@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>Vue中的$set - Hexo</title>
+
+  
+    <meta name="description" content="vue中$set详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue中的$set">
+<meta property="og:url" content="http://example.com/2020/07/29/vue%E4%B8%AD%E7%9A%84$set/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="vue中$set详解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://math.jianshu.com/math?formula=set%E5%88%99%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E7%BB%99data%E6%B7%BB%E5%8A%A0%E5%B1%9E%E6%80%A7%E5%AE%9E%E7%8E%B0%E5%93%8D%E5%BA%94%E5%BC%8F%E6%B8%B2%E6%9F%93%E6%95%88%E6%9E%9C%20%E4%BD%BF%E7%94%A8">
+<meta property="article:published_time" content="2020-07-29T02:20:39.000Z">
+<meta property="article:modified_time" content="2022-08-08T08:16:02.700Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-Vue -$set">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://math.jianshu.com/math?formula=set%E5%88%99%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E7%BB%99data%E6%B7%BB%E5%8A%A0%E5%B1%9E%E6%80%A7%E5%AE%9E%E7%8E%B0%E5%93%8D%E5%BA%94%E5%BC%8F%E6%B8%B2%E6%9F%93%E6%95%88%E6%9E%9C%20%E4%BD%BF%E7%94%A8">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E6%8A%9B%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-text">一 抛出问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-%E5%BC%95%E5%87%BA%E6%8E%A8%E8%AE%BA"><span class="toc-text">二 引出推论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">三 解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-set%E7%9A%84%E5%85%B7%E4%BD%93%E7%94%A8%E6%B3%95"><span class="toc-text">四 $set的具体用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94-%E6%80%BB%E7%BB%93"><span class="toc-text">五 总结</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Vue/">Vue</a></div><div id="post-meta">发布于&nbsp;<time datetime="2020-07-29T02:20:39.000Z">2020-07-29</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>Vue中的$set</span></h1>
+<blockquote>
+<p>理解vue数据响应式<br> 响应式 : 当data中的数据发生改变时 , 视图中的数据也会跟着改变</p>
+</blockquote>
+<h3 id="一-抛出问题"><a href="#一-抛出问题" class="headerlink" title="一 抛出问题"></a>一 抛出问题</h3><blockquote>
+<p>在vue中的data中定义一个空对象 , 将来动态给对象添加属性 , 改变这个属性</p>
+</blockquote>
+<p>具体看代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 添加视图容器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>渲染age属性<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123; obj.age &#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;changeAge&quot;</span>&gt;</span>点我修改 age 的值<span class="tag">&lt;/<span class="name">button</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>渲染 name 属性<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123; obj.name &#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;setName&quot;</span>&gt;</span>点我动态添加 name 属性<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../vue.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> vm = <span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">el</span>: <span class="string">&#x27;#app&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">data</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">obj</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">age</span>: <span class="number">18</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;,</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">changeAge</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">this</span>.<span class="property">obj</span>.<span class="property">age</span> = <span class="number">20</span></span></span><br><span class="line"><span class="language-javascript">            &#125;,</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">setName</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="comment">// 非响应式  只会给obj添加name属性及属性值 , 但视图没有更新</span></span></span><br><span class="line"><span class="language-javascript">                <span class="comment">// this.obj.name = &#x27;xjj&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                <span class="comment">// 响应式</span></span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">this</span>.$set(<span class="variable language_">this</span>.<span class="property">obj</span>, <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;xjj&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 响应式：</span></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">//     当 data 中的数据发生改变时， 视图中的数据也会跟着改变</span></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 什么情况下属性不会有响应式的效果：</span></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">//     在 data 中的数据下动态添加属性是不会有响应式的效果</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当更改的属性name在data中并没定义 , 这个时候触发更改name , 实质只会给data中添加了该属性和值 , 但视图没有动态更新<br> 这个属性之所以没有在视图响应式渲染出来 , 是因为它是动态添加的<br> 在data中的数据下动态添加属性是不会有响应式的效果</p>
+</blockquote>
+<h3 id="二-引出推论"><a href="#二-引出推论" class="headerlink" title="二 引出推论"></a>二 引出推论</h3><blockquote>
+<p>动态给 data 中对象添加属性，是不会有响应式的效果的</p>
+</blockquote>
+<h3 id="三-解决方案"><a href="#三-解决方案" class="headerlink" title="三 解决方案"></a>三 解决方案</h3><blockquote>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://math.jianshu.com/math?formula=set%E5%88%99%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E7%BB%99data%E6%B7%BB%E5%8A%A0%E5%B1%9E%E6%80%A7%E5%AE%9E%E7%8E%B0%E5%93%8D%E5%BA%94%E5%BC%8F%E6%B8%B2%E6%9F%93%E6%95%88%E6%9E%9C%20%E4%BD%BF%E7%94%A8" alt="set则可以实现动态给data添加属性实现响应式渲染效果 使用">set 就可以解决这个问题</p>
+</blockquote>
+<h3 id="四-set的具体用法"><a href="#四-set的具体用法" class="headerlink" title="四 $set的具体用法"></a>四 $set的具体用法</h3><blockquote>
+<p>引述vue文档<br> 向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新</p>
+</blockquote>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用法:</span><br><span class="line">Vue.<span class="keyword">set</span>(<span class="built_in">object</span>, key, <span class="keyword">value</span>)</span><br><span class="line">调用方法：<span class="keyword">this</span>.$<span class="keyword">set</span>( target, key, <span class="keyword">value</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment">//参数</span></span><br><span class="line">target：要更改的数据源(可以是对象或者数组)</span><br><span class="line">key：要更改或者新增属性的具体数据 (对象的key为键,数组的key为下标)</span><br><span class="line"><span class="keyword">value</span> ：重新赋的值</span><br><span class="line"></span><br><span class="line">官方解释：向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。</span><br><span class="line"></span><br><span class="line">应用场景:</span><br><span class="line">需要为data对象添加一个新属性时或修改某个属性的值时,却没有更新到视图上,这个时候就用$<span class="keyword">set</span>解决</span><br></pre></td></tr></table></figure>
+
+<p>上述 , 可以简单理解如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">语法</span><br><span class="line"><span class="comment">// target: 响应式的对象</span></span><br><span class="line"><span class="comment">// protoName: 属性名（要向响应式对象中添加的属性）</span></span><br><span class="line"><span class="comment">// value: 属性值</span></span><br><span class="line">Vue.<span class="keyword">set</span>(target, protoName, <span class="keyword">value</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 上例中</span></span><br><span class="line"><span class="keyword">this</span>.obj.name = <span class="string">&#x27;xjj&#x27;</span></span><br><span class="line"><span class="comment">// target: obj</span></span><br><span class="line"><span class="comment">// protoName: name</span></span><br><span class="line"><span class="comment">// value: xjj</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="五-总结"><a href="#五-总结" class="headerlink" title="五 总结"></a>五 总结</h3><p>&lt;1&gt; vue实例创建之后添加新的属性到实例上，它不会触发视图更新<br> &#x3D;&gt; 当生成vue实例后，这时对vue的data里边声明或者已经赋值过的对象或者数组（数组里边的值是对象）再次给对象添加新属性并赋值时(向对象中添加新的属性及属性值)，并不会自动更新到视图上去</p>
+<blockquote>
+<p>解析:<br> 受 ES5 的限制，Vue.js 不能检测到对象属性的添加或删除。由于 Vue 会在初始化实例时进行双向数据绑定，使用Object.defineProperty()对属性遍历添加 getter&#x2F;setter 方法，因此 Vue.js 在初始化实例时将属性转为 getter&#x2F;setter，<br> 所以属性必须在 data 对象上存在时才能进行上述过程 , 让 Vue.js 转换它，才能让它是响应的。<br> 如果要给对象添加新的属性，此时新属性没有进行过上述过程，它不是响应式的。<br> 此时需要用到$set。</p>
+</blockquote>
+<p>&lt;2&gt; Vue.set()不光能修改数据，还能添加数据<br> 使用$set()方法，既可以为data数据模型这个对象里的属性&#x3D;&gt;新增属性(并且给这个属性赋值)或修改原有属性的值,同时可以触发视图更新</p>
+<p>&lt;3&gt; 因此,$set可以理解为重新给data数据模型中的某个属性(可以是对象或者数组下的某层属性)重新赋值,无论是新增的属性或者原有的属性,都可以给他更改值,达到视图响应式更新的目的</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">举例</span><br><span class="line"><span class="comment">// 给数组中的对象的添加原有属性的值(给group这个数组下的满足find条件的对象的option属性下拉框添加数据,这个是数据为数组AccList)</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.$<span class="keyword">set</span>(<span class="keyword">this</span>.formConfigJson.formItems[<span class="number">0</span>].group.find(item =&gt; item.key === <span class="string">&#x27;accPayment&#x27;</span>), <span class="string">&#x27;option</span></span><br></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2020/06/08/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Vue生命周期详解<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2020/07/29/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">React生命周期<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

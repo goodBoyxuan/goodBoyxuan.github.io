@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>前端面试题一 - Hexo</title>
+
+  
+    <meta name="description" content="1、VUE 路由原理** 通过改变 URL，在不重新请求页面的情况下，更新页面视图。 更新视图但不重新请求页面，是前端路由原理的核心之一，目前在浏览器环境中这一功能的实现主要有 2 种方式： · 利用 URL 中的 hash(“#”); · 利用 History interface 在 HTML5 中新增的方法; 2、VUE 组件通信方式** 父子通信： 父向子传递数据是通过 props，子向父是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端面试题一">
+<meta property="og:url" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98/use-local-image-in-hexo/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、VUE 路由原理** 通过改变 URL，在不重新请求页面的情况下，更新页面视图。 更新视图但不重新请求页面，是前端路由原理的核心之一，目前在浏览器环境中这一功能的实现主要有 2 种方式： · 利用 URL 中的 hash(“#”); · 利用 History interface 在 HTML5 中新增的方法; 2、VUE 组件通信方式** 父子通信： 父向子传递数据是通过 props，子向父是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/use-local-image-in-hexo/img3.png">
+<meta property="og:image" content="http://example.com/use-local-image-in-hexo/img2.png">
+<meta property="og:image" content="http://example.com/use-local-image-in-hexo/img1.png">
+<meta property="og:image" content="http://example.com/use-local-image-in-hexo/img4.png">
+<meta property="og:image" content="http://example.com/use-local-image-in-hexo/img5.jpg">
+<meta property="og:image" content="http://example.com/use-local-image-in-hexo/34.png">
+<meta property="og:image" content="http://example.com/use-local-image-in-hexo/35.png">
+<meta property="article:published_time" content="2022-06-27T23:33:45.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:51:15.883Z">
+<meta property="article:author" content="知非">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/use-local-image-in-hexo/img3.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text"></span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-06-27T23:33:45.000Z">2022-06-28</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>前端面试题一</span></h1>
+<p>1、VUE 路由原理**</p>
+<p>通过改变 URL，在不重新请求页面的情况下，更新页面视图。</p>
+<p>更新视图但不重新请求页面，是前端路由原理的核心之一，目前在浏览器环境中这一功能的实现主要有 2 种方式：</p>
+<p>· 利用 URL 中的 hash(“#”);</p>
+<p>· 利用 History interface 在 HTML5 中新增的方法;<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/use-local-image-in-hexo/img3.png"></p>
+<p>2、VUE 组件通信方式**</p>
+<p>父子通信：</p>
+<p>父向子传递数据是通过 props，子向父是通过 events（$emit）；通过父链 &#x2F; 子链也可以通信（$parent &#x2F; $children）；ref 也可以访问组件实例；provide &#x2F; inject API；$attrs&#x2F;$listeners</p>
+<p>兄弟通信：</p>
+<p>Bus；Vuex</p>
+<p>跨级通信：</p>
+<p>Bus；Vuex；provide &#x2F; inject API、$attrs&#x2F;$listeners</p>
+<p>3、你了解 vue 的 diff 算法吗？说说看**</p>
+<p>diff 算法就是进行虚拟节点对比，并返回一个 patch 对象，用来存储两个节点</p>
+<p>不同的地方，最后用 patch 记录的消息去局部更新 Dom。</p>
+<p>其有两个特点：</p>
+<p>比较只会在同层级进行, 不会跨层级比较</p>
+<p>在 diff 比较的过程中，循环从两边向中间比较</p>
+<p>43.Dom</p>
+<p>真实 DOM，</p>
+<p>DOM 是文档对象模型，</p>
+<p>DOM 采用树形结构作为分层结构，以树节点形式表示页面中各种元素或内容在页面渲染出的每一个结点都是一个真实 DOM 结构，</p>
+<p>虚拟 DOM</p>
+<p>虚拟 Dom，本质上是以 JavaScript 对象形式存在的对 DOM 的描述。</p>
+<p>创建虚拟 DOM 目的就是为了更好将虚拟的节点渲染到页面视图中，虚拟 DOM 对象</p>
+<p>的节点与真实 DOM 的属性一一对应，为了简化视图的操作，解决跟踪状态变化的问</p>
+<p>题，于是虚拟 DOM 出现了虚拟 DOM 的好处是当状态改变时不需要立即更新 DOM</p>
+<p>，只需要创建一个虚拟树来描述 DOM，虚 DOM 内部将弄清楚如何有效的更新 DO</p>
+<p>M，虚拟 DOM 可以维护程序的状态，跟踪上一次的状态通过比较前后两次状态的差</p>
+<p>N，异更新真实 DOM</p>
+<p>4、Vue3.0 的设计目标是什么？做了那些优化**</p>
+<p>复杂组件的代码变得越来越难以维护</p>
+<p>缺少一种纯净的提取机制（使得多个组件之间逻辑的复用变得清晰易于维护）</p>
+<p>类型推断不够友好，代码写的不够畅快</p>
+<p>bundle 的时间相对较长（因为使用 webpack,所以打包机制决定了打包效率）</p>
+<p>打包的体积整体变小。运行速度<strong>**速度更快**</strong>**<strong>*</strong>*<strong>，**</strong>**<strong>****<strong>拥有*</strong>******</strong>***更灵活的代码组织能力**</p>
+<p><strong>**优化：**</strong></p>
+<p><strong>**源码，**</strong></p>
+<p>vue3 整个源码是通过 monorepo 的方式维护的，根据功能将不同的模块拆分到 packages 目录下面不同的子目录中。</p>
+<p>这样使得模块拆分更细化，职责划分更明确，模块之间的依赖关系也更加明确，开发人员也更容易阅读、理解和更改所有模块源码，提高代码的可维护性</p>
+<p><strong>**性能，**</strong></p>
+<p>· 体积优化</p>
+<p>· 编译优化</p>
+<p>· 数据劫持优化</p>
+<p>在 vue2 中，数据劫持是通过 Object.defineProperty，这个 API 有一些缺陷，并不能检测对象属性的添加和删除</p>
+<p>相比之下，vue3 是通过 proxy 监听整个对象，那么对于删除或者赋值都可以监听到，</p>
+<p>但是 Proxy 并不能监听到内部深层次的对象变化，Vue3 的处理方式是在 getter 中去递归响应式，这样的好处是真正访问到的内部对象才会变成响应式，而不是无脑递归，减少性能的开销。</p>
+<p><strong>**语法的 api**</strong></p>
+<p>· 优化逻辑组织</p>
+<p>· 优化逻辑复用</p>
+<p>5、Vue3.0 所采用的 Composition Api 与 Vue2.x 使用的 Options Api 有什么不同？**</p>
+<p>在逻辑组织和逻辑复用方面，Composition API 是优于 Options API</p>
+<p>因为 Composition API 几乎是函数，会有更好的类型推断。</p>
+<p>Composition API（自动删除无用代码） 代码也更容易压缩</p>
+<p>Composition API 中见不到 this 的使用，减少了 this 指向不明的情况</p>
+<p>6、说一下 vue2 和 vue3 的数据响应式原理**</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/use-local-image-in-hexo/img2.png"></p>
+<p><strong>#####</strong></p>
+<p>7、说说你对盒子模型的理解**</p>
+<p>有两种， IE 盒子模型（怪异盒子模型）、W3C 盒子模型（标准盒子模型）；</p>
+<p>盒模型： 内容(content)、填充(padding)、边界(margin)、 边框(border)；</p>
+<p>区 别： IE 的 content 部分把 border 和 padding 计算了进去;</p>
+<p>盒子模型构成：内容(content)、内填充(padding)、 边框(border)、外边距(margin)</p>
+<p>IE8 及其以下版本浏览器，未声明 DOCTYPE，内容宽高会包含内填充和边框，称为怪异盒模型(IE 盒模型)</p>
+<p>标准(W3C)盒模型：元素宽度 &#x3D; width + padding + border + margin</p>
+<p>怪异(IE)盒模型：元素宽度 &#x3D; width + margin</p>
+<p>标准浏览器通过设置 css3 的 box-sizing: border-box 属性，触发“怪异模式”解析计算宽高</p>
+<p>8、css 选择器有哪些？优先级？那些属性可以继承？**</p>
+<p>关于 css 属性选择器常用的有：</p>
+<p>id 选择器（#box），选择 id 为 box 的元素</p>
+<p>类选择器（.one），选择类名为 one 的所有元素</p>
+<p>标签选择器（div），选择标签为 div 的所有元素</p>
+<p>伪类选择器</p>
+<p>伪元素选择器</p>
+<p>属性选择器</p>
+<p>优先级：内联 &gt; ID 选择器 &gt; 类选择器 &gt; 标签选择器</p>
+<p>关于继承属性，可以分成：</p>
+<p>字体系列属性</p>
+<p>文本系列属性</p>
+<p>元素可见性</p>
+<p>表格布局属性</p>
+<p>列表属性</p>
+<p>光标属性</p>
+<p>继承中比较特殊的几点：</p>
+<p>a 标签的字体颜色不能被继承</p>
+<p>h1-h6 标签字体的大下也是不能被继承的</p>
+<p>无继承的属性</p>
+<p>display</p>
+<p>文本属性：vertical-align、text-decoration</p>
+<p>盒子模型的属性：宽度、高度、内外边距、边框等</p>
+<p>背景属性：背景图片、颜色、位置等</p>
+<p>定位属性：浮动、清除浮动、定位 position 等</p>
+<p>9、元素的水平垂直居中的方法有哪些？如果元素不定宽高呢？**</p>
+<p>实现元素水平垂直居中的方式：</p>
+<p>利用定位+<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=margin&spm=1001.2101.3001.7020">margin</a>:auto</p>
+<p>利用定位+margin:负值</p>
+<p>利用定位+transform</p>
+<p>table 布局</p>
+<p><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=flex&spm=1001.2101.3001.7020">flex</a>布局</p>
+<p>grid 布局</p>
+<p>上述方法中，不知道元素宽高大小仍能实现水平垂直居中的方法有：</p>
+<p>利用定位+margin:auto</p>
+<p>利用定位+transform</p>
+<p>利用定位+margin:负值</p>
+<p>flex 布局</p>
+<p>grid 布局</p>
+<p>10、怎么理解回流跟重绘？什么场景下会触发？**</p>
+<p>重绘和回流会在我们设置节点样式时频繁出现，同时也会很大程度上影响性能。</p>
+<p>重绘是当节点需要更改外观而不会影响布局的，比如改变 color 就叫称为重绘</p>
+<p>回流是布局或者几何属性需要改变就称为回流。</p>
+<p>什么场景下会触发</p>
+<p>回流必定会发生重绘，重绘不一定会引发回流。回流所需的成本比重绘高的多，改变父节点里的子节点很可能会导致父节点的一系列回流。</p>
+<p>11、什么是响应式设计？响应式设计的基本原理是什么？如何做**</p>
+<p>响应式⽹站设计（Responsive Web design）是⼀种⽹络页⾯设计布局，页⾯的设计与开发应当根据⽤户⾏为以及设备环境(系统平台、屏幕尺⼨、屏幕定向等)进⾏相应的响应和调整</p>
+<p>响应式设计的基本原理是通过媒体查询检测不同的设备屏幕尺⼨做处理，为了处理移动端，页⾯头部必须有 meta 声明 viewport</p>
+<p>实现响应式布局的⽅式有如下：</p>
+<p>媒体查询</p>
+<p>百分⽐</p>
+<p>vw&#x2F;vh</p>
+<p>rem</p>
+<p>12、如果做优化，css 提高性能的方法有哪些？**</p>
+<p>加载性能：</p>
+<p>（1）css 压缩：将写好的 css 进行打包压缩，可以减少很多的体积。</p>
+<p>（2）css 单一样式：当需要下边距和左边距的时候，很多时候选择:margin:top 0 bottom 0;但 margin-bottom:bot</p>
+<p>tom;margin-left:left;执行的效率更高。</p>
+<p>（3）减少使用@import,而建议使用 link，因为后者在页面加载时一起加载，前者是等待页面加载完成之后再进行加载。</p>
+<p><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E9%80%89%E6%8B%A9%E5%99%A8&spm=1001.2101.3001.7020">选择器</a>性能：</p>
+<p>减少标签选择，多用 class 选择器。</p>
+<p>尽量少的去使用后代选择器，降低选择器的权重值。后代选择器的开销是最高的，尽量将选择器的深度降到最低，最高不要超过三层，更多的使用类来关联每一个标签元素。</p>
+<p>了解哪些属性是可以通过继承而来的，然后避免对这些属性重复指定规则。</p>
+<p>13、对前端工程师这个职位是怎样理解的？它的前景会怎么样**</p>
+<p>通过各种终端来向用户展示数据，或者给用户提供一些和后台的交互接口。</p>
+<p>前景：首先，在我看来，一切和用户交互的终端都可以属于前端。并且随着现在跨端开发框架的兴起，，也使得前端的那套开发技术栈以及开发流程可以复制到 pc 端来，使得前端的范畴越来越广泛。</p>
+<p>并且，随着 AR，VR 技术的兴起，手机 app 中应用了大量的 3 维场景来提高用户体验，比如手机 app 上看房，看车，甚至是看一个城市的街景，都已经有了 3D 的场景，并且用户还能进行简单的操作。而这些都对前端提出了更高的要求</p>
+<p>14、说说 JavaScript 中的数据类型？存储上的差别？**</p>
+<p>JavaScript 一共有 8 种数据类型，其中有 7 种基本数据类型：Undefined、Null、Boolean、Number、String、Symbol（es6 新增，表示独一无二的值）和 BigInt（es10 新增）；</p>
+<p>1 种引用数据类型——Object（Object 本质上是由一组无序的名值对组成的）。里面包含 function、Array、Date 等。JavaScript 不支持任何创建自定义类型的机制，而所有值最终都将是上述 8 种数据类型之一。</p>
+<p>引用数据类型: 对象 Object（包含普通对象-Object，数组对象-Array，正则对象-Re gEx p，日期对象-Date，数学函数-Math，函数对象-Function）</p>
+<p>在 JavaScript 的执行过程中， 主要有三种类型内存空间，分别是代码空间、栈空间、堆空间。其中的代码空间主要是存储可执行代码的，原始类型的数据值都是直接保存在“栈”中的，引用类型(Object)的值是存放在“堆”中的。因此在栈空间中，原始类型存储的是变量的值，而引用类型存储的是其在”堆空间”中的地址，当 JavaScript 需要访问该数据的时候，是通过栈中的引用地址来访问的</p>
+<p>15、typeof 与 instanceof 区别**</p>
+<p>typeof 的返回值是一个字符串，对于基本类型，除了 null 都可以显示正确的类型</p>
+<p>typeof 对于对象，除了函数都会显示 object</p>
+<p>instanceof 返回值是布尔值，用于判断一个变量是否属于某个对象，因为内部机制是通过判断对象的原型链中是不是能找到类型的 prototype</p>
+<p>16、JavaScript 本地存储的方式由哪些？区别及应用场景？**</p>
+<p>javaScript 本地缓存的方法我们主要讲述以下四种：</p>
+<p>cookie</p>
+<p>sessionStorage</p>
+<p><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=localStorage&spm=1001.2101.3001.7020">localStorage</a></p>
+<p>indexedDB</p>
+<p>关于 cookie、sessionStorage、localStorage 三者的区别主要如下：</p>
+<p>存储大小：cookie 数据大小不能超过 4k，sessionStorage 和 localStorage 虽然也有存储大小的限制，但比 cookie 大得多，可以达到 5M 或更大</p>
+<p>有效时间：localStorage 存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；sessionStorage 数据在当前浏览器窗口关闭后自动删除；cookie 设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭</p>
+<p>数据与服务器之间的交互方式，cookie 的数据会自动的传递到服务器，服务器端也可以写 cookie 到客户端；sessionStorage 和 localStorage 不会自动把数据发给服务器，仅在本地保存</p>
+<p>17、什么是防抖和节流？有什么区别？如何实现？**</p>
+<p>防抖：某一高频事件不断被触发时，仅在最后一次真正执行事件处理代码。</p>
+<p>节流：某一高频事件被触发时，确保在每一个特定的时间段内被执行一次。</p>
+<p>相似点：都是为应对事件持续频繁发生，造成前端性能下降或对后端服务造成的压力。</p>
+<p>区别：节流会不断的触发，而防抖仅在最后一次触发。防抖适用于，如搜索输入框提示，仅在输入停止后进行一次提示更新，以减少后台压力。节流适用于，如窗体以拖动的方式调整大小，在每次特定的时间片结束后触发一次窗体大小调整。</p>
+<p>节流的实现：</p>
+<p>可以使用事件戳和定时器</p>
+<p>使用事件戳写法，事件会立即执行，停止触发后没有办法再次执行</p>
+<p>使用定时器的写法，自己决定多少毫秒后第一次执行，第二次事件停止触发后依然会在执行一次</p>
+<p>防抖的实现：</p>
+<p>在处理一段连续操作结束后，处理回调，利用 clearTimeout 和 setTimeout 实现</p>
+<p>18、如何通过 JS 判断一个人数组**</p>
+<p>1.Es5 新增的方法 isArray)</p>
+<p>2.Instanceof 方法 是用来检测一个对象是否在其原型链原型构造函数的属性</p>
+<p>3.Constructor 方法 返回对创建此对象的数组函数的引用，就是返回对象对应 的构造函数</p>
+<p>4.jQuery 正在使用的 object.protype.toString.call(value) 写一个返回数据类型的方法</p>
+<p>19、说说你对作用域链的理解**</p>
+<p>作用域 就是变量 变量作用域又称上下文</p>
+<p>作用域分为 全局，函数，块级 作用域</p>
+<p>作用域链的作用是保证执行环境里有权访问的变量和函数是有序的，作用域链的变量只能向上访问，变量访问到 window 对象即被终止，作用域链向下访问变量是不被允许的 即作用域控制着变量与函数的可见性和生命周期</p>
+<p>20、JavaScript 原型，原型链？有什么特点？**</p>
+<p><strong>****</strong>***<strong>*原型：**</strong>**<strong>*</strong>***</p>
+<p>JavaScript 的所有对象中都包含了一个 [<strong>proto</strong>] 内部属性，这个属性所对应的就是该对象的原型</p>
+<p>JavaScript 的函数对象，除了原型 [<strong>proto</strong>] 之外，还预置了 prototype 属性</p>
+<p>当函数对象作为构造函数创建实例时，该 prototype 属性值将被作为实例对象的原型 [<strong>proto</strong>]。</p>
+<p><strong>****</strong>***<strong>*原型链：**</strong>**<strong>*</strong>***</p>
+<p>当一个对象调用的属性&#x2F;方法自身不存在时，就会去自己 [<strong>proto</strong>] 关联的前辈 prototype 对象上去找</p>
+<p>如果没找到，就会去该 prototype 原型 [<strong>proto</strong>] 关联的前辈 prototype 去找。依次类推，直到找到属性&#x2F;方法或 undefined 为止。从而形成了所谓的“原型链”</p>
+<p><strong>****</strong>***<strong>*原型特点：**</strong>**<strong>*</strong>***</p>
+<p>JavaScript 对象是通过引用来传递的，当修改原型时，与之相关的对象也会继承这一改变</p>
+<p>21、请解释什么是事件代理**</p>
+<p>事件代理（Event Delegation），又称之为事件委托。是 JavaScript 中常用绑定事件的常用技巧。顾名思义，“事件代理”即是把原本需要绑定的事件委托给父元素，让父元素担当事件监听的职务。事件代理的原理是 DOM 元素的事件冒泡。</p>
+<p>使用事件代理的好处是可以提高性能可以大量节省内存占用，减少事件注册</p>
+<p>可以实现当新增子对象时无需再次对其绑定</p>
+<p>22、请谈谈 This 对象的理解**</p>
+<p>在浏览器里，在全局范围内 this 指向 window 对象；</p>
+<p>在函数中，this 永远指向最后调用他的那个对象；</p>
+<p>构造函数中，this 指向 new 出来的那个新的对象；</p>
+<p>call、apply、bind 中的 this 被强绑定在指定的那个对象上；</p>
+<p>箭头函数中 this 比较特殊,箭头函数 this 为父作用域的 this，而箭头函数的 this 指向是静态的,声明的时候就确定了下来；</p>
+<p>23、new 操作符具体干了什么**</p>
+<p>创建一个新对象,作为返回的实例对象</p>
+<p>将空对象的原型-proto-指向构造函数的 protptype 属性</p>
+<p>对象连接到构造函数原型上，并绑定 <code>this</code>（this 指向新对象）</p>
+<p>执行构造函数代码（为这个新对象添加属性）</p>
+<p>返回新对象</p>
+<p>（1）首先创建了一个新的空对象。</p>
+<p>（2）设置原型，将对象的原型设置为函数的 prototype 对象。</p>
+<p>（3）让函数的 this 指向这个对象，执行构造函数的代码（为这个新对象添加属性）。</p>
+<p>（4）判断函数的返回值类型，如果是值类型，返回创建的对象。如果是引用类型，就返回这个引用类型的对象</p>
+<p>24、null，undefined 的区别**</p>
+<p>undefined：声明了变量但未赋值</p>
+<p>null 是一个空对象，对象已经被定义但是值为空值</p>
+<p>在验证 null 和 undefind 时要用&#x3D;&#x3D;&#x3D;（数据类型转化）而不是&#x3D;&#x3D;，&#x3D;&#x3D;无法分辨 null undefined</p>
+<p>25、JavaScript 代码中“use strict”；是什么意思**</p>
+<p>use strict 是 es5 中的严格模式，利用严格模式使代码编写更加规范，避免不合理的语法，和一些异常操作</p>
+<p>26、同步和异步的区别**</p>
+<p>同步，在任务执行过程中如果需要一段时间才能返回信息，那么这个进程就会一直等下去，直到可以返回信息再执行</p>
+<p>异步不会一直等待，不管其他进程的状态，直接进行下面的操作，提高了执行效率</p>
+<p>27、谈一谈箭头函数与普通函数的区别**</p>
+<p>不能作为构造函数，不能使用 new。</p>
+<p>1：写法不一样</p>
+<p>2：普通函数存在变量提升的现象</p>
+<p>3：箭头函数是匿名函数，不能作为构造函数使用，不能使用 new。</p>
+<p>4：两者 this 的指向不同</p>
+<p>5：箭头函数的 arguments 指向它的父级函数所在作用域的 arguments</p>
+<p>6：箭头函数没有 new.target</p>
+<p>箭头函数</p>
+<p>箭头函数的 this 指向父级作用域的 this，</p>
+<p>箭头函数没有 prototype 原型.</p>
+<p>箭头函数不能作为构造函数。</p>
+<p>普通函数的 this</p>
+<p>1、普通函数最终指向调用它的对象，也就是说谁调用就指向谁。</p>
+<p>2、没有被对象调用的函数默认指向 windows</p>
+<p>28、JS 数组和对象的遍历方式，以及几种方式的比较**</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/use-local-image-in-hexo/img1.png"></h2><p>title: use-local-image-in-hexo<br>date: 2022-07-05 11:44:00<br>tags:</p>
+<hr>
+<p>29、如何解决跨域问题**</p>
+<p>通过 jsonp 跨域</p>
+<p>document.domain + iframe 跨域</p>
+<p>nginx 代理跨域</p>
+<p>nodejs 中间件代理跨域</p>
+<p>后端在头部信息里面设置安全域名</p>
+<p>方式 1：6 资源共享（cors）</p>
+<p>浏览器将 CORS 请求分成两类：简单请求（simple request）和预检请求。</p>
+<p>解决方式就是服务端在响应头中加入字段：Access-contro-allowl-origion:Origion,那么该 Origion 就可以访问了。如果该字段值为’*‘那么所有 Origion 均可访问</p>
+<p>方式 2：jsonp</p>
+<p>通常为了减轻 web 服务器的负载，我们把 js、css，img 等静态资源分离到另一台独立域名的服务器上，在 html 页面中再通过相应的标签从不同域名下加载静态资源，而被浏览器允许，基于此原理，我们可以通过动态创建 script，再请求一个带参网址实现跨域通信。</p>
+<p>不过我们又发现，Web 页面上调用 js 文件时则不受是否跨域的影响（不仅如此，我们还发现凡是拥有”src”这个属性的标签都拥有跨域的能力，比如“&lt;“script”&gt;”、“&lt;”img“&gt;”、&lt;“iframe”&gt;）</p>
+<p>于是可以判断，当前阶段如果想通过纯 web 端跨域访问数据就只有一种可能，那就是在远程服务器上设法把数据装进 js 格式的文件里，供客户端调用和进一步处理；</p>
+<p>方式 3：vue 中设置代理服务器</p>
+<p>跨域问题只存在浏览器，如果是服务器和服务器之间的通信是不存在跨域问题的</p>
+<p>可以在 vue-cli 中设置代理服务器实现跨域请求</p>
+<p>30、XML 和 JSON 的区别**</p>
+<p>XML 是<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8F%AF%E6%89%A9%E5%B1%95%E6%A0%87%E8%AE%B0%E8%AF%AD%E8%A8%80&spm=1001.2101.3001.7020">可扩展标记语言</a>，标记语言就是通过一个一个的标记来组织数据的一种语法格式。</p>
+<p>JSON 是一种轻量级的数据交换格式，可使人们很容易地进行阅读和编写，同时也方便了机器进行解析和生成。JSON 适用于进行数据交互的场景，如网站前台与后台之间的数据交互。</p>
+<p>数据交互 json 比 xml 交互更好，容易被解析</p>
+<p>传输速度 json 比 xml 传输速度更快</p>
+<p>数据描述 json 比 xml 描述更细致</p>
+<p>体积 json 比 xml 体积小，传输速度快</p>
+<p>31、 谈谈你对 webpack 的看法**</p>
+<p>webpack 是用来管理模块包的工具，在项目开发中可以打包模块依赖，对静态资源进行解析。在 web 开发过程中打包 ht js css 等静态资源，开发更加高效。对于不同类型的资源，webpack 有模块加载器对模块包分析他们之间的依赖关系，最终优化合并为静态资源</p>
+<p>32、webpack 的打包原理**</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/use-local-image-in-hexo/img4.png"></p>
+<p>33、 如何优化 webpack 打包速度**</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/use-local-image-in-hexo/img5.jpg"></p>
+<p>34、 说说 webpack 中常见的 Loader？解决了什么问题？**</p>
+<p>loader 用于对模块的源代码进行转换，在 import 或‘加载’模块时<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E9%A2%84%E5%A4%84%E7%90%86&spm=1001.2101.3001.7020">预处理</a>文件</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/use-local-image-in-hexo/34.png"></p>
+<p>35、说说 webpack 中常见的 Plugin？解决了什么问题？**</p>
+<p>Plugin（Plug-in）是一种计算机应用程序，它和主应用程序互相交互，以提供特定的功能</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/use-local-image-in-hexo/35.png"></p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2022/06/28/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98/">前端面试题<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2022/07/06/%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/">基础面试题<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
