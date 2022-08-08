@@ -4,7 +4,7 @@
 <head>
   <meta name="generator" content="Hexo 6.2.0">
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,follow">
+  
 
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
@@ -18,15 +18,20 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>归档 - Hexo</title>
+  <title>如何减少回流和重绘 - Hexo</title>
 
   
-    <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="http://example.com/archives/2022/07/index.html">
+    <meta name="description" content="如何减少回流和重绘详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何减少回流和重绘">
+<meta property="og:url" content="http://example.com/2020/06/09/%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如何减少回流和重绘详解">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-09T02:50:02.000Z">
+<meta property="article:modified_time" content="2022-08-08T13:20:00.759Z">
 <meta property="article:author" content="知非">
+<meta property="article:tag" content="-css">
 <meta name="twitter:card" content="summary">
   
   
@@ -54,8 +59,10 @@
   
 
 
+
+
   <div class='l_body' id='start'>
-    <aside class='l_left' layout=''>
+    <aside class='l_left' layout='post'>
     
 
 
@@ -65,378 +72,50 @@
 <nav class="menu dis-select"></nav></header>
 
 <div class="widgets">
-<div class="widget-wrap" id="markdown"><div class="widget-header cap dis-select"><span class="name">欢迎</span></div><div class="widget-body fs14"><hr>
-<h2 id="欢迎来到知非的博客"><a href="#欢迎来到知非的博客" class="headerlink" title="欢迎来到知非的博客"></a>欢迎来到知非的博客</h2><p>A wandering dream ~</p>
-</div></div>
 
-<div class="widget-wrap" id="recent"><div class="widget-header cap dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><div class="more-item"><a class="title" href="/2018/10/05/Js%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E4%B8%8B/">JavaScript数组去重（下）</a></div><div class="more-item"><a class="title" href="/2018/10/05/Js%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E4%B8%8A/">JavaScript数组去重（上）</a></div><div class="more-item"><a class="title" href="/2018/09/16/JavaScript%E4%BB%A3%E7%A0%81%E5%9D%97/">JavaScript代码块</a></div><div class="more-item"><a class="title" href="/2018/09/27/Js%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B,/">let const var 相关</a></div><div class="more-item"><a class="title" href="/2018/09/23/Js%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C/">JavaScript对象基础操作</a></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81CSS%E4%BC%98%E5%8C%96%E6%B3%95"><span class="toc-text">1、CSS优化法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81JavaScript%E4%BC%98%E5%8C%96%E6%B3%95"><span class="toc-text">2、JavaScript优化法</span></a></li></ol></div></div></div>
+
+
 </div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
-  
-
-<header class="header mobile-only">
-
-<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
-</header>
-
-
 
       
 
-  
-  <div class='nav-wrap'>
-  <nav class='sub post cap'>
-    
-      <a href='/'>近期发布</a>
-    
-    
-      
-        <a href='/categories'>分类</a>
-      
-    
-    
-      
-        <a href='/tags'>标签</a>
-      
-    
-    
-      
-        <a class='active' href='/archives'>归档</a>
-      
-    
-  </nav>
-</div>
 
-  <div class='post-list'>
-  	
-  	
-  		
-  		
-  			
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  			
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  			
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  	
-  		<article class='' id='archive'>
-  			<div class='archive-header h4'>2022</div>
-  			
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/08/08/Vue3%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A/">
-    					<time>08-08</time>
-    					<span>
-                
-      						Vue3中通父子组件双向绑定
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/07/06/%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/">
-    					<time>07-06</time>
-    					<span>
-                
-      						基础面试题
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/28/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98/use-local-image-in-hexo/">
-    					<time>06-28</time>
-    					<span>
-                
-      						前端面试题一
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/06/28/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E9%A2%98/">
-    					<time>06-28</time>
-    					<span>
-                
-      						前端面试题
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  		</article>
-  	
-  		<article class='' id='archive'>
-  			<div class='archive-header h4'>2020</div>
-  			
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/07/29/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
-    					<time>07-29</time>
-    					<span>
-                
-      						React生命周期
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/07/29/vue%E4%B8%AD%E7%9A%84$set/">
-    					<time>07-29</time>
-    					<span>
-                
-      						Vue中的$set
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/06/09/%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98/">
-    					<time>06-09</time>
-    					<span>
-                
-      						如何减少回流和重绘
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/06/08/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
-    					<time>06-08</time>
-    					<span>
-                
-      						Vue生命周期详解
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/06/08/%E4%BB%80%E4%B9%88%E6%98%AF%E9%87%8D%E7%BB%98%E5%92%8C%E5%9B%9E%E6%B5%81/">
-    					<time>06-08</time>
-    					<span>
-                
-      						什么是回流和重绘
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  		</article>
-  	
-  		<article class='' id='archive'>
-  			<div class='archive-header h4'>2018</div>
-  			
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2018/10/05/Js%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E4%B8%8A/">
-    					<time>10-05</time>
-    					<span>
-                
-      						JavaScript数组去重（上）
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2018/10/05/Js%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E4%B8%8B/">
-    					<time>10-05</time>
-    					<span>
-                
-      						JavaScript数组去重（下）
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2018/09/27/Js%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B,/">
-    					<time>09-27</time>
-    					<span>
-                
-      						let const var 相关
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2018/09/23/Js%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C/">
-    					<time>09-23</time>
-    					<span>
-                
-      						JavaScript对象基础操作
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2018/09/20/Js%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D/">
-    					<time>09-20</time>
-    					<span>
-                
-      						JavaScript对象基础介绍
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2018/09/16/JavaScript%E4%BB%A3%E7%A0%81%E5%9D%97/">
-    					<time>09-16</time>
-    					<span>
-                
-      						JavaScript代码块
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  		</article>
-  	
-  </div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Css/">Css</a></div><div id="post-meta">发布于&nbsp;<time datetime="2020-06-09T02:50:02.000Z">2020-06-09</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>如何减少回流和重绘</span></h1>
+<h3 id="1、CSS优化法"><a href="#1、CSS优化法" class="headerlink" title="1、CSS优化法"></a>1、CSS优化法</h3><p>（1）使用 transform 替代 top</p>
+<p>（2）使用 visibility 替换 display: none ，因为前者只会引起重绘，后者会引发回流（改变了布局</p>
+<p>（3）避免使用table布局，可能很小的一个小改动会造成整个 table 的重新布局。</p>
+<p>（4）尽可能在DOM树的最末端改变class，回流是不可避免的，但可以减少其影响。尽可能在DOM树的最末端改变class，可以限制了回流的范围，使其影响尽可能少的节点。</p>
+<p>（5）避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点层级过多。</p>
+<p>（6）将动画效果应用到position属性为absolute或fixed的元素上，避免影响其他元素的布局，这样只是一个重绘，而不是回流，同时，控制动画速度可以选择 requestAnimationFrame，详见探讨 requestAnimationFrame。</p>
+<p>（7）避免使用CSS表达式，可能会引发回流。</p>
+<p>（8）将频繁重绘或者回流的节点设置为图层，图层能够阻止该节点的渲染行为影响别的节点，例如will-change、video、iframe等标签，浏览器会自动将该节点变为图层。</p>
+<p>（9）CSS3 硬件加速（GPU加速），使用css3硬件加速，可以让transform、opacity、filters这些动画不会引起回流重绘 。但是对于动画的其它属性，比如background-color这些，还是会引起回流重绘的，不过它还是可以提升这些动画的性能。</p>
+<h3 id="2、JavaScript优化法"><a href="#2、JavaScript优化法" class="headerlink" title="2、JavaScript优化法"></a>2、JavaScript优化法</h3><p>（1）避免频繁操作样式，最好一次性重写style属性，或者将样式列表定义为class并一次性更改class属性。</p>
+<p>（2）避免频繁操作DOM，创建一个documentFragment，在它上面应用所有DOM操作，最后再把它添加到文档中。 </p>
+<p>（3）避免频繁读取会引发回流&#x2F;重绘的属性，如果确实需要多次使用，就用一个变量缓存起来。</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2020/06/08/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Vue生命周期详解<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2020/07/29/vue%E4%B8%AD%E7%9A%84$set/">Vue中的$set<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
 
 
       
