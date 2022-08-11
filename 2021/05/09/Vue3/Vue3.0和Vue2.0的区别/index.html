@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>Vue3.0和Vue2.0的区别 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="Vue3.0和Vue2.0的区别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue3.0和Vue2.0的区别">
+<meta property="og:url" content="http://example.com/2021/05/09/Vue3/Vue3.0%E5%92%8CVue2.0%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="Vue3.0和Vue2.0的区别">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-09T03:12:26.000Z">
+<meta property="article:modified_time" content="2022-08-10T06:49:05.670Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-Vue3">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/friends/">友链</a><a class="nav-item" href="/about/">关于</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81vue2%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F-vs-vue3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F-%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87"><span class="toc-text">1、vue2的响应式 vs vue3的响应式 (性能提升)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95"><span class="toc-text">2、模板语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E5%AF%B9%E6%AF%94"><span class="toc-text">3、生命周期函数对比</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89%E9%A6%96%E5%85%88%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">1）首先需要了解生命周期是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89-%E5%85%B7%E4%BD%93%E5%90%AB%E4%B9%89%E5%92%8C%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E6%84%8F%E4%B9%89%EF%BC%9A"><span class="toc-text">2） 具体含义和实际项目中的意义：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%80%BB%E7%BB%93"><span class="toc-text">3)总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E9%87%8D%E8%A6%81%E7%9A%84setup%E5%87%BD%E6%95%B0"><span class="toc-text">4、重要的setup函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81v-model%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%B8%8D%E4%B8%80%E6%A0%B7%EF%BC%8C%E5%9C%A8vue3%E4%B8%AD%E6%88%91%E4%BB%AC%E8%BF%99%E6%A0%B7%E4%BD%BF%E7%94%A8"><span class="toc-text">5、v-model双向数据绑定的使用方式不一样，在vue3中我们这样使用</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Vue3/">Vue3</a></div><div id="post-meta">发布于&nbsp;<time datetime="2021-05-09T03:12:26.000Z">2021-05-09</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>Vue3.0和Vue2.0的区别</span></h1>
+<h3 id="1、vue2的响应式-vs-vue3的响应式-性能提升"><a href="#1、vue2的响应式-vs-vue3的响应式-性能提升" class="headerlink" title="1、vue2的响应式 vs vue3的响应式 (性能提升)"></a>1、vue2的响应式 vs vue3的响应式 (性能提升)</h3><p><strong>响应式系统升级</strong></p>
+<ul>
+<li>vue2 中的 object.defineProperty(响应式系统的核心)</li>
+</ul>
+<blockquote>
+<p>初始化的时候，会遍历data中的所有成员，使用defineProperty把对象的属性转换成get和set，如果该成员中的属性还是对象的话，需要递归处理每一个子对象的属性。这些都是在初始化的时候进行的。即使你没有使用到这个属性，那么也是会将该属性进行响应式处理。<br>复制代码</p>
+</blockquote>
+<ul>
+<li>vue3 proxy</li>
+</ul>
+<blockquote>
+<p>proxy的性能本身就比defineProperty要好， 另外，代理对象可以拦截属性的访问、赋值、删除等操作，不需要初始化时遍历所有的属性。另外，如果有多层属性嵌套的话，只有访问某个属性的时候，才会递归处理下一级的属性。使用proxy默认就可以监听到动态新增的属性，可以监听到删除的属性。可以监听数组的索引和length属性。<br>复制代码<br>总结： vue3使用的proxy对象提升了响应式系统的性能和功能</p>
+</blockquote>
+<h3 id="2、模板语法"><a href="#2、模板语法" class="headerlink" title="2、模板语法"></a>2、模板语法</h3><p>打开App.vue文件，唯一和Vue2不同的是：Template不再强调一定要有根标签了。</p>
+<h3 id="3、生命周期函数对比"><a href="#3、生命周期函数对比" class="headerlink" title="3、生命周期函数对比"></a>3、生命周期函数对比</h3><h4 id="1）首先需要了解生命周期是什么？"><a href="#1）首先需要了解生命周期是什么？" class="headerlink" title="1）首先需要了解生命周期是什么？"></a>1）首先需要了解生命周期是什么？</h4><blockquote>
+<p>Vue实例从创建到销毁的过程，就是Vue实例的生命周期。</p>
+</blockquote>
+<blockquote>
+<p>这个过程包括数据监听、编译模板、将实例挂载到DOM并在数据变化时更新DOM等。</p>
+</blockquote>
+<h4 id="2）-具体含义和实际项目中的意义："><a href="#2）-具体含义和实际项目中的意义：" class="headerlink" title="2） 具体含义和实际项目中的意义："></a>2） 具体含义和实际项目中的意义：</h4><p><strong>vue3中各个生命周期函数的意义</strong></p>
+<blockquote>
+<p>setup() :开始创建组件之前，在beforeCreate和created之前执行。创建的是data和method<br>onBeforeMount() : 组件挂载到节点上之前执行的函数。<br>onMounted() : 组件挂载完成后执行的函数。<br>onBeforeUpdate(): 组件更新之前执行的函数。<br>onUpdated(): 组件更新完成之后执行的函数。<br>onBeforeUnmount(): 组件卸载之前执行的函数。<br>onUnmounted(): 组件卸载完成后执行的函数<br>onActivated(): 被包含在中的组件，会多出两个生命周期钩子函数。被激活时执行。<br>onDeactivated(): 比如从 A 组件，切换到 B 组件，A 组件消失时执行。<br>onErrorCaptured(): 当捕获一个来自子孙组件的异常时激活钩子函数。<br>vue2中各个生命周期函数的意义</p>
+</blockquote>
+<ul>
+<li><p>beforeCreate():实例在内存中被创建出来，还没有初始化好data和methods属性。</p>
+</li>
+<li><p>create():实例已经在内存中创建，已经初始化好data和method，此时还没有开始编译模板。</p>
+</li>
+<li><p>beforeMount():已经完成了模板的编译，还没有挂载到页面中。</p>
+</li>
+<li><p>mounted()：将编译好的模板挂载到页面指定的容器中显示。</p>
+</li>
+<li><p>beforeUpdate():状态更新之前执行函数，此时data中的状态值是最新的，但是界面上显示的数据还是旧的，因为还没有开始重新渲染DOM节点。</p>
+</li>
+<li><p>updated():此时data中的状态值和界面上显示的数据都已经完成了跟新，界面已经被重新渲染好了！</p>
+</li>
+<li><p>beforeDestroy():实例被销毁之前。</p>
+</li>
+<li><p>destroyed():实例销毁后调用，Vue实例指示的所有东西都会解绑，所有的事件监听器都会被移除,所有的子实例也都会被销毁。组件已经被完全销毁，此时组建中所有data、methods、以及过滤器，指令等，都已经不可用了。</p>
+</li>
+</ul>
+<h4 id="3-总结"><a href="#3-总结" class="headerlink" title="3)总结"></a>3)总结</h4><blockquote>
+<p>Vue3相比原有的生命周期，基本都是存在的，Vue3只不过有了新的命名：beforeDestroy变成了onbeforeUnmount；destroy变成了onUnmounted，名字变了但是原理还是没变的；</p>
+</blockquote>
+<h3 id="4、重要的setup函数"><a href="#4、重要的setup函数" class="headerlink" title="4、重要的setup函数"></a>4、重要的setup函数</h3><p>在vue2中我们js部分是data、methods、computed等等，但是在vue3中都是在setup上,setup函数可以说是Vue3的属性和方法入口</p>
+<p> setup函数中有以下几个特点：</p>
+<p>1）setup(props,context):接收两个参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(1) props ：接收来自父组件传来的参数</span><br><span class="line"> </span><br><span class="line">(2) context ：上下文，主要包含3个使用参数：attrs,emits,slots，相当于Vue2中this的 </span><br><span class="line">attrs,emits,slots</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2）有返回值，返回值可以是两种：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(1) 返回 对象 ，返回的对象中的属性方法，可在模板中直接使用；</span><br><span class="line"> </span><br><span class="line">(2) 返回 渲染函数 ，可以自定义渲染的内容；</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>3）函数内部没有this；</p>
+<p>4）当内部有异步函数，需要使用到await的时候，可以直接使用，不需要在setup前面加async；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//最基础的写法</span><br><span class="line">import &#123; h &#125; from &#x27;vue&#x27;</span><br><span class="line">setup() &#123;</span><br><span class="line">    let name = &#x27;连颜少&#x27;;</span><br><span class="line">    let age = 18;</span><br><span class="line"> </span><br><span class="line">    function sayhello() &#123;</span><br><span class="line">      alert(`我叫$&#123;name&#125;,我每年都$&#123;age&#125;.你好`)</span><br><span class="line">    &#125;</span><br><span class="line">    function changeInfo() &#123;</span><br><span class="line">      name = &#x27;new 连颜少&#x27;;</span><br><span class="line">      age = 28;</span><br><span class="line">      console.log(name,age);</span><br><span class="line">    &#125;</span><br><span class="line">    // 1.返回对象</span><br><span class="line">    return &#123;</span><br><span class="line">      name,age,sayhello,changeInfo</span><br><span class="line">    &#125;</span><br><span class="line">    // 2.返回渲染函数</span><br><span class="line">    // return ()=&gt; h(&#x27;h1&#x27;,name)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）如果想要实现双向数据绑定原理，需要通过ref定义变量来实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const value = ref&lt;string&gt;(&quot;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>6）vue3中是组合式API，就是将所有的业务逻辑放在了一个地方进行处理，增强了代码的可读性和逻辑复用性。以下便是vue2和vue3的业务逻辑使用实际做一个对比，如下</p>
+<p>以下内容同一个色块代表同一块业务逻辑</p>
+<p>vue2中业务逻辑没有放在一起</p>
+<p>各个业务逻辑的代码互相穿插，我们需要不断地跳转到相应模块代码进行逻辑处理，这使得组件的代码理解和维护越来越难。</p>
+<p>为了解决这个问题，Vue3引入了组合式API，将同一个逻辑关注点的代码配置在一起，增强代码的可读性和可维护性，这也是Vue3引入组合式API的主要目的。</p>
+<h3 id="5、v-model双向数据绑定的使用方式不一样，在vue3中我们这样使用"><a href="#5、v-model双向数据绑定的使用方式不一样，在vue3中我们这样使用" class="headerlink" title="5、v-model双向数据绑定的使用方式不一样，在vue3中我们这样使用"></a>5、v-model双向数据绑定的使用方式不一样，在vue3中我们这样使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input v-model:value=&quot;value&quot; type=&quot;password&quot; placeholder=&quot;请输入密码&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/04/21/Vue3/%E6%B5%85%E6%9E%90proxy/">Vue3中proxy的理解<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2021/05/19/Vue3/VUE3%20Composition%20API%E8%AF%A6%E8%A7%A3/">Vue3-Composition API详解<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

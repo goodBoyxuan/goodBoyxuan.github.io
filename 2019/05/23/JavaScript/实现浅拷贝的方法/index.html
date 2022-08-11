@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>实现浅拷贝的方法 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="实现浅拷贝的方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现浅拷贝的方法">
+<meta property="og:url" content="http://example.com/2019/05/23/JavaScript/%E5%AE%9E%E7%8E%B0%E6%B5%85%E6%8B%B7%E8%B4%9D%E7%9A%84%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="实现浅拷贝的方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-23T09:03:26.000Z">
+<meta property="article:modified_time" content="2022-08-11T06:24:32.252Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-JavaScript">
+<meta property="article:tag" content="-前端">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/friends/">友链</a><a class="nav-item" href="/about/">关于</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="toc-text">浅拷贝和深拷贝的区别：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%B5%85%E6%8B%B7%E8%B4%9D%EF%BC%88%E4%B8%80%E5%B1%82%E6%B5%85%E6%8B%B7%E8%B4%9D%EF%BC%89%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-text">实现浅拷贝（一层浅拷贝）的几种方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-for%E5%BE%AA%E7%8E%AF%E6%8B%B7%E8%B4%9D"><span class="toc-text">1.for循环拷贝</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Object-assign-%E5%AE%9E%E7%8E%B0%E4%B8%80%E5%B1%82%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="toc-text">2.Object.assign()实现一层深拷贝</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-slice%E5%AE%9E%E7%8E%B0"><span class="toc-text">3.slice实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8concat-%E6%96%B9%E6%B3%95"><span class="toc-text">4.使用concat()方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-es6%E7%9A%84%E6%89%A9%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6%E2%80%9D%E2%80%A6%E2%80%9D"><span class="toc-text">5.es6的扩展运算符”…”</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E9%80%9A%E8%BF%87Object-create-%E5%AE%9E%E7%8E%B0"><span class="toc-text">6.通过Object.create()实现</span></a></li></ol></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/JavaScript/">JavaScript</a></div><div id="post-meta">发布于&nbsp;<time datetime="2019-05-23T09:03:26.000Z">2019-05-23</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>实现浅拷贝的方法</span></h1>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="浅拷贝和深拷贝的区别："><a href="#浅拷贝和深拷贝的区别：" class="headerlink" title="浅拷贝和深拷贝的区别："></a>浅拷贝和深拷贝的区别：</h3><p><strong>浅拷贝 ：</strong> 只是将数据中所有的数据引用下来，依旧指向同一个存放地址，拷贝之后的数据修改之后，也会影响到原数据的中的对象数据</p>
+<p><strong>深拷贝：</strong> 将数据中所有的数据拷贝下来，对拷贝之后的数据进行修改不会影响到原数据,，因为此时它自己在堆中开辟了自己的内存区域，不受外界干扰。</p>
+<h3 id="实现浅拷贝（一层浅拷贝）的几种方法"><a href="#实现浅拷贝（一层浅拷贝）的几种方法" class="headerlink" title="实现浅拷贝（一层浅拷贝）的几种方法"></a>实现浅拷贝（一层浅拷贝）的几种方法</h3><h4 id="1-for循环拷贝"><a href="#1-for循环拷贝" class="headerlink" title="1.for循环拷贝"></a>1.for循环拷贝</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只复制第一层的浅拷贝</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">simpleCopy</span>(<span class="params">obj1</span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> obj2 = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(obj1) ? [] : &#123;&#125;;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i <span class="keyword">in</span> obj1) &#123;</span><br><span class="line">   obj2[i] = obj1[i];</span><br><span class="line">  &#125;</span><br><span class="line">   <span class="keyword">return</span> obj2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj1 = &#123;</span><br><span class="line">   <span class="attr">a</span>: <span class="number">1</span>,</span><br><span class="line">   <span class="attr">b</span>: <span class="number">2</span>,</span><br><span class="line">   <span class="attr">c</span>: &#123;</span><br><span class="line">   <span class="attr">d</span>: <span class="number">3</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = <span class="title function_">simpleCopy</span>(obj1);</span><br><span class="line">obj2.<span class="property">a</span> = <span class="number">3</span>;</span><br><span class="line">obj2.<span class="property">c</span>.<span class="property">d</span> = <span class="number">4</span>;</span><br><span class="line"><span class="title function_">alert</span>(obj1.<span class="property">a</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="title function_">alert</span>(obj2.<span class="property">a</span>); <span class="comment">// 3</span></span><br><span class="line"><span class="title function_">alert</span>(obj1.<span class="property">c</span>.<span class="property">d</span>); <span class="comment">// 4</span></span><br><span class="line"><span class="title function_">alert</span>(obj2.<span class="property">c</span>.<span class="property">d</span>); <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-Object-assign-实现一层深拷贝"><a href="#2-Object-assign-实现一层深拷贝" class="headerlink" title="2.Object.assign()实现一层深拷贝"></a>2.Object.assign()实现一层深拷贝</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">var</span> obj1 = &#123;</span><br><span class="line">    <span class="attr">a</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">b</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">c</span>: <span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = <span class="title class_">Object</span>.<span class="title function_">assign</span>(&#123;&#125;, obj1);</span><br><span class="line">obj2.<span class="property">b</span> = <span class="number">5</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj1.<span class="property">b</span>); <span class="comment">// 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj2.<span class="property">b</span>); <span class="comment">// 5</span></span><br><span class="line"> <span class="keyword">var</span> obj1 = &#123;</span><br><span class="line">    <span class="attr">a</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">b</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">c</span>: [<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = <span class="title class_">Object</span>.<span class="title function_">assign</span>(&#123;&#125;, obj1);</span><br><span class="line">obj2.<span class="property">c</span>[<span class="number">1</span>] = <span class="number">5</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj1.<span class="property">c</span>); <span class="comment">// [&quot;a&quot;, 5, &quot;c&quot;]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj2.<span class="property">c</span>); <span class="comment">// [&quot;a&quot;, 5, &quot;c&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-slice实现"><a href="#3-slice实现" class="headerlink" title="3.slice实现"></a>3.slice实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对只有一级属性值的数组对象使用slice</span></span><br><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line"><span class="keyword">var</span> b = a.<span class="title function_">slice</span>();</span><br><span class="line">b[<span class="number">0</span>] = <span class="number">2</span>;</span><br><span class="line"><span class="title function_">alert</span>(a); <span class="comment">// 1,2,3,4</span></span><br><span class="line"><span class="title function_">alert</span>(b); <span class="comment">// 2,2,3,4</span></span><br><span class="line"><span class="comment">// 对有多层属性的数组对象使用slice</span></span><br><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>,[<span class="number">1</span>,<span class="number">2</span>],<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line"><span class="keyword">var</span> b = a.<span class="title function_">slice</span>();</span><br><span class="line">b[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">2</span>;</span><br><span class="line"><span class="title function_">alert</span>(a); <span class="comment">// 1,2,2,3,4</span></span><br><span class="line"><span class="title function_">alert</span>(b); <span class="comment">// 1,2,2,3,4</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-使用concat-方法"><a href="#4-使用concat-方法" class="headerlink" title="4.使用concat()方法"></a>4.使用concat()方法</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=[<span class="number">1</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"><span class="keyword">var</span> c=[];</span><br><span class="line"><span class="keyword">var</span> b=c.<span class="title function_">concat</span>(a);</span><br><span class="line">b[<span class="number">0</span>]=<span class="number">5</span>;</span><br><span class="line">b[<span class="number">2</span>][<span class="number">0</span>]=<span class="number">6</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b[<span class="number">0</span>]);<span class="comment">//5</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a[<span class="number">0</span>])<span class="comment">//1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b[<span class="number">2</span>][<span class="number">0</span>]);<span class="comment">//6</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a[<span class="number">2</span>][<span class="number">0</span>])<span class="comment">//6</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-es6的扩展运算符”…”"><a href="#5-es6的扩展运算符”…”" class="headerlink" title="5.es6的扩展运算符”…”"></a>5.es6的扩展运算符”…”</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=[<span class="number">1</span>,<span class="number">2</span>,[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"><span class="keyword">var</span> b=[...a];</span><br><span class="line">b[<span class="number">0</span>]=<span class="number">5</span>;</span><br><span class="line">b[<span class="number">2</span>][<span class="number">0</span>]=<span class="number">6</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b[<span class="number">0</span>]);<span class="comment">//5</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a[<span class="number">0</span>])<span class="comment">//1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b[<span class="number">2</span>][<span class="number">0</span>]);<span class="comment">//6</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a[<span class="number">2</span>][<span class="number">0</span>])<span class="comment">//6</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-通过Object-create-实现"><a href="#6-通过Object-create-实现" class="headerlink" title="6.通过Object.create()实现"></a>6.通过Object.create()实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">deepCopy</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> copy = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(obj));</span><br><span class="line">  <span class="keyword">var</span> propNames = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyNames</span>(obj);</span><br><span class="line">  propNames.<span class="title function_">forEach</span>(<span class="keyword">function</span>(<span class="params">name</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> desc = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(obj, name);</span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(copy, name, desc);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> copy;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj1 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: &#123;<span class="attr">bc</span>: <span class="number">50</span>, <span class="attr">dc</span>: <span class="number">100</span>, <span class="attr">be</span>: &#123;<span class="attr">bea</span>: <span class="number">1</span>&#125;&#125; &#125;;</span><br><span class="line"><span class="keyword">var</span> obj2 = <span class="title function_">deepCopy</span>(obj1);</span><br><span class="line">obj2.<span class="property">a</span> = <span class="number">20</span>;</span><br><span class="line">obj2.<span class="property">b</span>.<span class="property">bc</span> = <span class="number">60</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj1.<span class="property">a</span>)<span class="comment">//1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj2.<span class="property">a</span>)<span class="comment">//20</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj1.<span class="property">b</span>.<span class="property">bc</span>)<span class="comment">//60</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj2.<span class="property">b</span>.<span class="property">bc</span>)<span class="comment">//60</span></span><br></pre></td></tr></table></figure>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2019/05/19/JavaScript/%E5%AE%9E%E7%8E%B0%E6%B7%B1%E6%8B%B7%E8%B4%9D%E7%9A%84%E6%96%B9%E6%B3%95/">实现深拷贝的方法<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2019/06/07/Css/%E4%BB%80%E4%B9%88%E6%98%AF%E9%87%8D%E7%BB%98%E5%92%8C%E5%9B%9E%E6%B5%81/">什么是回流和重绘<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>常用的hook - 你又来看我啦</title>
+
+  
+    <meta name="description" content="React中常用的hook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用的hook">
+<meta property="og:url" content="http://example.com/2021/06/25/React/%E5%B8%B8%E7%94%A8%E7%9A%84hook/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="React中常用的hook">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210524181825618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMwOTk3NTAz,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2021-06-25T02:50:39.000Z">
+<meta property="article:modified_time" content="2022-08-10T02:04:09.205Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20210524181825618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMwOTk3NTAz,size_16,color_FFFFFF,t_70">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/friends/">友链</a><a class="nav-item" href="/about/">关于</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#useState"><span class="toc-text">useState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useEffect"><span class="toc-text">useEffect</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#useLayoutEffect"><span class="toc-text">useLayoutEffect</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useReducer"><span class="toc-text">useReducer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useMemo"><span class="toc-text">useMemo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useCallback"><span class="toc-text">useCallback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useRef"><span class="toc-text">useRef</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#useContext"><span class="toc-text">useContext</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/React/">React</a></div><div id="post-meta">发布于&nbsp;<time datetime="2021-06-25T02:50:39.000Z">2021-06-25</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>常用的hook</span></h1>
+<h3 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h3><p>示例：</p>
+<p>const [stateA, setStateA] &#x3D; useState(0)</p>
+<p>参数是初始state（定义初始state最好给出初始值，方便后期维护， 0&#x2F;false&#x2F;’’&#x2F;[]&#x2F;{}）。</p>
+<p>返回值：一个是当前state，一个是更新state的函数。</p>
+<p>useState的实现很简单，只有两行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export function useState&lt;S&gt;(initialState: (() =&gt; S) | S) &#123;</span><br><span class="line">  const dispatcher = resolveDispatcher();</span><br><span class="line">  return dispatcher.useState(initialState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重点都在dispatcher上，dispatcher通过resolveDispatcher()来获取，这个函数只是将ReactCurrentDispatcher.current的值赋给了dispatcher</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function resolveDispatcher() &#123;</span><br><span class="line">  const dispatcher = ReactCurrentDispatcher.current;</span><br><span class="line">  return dispatcher;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>useState挂在dispatcher上，resolveDispatcher() 返回的是 ReactCurrentDispatcher.current，所以useState(xxx)等价于ReactCurrentDispatcher.current.useState(xxx)。<br>简单理解：</p>
+<blockquote>
+<p> 初次渲染的时候，按照 useState，useEffect 的顺序，把 state，deps 等按顺序塞到 memoizedState 数组中，共享同一个 memoizedState，共享同一个顺序。<br>更新的时候，按照顺序，从 memoizedState 中把上次记录的值拿出来。</p>
+</blockquote>
+<h3 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h3><p>useEffect的实现很简单，也是只有两行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export function useEffect (create: () = &gt;(() = &gt;void) | void, deps: Array &lt; mixed &gt; |void | null, ) : void &#123;</span><br><span class="line">  const dispatcher = resolveDispatcher();</span><br><span class="line">  return dispatcher.useEffect(create, deps);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>useEffect产生的hook会放在fiber.memoizedState上，调用后生成一个effect对象，存储到对应hook的memoizedState中，与其他effect连接成环形链表。<br>单个的effect对象包含以下几个属性：<br>create：传入useEffect函数的第一个参数，即回调函数；<br>destory：回调函数中的return函数，在改effect销毁的时候执行，默认发生在第一次渲染后，也可以让它在依赖项数组中的值改变时执行，通过return清除副作用函数（如监听、订阅、计时器等）；<br>deps：依赖项，传入的第二个参数，用来控制该Effect包裹的函数执不执行。如果依赖项为空数组[]，则该Effect在每次组件挂载时执行，且仅执行一次，相当于class组件中的componentDidMount和componentDidupdate生命周期的融合；如果没有第二个参数，则effect会不停地调用。<br>next：指向下一个effect；<br>tag：effect的类型，区分useEffect和useLayoputEffect。<br>hook会挂载到fiber.memoizedState上。hook按出现顺序进行存储，memoizedState存储了useEffect的effect对象（effect1），next指向useLayoutEffect的effect对象（effect2），effect2的next又会指向effect1，最终形成闭环。结构如下：<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img-blog.csdnimg.cn/20210524181825618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMwOTk3NTAz,size_16,color_FFFFFF,t_70"></p>
+<p>结论：effect在页面完成渲染后按照先后顺序执行，并且内部执行时异步的</p>
+<blockquote>
+<p>useEffect和useLayoutEffect：<br>useLayoutEffect也是一个hook方法，跟useEffect类似，区别在于渲染时机不同，useEffect发生在浏览器渲染结束后执行，useLayoutEffect则是发生在dom更新完成后。</p>
+</blockquote>
+<h4 id="useLayoutEffect"><a href="#useLayoutEffect" class="headerlink" title="useLayoutEffect"></a>useLayoutEffect</h4><p>useLayoutEffect和useEffect很像，唯一的不同点就是useEffect是异步执行，而useLayoutEffect是同步执行的。</p>
+<p>当函数组件刷新（渲染）时，</p>
+<p>包含useEffect的组件整个运行过程如下：<br>1、触发组件重新渲染（通过改变组件state或者组件的父组件重新渲染，导致子节点渲染）<br>2、组件函数执行<br>3、组件渲染后呈现到屏幕上<br>4、useEffect hook执行</p>
+<p>包含useLayoutEffect的组件整个运行过程如下：<br>1、触发组件重新渲染（通过改变组件state或者组件的父组件重新渲染，导致子组件渲染）<br>2、组件函数执行<br>3、useLayoutEffect hook执行, React等待useLayoutEffect的函数执行完毕<br>4、组件渲染后呈现到屏幕上</p>
+<p>useEffect异步执行的优点是，react渲染组件不必等待useEffect函数执行完毕，造成阻塞。</p>
+<p>百分之99的情况，使用useEffect就可以了，唯一需要用到useLayoutEffect的情况就是，在使用useEffect的情况下，我们的屏幕会出现闪烁的情况（组件在很短的时间内渲染了两次）。</p>
+<h3 id="useReducer"><a href="#useReducer" class="headerlink" title="useReducer"></a>useReducer</h3><p>参数：第一个是reducer纯函数，第二个是初始state，第三个是修改初始state，用于重置<br>返回值是一个数组，数组第一个元素是state的当前值，第二个元素是发送action的dispatch函数</p>
+<blockquote>
+<p>结论：useReducer可以处理多个用useState实现的逻辑（加载状态、错误信息、请求数据）</p>
+</blockquote>
+<h3 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h3><p>参数是创建函数和依赖项数组。</p>
+<p>返回值是一个带有memoized的值，发生在render之前， 并且这个值仅在依赖项改变时才重新计算。</p>
+<blockquote>
+<p>结论：useMemo发生在render前，返回一个缓存的数据，且仅在依赖项改变后变化。</p>
+<p>使用useMemo可以避免多余的计算开销。</p>
+</blockquote>
+<h3 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h3><p>参数是内联回调函数和依赖项数组，</p>
+<p>返回值是回调函数的memoized版，该回调函数仅在某个依赖项改变时才会更新。</p>
+<blockquote>
+<p>结论：返回一个缓存的函数，添加依赖项数组可以避免函数的无意义计算，降低了子组件的渲染开销。</p>
+</blockquote>
+<h3 id="useRef"><a href="#useRef" class="headerlink" title="useRef"></a>useRef</h3><p>返回值是一个可变的ref对象，并且这个对象的值发生改变时不会引起页面的渲染。</p>
+<blockquote>
+<p>结论：useRef可以存储不需要引起页面渲染的数据；修改useRef值的唯一方法是修改.current，且修改后不会引起重渲染。</p>
+</blockquote>
+<h3 id="useContext"><a href="#useContext" class="headerlink" title="useContext"></a>useContext</h3><p>跨组件共享数据的钩子函数，接收一个context对象，并返回该对象的当前值。</p>
+<p>当前的context值由上层组件中距离当前组件最近的&lt;MyContext.Provider&gt;的value决定，并且父组件的context发生改变是，子组件都会重新渲染。</p>
+<blockquote>
+<p>结论：useContext会在context值变化时重新渲染，&lt;MyContext.Provider&gt;的value发生变化时，包裹的组件无论是否订阅value值，都会重新渲染，可以使用memo对未使用value的子组件进行优化。</p>
+</blockquote>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/06/17/React/React%E4%B8%AD%E7%9A%84hooks/">React中的hooks是什么<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2021/06/25/React/%E7%B1%BB%E7%BB%84%E4%BB%B6%E5%92%8C%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8C%BA%E5%88%AB/">类组件和函数组件的区别<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

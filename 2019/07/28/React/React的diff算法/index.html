@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>React-diff算法 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="React-diff算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-diff算法">
+<meta property="og:url" content="http://example.com/2019/07/28/React/React%E7%9A%84diff%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="React-diff算法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/b2e221886a674e9995aecc270814d736.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_20,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/029d9b1841504656804210a7ce5802be.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_14,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/3e89673a37e341068b2cdfe5177392ec.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_20,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/3aebeac762de464ab9e571c02edbc8f9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_13,color_FFFFFF,t_70,g_se,x_16">
+<meta property="article:published_time" content="2019-07-28T02:26:39.000Z">
+<meta property="article:modified_time" content="2022-08-11T06:11:26.165Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-React">
+<meta property="article:tag" content="-diff算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/b2e221886a674e9995aecc270814d736.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_20,color_FFFFFF,t_70,g_se,x_16">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/friends/">友链</a><a class="nav-item" href="/about/">关于</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81Diff%E7%AE%97%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">一、Diff算法的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81React%E7%9A%84Diff%E7%AE%97%E6%B3%95"><span class="toc-text">二、React的Diff算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E8%B0%83%E5%92%8C%EF%BC%9F"><span class="toc-text">1、什么是调和？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFReact-diff%E7%AE%97%E6%B3%95%EF%BC%9F"><span class="toc-text">2、什么是React diff算法？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81diff%E7%AD%96%E7%95%A5"><span class="toc-text">3、diff策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81tree-diff%EF%BC%9A"><span class="toc-text">4、tree diff：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6%E3%80%81element-diff"><span class="toc-text">6、element diff</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E4%BA%8EDiff%E7%9A%84%E5%BC%80%E5%8F%91%E5%BB%BA%E8%AE%AE"><span class="toc-text">三、基于Diff的开发建议</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/React/">React</a></div><div id="post-meta">发布于&nbsp;<time datetime="2019-07-28T02:26:39.000Z">2019-07-28</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>React-diff算法</span></h1>
+<h3 id="一、Diff算法的作用"><a href="#一、Diff算法的作用" class="headerlink" title="一、Diff算法的作用"></a>一、Diff算法的作用</h3><p>​        渲染真实DOM的开销很大，有时候我们修改了某个数据，直接渲染到真实dom上会引起整个dom树的重绘和重排。我们希望只更新我们修改的那一小块dom，而不是整个dom，diff算法就帮我们实现了这点。<br>​        diff算法的本质就是：找出两个对象之间的差异，目的是尽可能做到节点复用。</p>
+<blockquote>
+<p>注：此处说到的对象，指的其实就是vue中的virtual dom（虚拟dom树），即使用js对象来表示页面中的dom结构。</p>
+</blockquote>
+<h3 id="二、React的Diff算法"><a href="#二、React的Diff算法" class="headerlink" title="二、React的Diff算法"></a>二、React的Diff算法</h3><h4 id="1、什么是调和？"><a href="#1、什么是调和？" class="headerlink" title="1、什么是调和？"></a>1、什么是调和？</h4><p>   将Virtual DOM树转换成Actual DOM树的最少操作的过程称为调和。</p>
+<h4 id="2、什么是React-diff算法？"><a href="#2、什么是React-diff算法？" class="headerlink" title="2、什么是React diff算法？"></a>2、什么是React diff算法？</h4><p>   diff算法是调和的具体实现。</p>
+<h4 id="3、diff策略"><a href="#3、diff策略" class="headerlink" title="3、diff策略"></a>3、diff策略</h4><p><strong>React用三大策略 将O(n3)复杂度 转化为O(n)复杂度</strong></p>
+<p>(1)策略一（tree diff）：Web UI中DOM节点跨层级的移动操作特别少，可以忽略不计。</p>
+<p>(2)策略二（component diff）：拥有相同类的两个组件 生成相似的树形结构，拥有不同类的两个组件 生成不同的树形结构。</p>
+<p>(3)策略三（element diff）：对于同一层级的一组子节点，通过唯一id区分。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img-blog.csdnimg.cn/b2e221886a674e9995aecc270814d736.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_20,color_FFFFFF,t_70,g_se,x_16"></p>
+<h4 id="4、tree-diff："><a href="#4、tree-diff：" class="headerlink" title="4、tree diff："></a>4、tree diff：</h4><p>(1)React通过updateDepth对Virtual DOM树进行层级控制。</p>
+<p>(2)对树分层比较，两棵树只对同一层次节点进行比较。如果该节点不存在时，则该节点及其子节点会被完全删除，不会再进一步比较。</p>
+<p>(3)只需遍历一次，就能完成整棵DOM树的比较。</p>
+<p><strong>如果DOM 节点出现了跨层级操作，Diff会怎么办？</strong></p>
+<blockquote>
+<p>答：Tree DIFF是对树的每一层进行遍历，如果某组件不存在了，则会直接销毁。如图所示，左边是旧属，右边是新属，第一层是R组件，一模一样，不会发生变化；第二层进入Component DIFF，同一类型组件继续比较下去，发现A组件没有，所以直接删掉A、B、C组件；继续第三层，重新创建A、B、C组件。</p>
+</blockquote>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img-blog.csdnimg.cn/029d9b1841504656804210a7ce5802be.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_14,color_FFFFFF,t_70,g_se,x_16"></p>
+<p> 如上图所示，以A为根节点的整棵树会被重新创建，而不是移动，因此 官方建议不要进行DOM节点跨层级操作，可以通过CSS隐藏、显示节点，而不是真正地移除、添加DOM节点。</p>
+<p>5、component diff :<br><strong>React对不同的组件间的比较，有三种策略</strong></p>
+<p>(1)同一类型的两个组件，按原策略（层级比较）继续比较Virtual DOM树即可。</p>
+<p>(2)同一类型的两个组件，组件A变化为组件B时，可能Virtual DOM没有任何变化，如果知道这点（变换的过程中，Virtual DOM没有改变），可节省大量计算时间，所以用户可以通过 shouldComponentUpdate() 来判断是否需要判断计算。</p>
+<p>(3)不同类型的组件，将一个（将被改变的）组件判断为dirtycomponent（脏组件），从而替换整个组件的所有节点。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img-blog.csdnimg.cn/3e89673a37e341068b2cdfe5177392ec.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_20,color_FFFFFF,t_70,g_se,x_16"></p>
+<p> <strong>注意：</strong>如上图所示，当组件D变为组件G时，即使这两个组件结构相似，一旦React判断D和G是不用类型的组件，就不会比较两者的结构，而是直接删除组件D，重新创建组件G及其子节点。虽然当两个组件是不同类型但结构相似时，进行diff算法分析会影响性能，但是毕竟不同类型的组件存在相似DOM树的情况在实际开发过程中很少出现，因此这种极端因素很难在实际开发过程中造成重大影响。</p>
+<h4 id="6、element-diff"><a href="#6、element-diff" class="headerlink" title="6、element diff"></a>6、element diff</h4><p>   当节点处于同一层级时，diff提供三种节点操作：删除、插入、移动。</p>
+<p><strong>插入：</strong></p>
+<p>组件 C 不在集合（A,B）中，需要插入</p>
+<p><strong>删除：</strong></p>
+<p>(1)组件 D 在集合（A,B,D）中，但 D的节点已经更改，不能复用和更新，所以需要删除 旧的D ，再创建新的。</p>
+<p>(2)组件D之前在集合（A,B,D）中，但集合变成新的集合（A,B）了，D 就需要被删除。</p>
+<p><strong>移动：</strong>组件D已经在集合（A,B,C,D）里了，且集合更新时，D没有发生更新，只是位置改变，如新集合（A,D,B,C），D在第二个，无须像传统diff，让旧集合的第二个B和新集合的第二个D 比较，并且删除第二个位置的B，再在第二个位置插入D，而是 （对同一层级的同组子节点） 添加唯一key进行区分，移动即可。</p>
+<p><strong>移动情形一：</strong>新旧集合中存在相同节点但位置不同时，如何移动节点</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img-blog.csdnimg.cn/3aebeac762de464ab9e571c02edbc8f9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6L-q5Y2i5YWL55qE546w5Lu7,size_13,color_FFFFFF,t_70,g_se,x_16"></p>
+<p>(1)B不移动，不赘述，更新l astIndex&#x3D;1</p>
+<p>(2)新集合取得 E，发现旧不存在，故在lastIndex&#x3D;1的位置 创建E，更新lastIndex&#x3D;1</p>
+<p>(3)新集合取得C，C不移动，更新lastIndex&#x3D;2</p>
+<p>(4)新集合取得A，A移动，同上，更新lastIndex&#x3D;2</p>
+<p>(5)新集合对比后，再对旧集合遍历。判断 新集合 没有，但 旧集合 有的元素（如D，新集合没有，旧集合有），发现 D，删除D，diff操作结束。</p>
+<p><strong>React中Diff算法实现的代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">_updateChildren: function(nextNestedChildrenElements, transaction, context) &#123;</span><br><span class="line">    var prevChildren = this._renderedChildren;</span><br><span class="line">    var removedNodes = &#123;&#125;;</span><br><span class="line">    var mountImages = [];</span><br><span class="line">    // 获取新的子元素数组</span><br><span class="line">    var nextChildren = this._reconcilerUpdateChildren(</span><br><span class="line">      prevChildren,</span><br><span class="line">      nextNestedChildrenElements,</span><br><span class="line">      mountImages,</span><br><span class="line">      removedNodes,</span><br><span class="line">      transaction,</span><br><span class="line">      context</span><br><span class="line">    );</span><br><span class="line">    if (!nextChildren &amp;&amp; !prevChildren) &#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line">    var updates = null;</span><br><span class="line">    var name;</span><br><span class="line">    var nextIndex = 0;</span><br><span class="line">    var lastIndex = 0;</span><br><span class="line">    var nextMountIndex = 0;</span><br><span class="line">    var lastPlacedNode = null;</span><br><span class="line">    for (name in nextChildren) &#123;</span><br><span class="line">      if (!nextChildren.hasOwnProperty(name)) &#123;</span><br><span class="line">        continue;</span><br><span class="line">      &#125;</span><br><span class="line">      var prevChild = prevChildren &amp;&amp; prevChildren[name];</span><br><span class="line">      var nextChild = nextChildren[name];</span><br><span class="line">      if (prevChild === nextChild) &#123;</span><br><span class="line">        // 同一个引用，说明是使用的同一个component,所以我们需要做移动的操作</span><br><span class="line">        // 移动已有的子节点</span><br><span class="line">        // NOTICE：这里根据nextIndex, lastIndex决定是否移动</span><br><span class="line">        updates = enqueue(</span><br><span class="line">          updates,</span><br><span class="line">          this.moveChild(prevChild, lastPlacedNode, nextIndex, lastIndex)</span><br><span class="line">        );</span><br><span class="line">        // 更新lastIndex</span><br><span class="line">        lastIndex = Math.max(prevChild._mountIndex, lastIndex);</span><br><span class="line">        // 更新component的.mountIndex属性</span><br><span class="line">        prevChild._mountIndex = nextIndex;</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        if (prevChild) &#123;</span><br><span class="line">          // 更新lastIndex</span><br><span class="line">          lastIndex = Math.max(prevChild._mountIndex, lastIndex);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        // 添加新的子节点在指定的位置上</span><br><span class="line">        updates = enqueue(</span><br><span class="line">          updates,</span><br><span class="line">          this._mountChildAtIndex(</span><br><span class="line">            nextChild,</span><br><span class="line">            mountImages[nextMountIndex],</span><br><span class="line">            lastPlacedNode,</span><br><span class="line">            nextIndex,</span><br><span class="line">            transaction,</span><br><span class="line">            context</span><br><span class="line">          )</span><br><span class="line">        );</span><br><span class="line">        nextMountIndex++;</span><br><span class="line">      &#125;</span><br><span class="line">      // 更新nextIndex</span><br><span class="line">      nextIndex++;</span><br><span class="line">      lastPlacedNode = ReactReconciler.getHostNode(nextChild);</span><br><span class="line">    &#125;</span><br><span class="line">    // 移除掉不存在的旧子节点，和旧子节点和新子节点不同的旧子节点</span><br><span class="line">    for (name in removedNodes) &#123;</span><br><span class="line">      if (removedNodes.hasOwnProperty(name)) &#123;</span><br><span class="line">        updates = enqueue(</span><br><span class="line">          updates,</span><br><span class="line">          this._unmountChild(prevChildren[name], removedNodes[name])</span><br><span class="line">        );</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、基于Diff的开发建议"><a href="#三、基于Diff的开发建议" class="headerlink" title="三、基于Diff的开发建议"></a>三、基于Diff的开发建议</h3><p><strong>基于tree diff：</strong></p>
+<ul>
+<li>开发组件时，注意保持DOM结构的稳定；即，尽可能少地动态操作DOM结构，尤其是移动操作。</li>
+<li>当节点数过大或者页面更新次数过多时，页面卡顿的现象会比较明显。</li>
+<li>这时可以通过 CSS 隐藏或显示节点，而不是真的移除或添加 DOM 节点。</li>
+</ul>
+<p><strong>基于component diff：</strong></p>
+<ul>
+<li>注意使用 shouldComponentUpdate() 来减少组件不必要的更新。</li>
+<li>对于类似的结构应该尽量封装成组件，既减少代码量，又能减少component diff的性能消耗。</li>
+</ul>
+<p><strong>基于element diff：</strong></p>
+<ul>
+<li>对于列表结构，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，在一定程度上会影响 React 的渲染性能。</li>
+</ul>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2019/07/13/Css/%E4%BB%80%E4%B9%88%E6%98%AF%E9%9B%AA%E7%A2%A7%E5%9B%BE/">什么是雪碧图<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2019/12/26/JavaScript/ES6%E5%AF%B9%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E5%8D%87%E7%BA%A7/">ES6对数据类型的优化和升级<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

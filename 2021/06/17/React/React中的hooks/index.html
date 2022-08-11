@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>React中的hooks是什么 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="React中的hooks是什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React中的hooks是什么">
+<meta property="og:url" content="http://example.com/2021/06/17/React/React%E4%B8%AD%E7%9A%84hooks/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="React中的hooks是什么">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-17T02:50:39.000Z">
+<meta property="article:modified_time" content="2022-08-10T01:27:41.025Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-React">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="title" href="/"><div class="main">MengXuan</div></a></div>
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/friends/">友链</a><a class="nav-item" href="/about/">关于</a></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8hook"><span class="toc-text">为什么用hook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFhook"><span class="toc-text">什么是hook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89hook"><span class="toc-text">自定义hook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96"><span class="toc-text">优化</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/React/">React</a></div><div id="post-meta">发布于&nbsp;<time datetime="2021-06-17T02:50:39.000Z">2021-06-17</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>React中的hooks是什么</span></h1>
+<h3 id="为什么用hook"><a href="#为什么用hook" class="headerlink" title="为什么用hook"></a>为什么用hook</h3><p>在react类组件（class）写法中，有setState和生命周期对状态进行管理，但是在函数组件中不存在这些，故引入hooks（版本：**&gt;&#x3D;16.8**），使开发者在非class的情况下使用更多react特性。</p>
+<p>以下是实现一个输入框，类组件和函<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%B0%E7%BB%84&spm=1001.2101.3001.7020">数组</a>件两种写法的对比：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @name 类组件</span><br><span class="line"> */</span><br><span class="line">import React from &#x27;react&#x27;;</span><br><span class="line">export default class Home extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      name: &#x27;world&#x27;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  componentDidMount() &#123;</span><br><span class="line">    console.log(&#x27;组件挂载后要做的操作&#x27;)</span><br><span class="line">  &#125;</span><br><span class="line">  componentWillUnmount() &#123;</span><br><span class="line">    console.log(&#x27;组件卸载要做的操作&#x27;)</span><br><span class="line">  &#125;</span><br><span class="line">  componentDidUpdate(prevProps, prevState) &#123;</span><br><span class="line">    if (prevState.name !== this.state.name) &#123;</span><br><span class="line">      console.log(&#x27;组件更新后的操作&#x27;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;p&gt;hello &#123;this.state.name&#125;&lt;/p&gt;</span><br><span class="line">        &lt;input type=&quot;text&quot; placeholder=&quot;input new name&quot;</span><br><span class="line">          onChange=&#123;(e) =&gt; this.setState(&#123; name: e.target.value &#125;)&#125;&gt;</span><br><span class="line">        &lt;/input&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @name 函数组件</span><br><span class="line"> */</span><br><span class="line">import React, &#123; useState, useEffect &#125; from &#x27;react&#x27;;</span><br><span class="line"></span><br><span class="line">export default function Home() &#123;</span><br><span class="line">  const [name, setName] = useState(&#x27;world&#x27;);</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;hello &#123;name&#125;&lt;/p&gt;</span><br><span class="line">      &lt;DemoState /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function DemoState() &#123;</span><br><span class="line">  const [n1, setN1] = useState(1)</span><br><span class="line">  const [n2, setN2] = useState(2)</span><br><span class="line">  const [n3, setN3] = useState(3)</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setN1(10)</span><br><span class="line">    setN1(100)</span><br><span class="line">  &#125;, [])</span><br><span class="line">  const handleClick = () =&gt; &#123;</span><br><span class="line">    setN2(20)</span><br><span class="line">    setN3(30)</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(&#x27;demo-state&#x27;, n1, n2, n3)</span><br><span class="line">  return &lt;button onClick=&#123;handleClick&#125;&gt;click&lt;/button&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述例子中，useState相当于constructor，完成数据的初始化；</p>
+<p>useEffect相当于componentDidMount和componentDidUpdate两个生命周期，通过return () &#x3D;&gt; {}的方式解绑生命周期，相当于componentWillUnmount周期，以监听页面滚动为例，通过effect实现监听与解绑如下：</p>
+<p>useEffect(() &#x3D; &gt;{<br>window.addEventListener(‘scroll’, throttleFunc)<br>return () &#x3D; &gt;{<br>window.removeEventListener(‘scroll’, throttleFunc)<br>}<br>}, [])</p>
+<p>在同一个effect钩子中实现绑定与解绑，使状态的管理更加方便、代码更简洁。</p>
+<p>此外还有发生在页面渲染前的useMemo相当于shouldComponentUpdate周期等，具体关系如下表：</p>
+<table>
+<thead>
+<tr>
+<th>class组件</th>
+<th>hooks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>shouldComponentUpdate</td>
+<td>useMemo</td>
+</tr>
+<tr>
+<td>render</td>
+<td>函数本身</td>
+</tr>
+<tr>
+<td>getDerivedStateFromProps</td>
+<td>useState 中的 update</td>
+</tr>
+<tr>
+<td>getDerivedStateFromError</td>
+<td>无</td>
+</tr>
+<tr>
+<td>constructor</td>
+<td>useState</td>
+</tr>
+<tr>
+<td>componentWillUnmount</td>
+<td>useEffect中的return函数</td>
+</tr>
+<tr>
+<td>componentDidUpdate</td>
+<td>useEffect</td>
+</tr>
+<tr>
+<td>componentDidMount</td>
+<td>useEffect</td>
+</tr>
+<tr>
+<td>componentDidCatch</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<h3 id="什么是hook"><a href="#什么是hook" class="headerlink" title="什么是hook"></a>什么是hook</h3><p>hooks挂载在Fiber结点上的memoizedState，filber结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FiberNode &#123; // fiber结构</span><br><span class="line">  memoziedState, // 组件更新的依据</span><br><span class="line">  type, // 原生或react   </span><br><span class="line">  key,</span><br><span class="line">  tag,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>memoziedState这个字段很重要，是组件更新的唯一依据。在class组件里，它就是this.state的结构，调用this.setState的时候，其实就是修改了它的数据，数据改变了组件就会重新执行。</p>
+<p>也就是说，即使是class组件，也不会主动调用任何生命周期函数，而是在memoziedState改变后，组件重新执行，在执行的过程中才会经过这些周期。</p>
+<p>所以，这就解释了函数式组件为什么可以通过hooks改变状态，实际上就是修改了对应fiber节点的memoziedState。</p>
+<p>hooks主要有以下特点：</p>
+<p>1、无需修改组件结构的情况下复用状态逻辑；</p>
+<p>2、可将组件中相互关联的部分拆分成更小的函数，复杂组件将变得更容易理解；</p>
+<p>3、每一个组件内的函数(包括事件处理函数，effects，定时器或者api调用等等)会捕获某次渲染中定义的props和state；</p>
+<p>4、memo缓存组件 ,useMemo缓存值， useCallback缓存函数；</p>
+<p>5、每次render都有自己的props、state和effects。(每一个组件内的函数，包括事件处理函数，effects，定时器或者api调用等等，会捕获某次渲染中定义的props和state)；</p>
+<p>6、<strong>更新状态的时候(如setCount(count + 1))，React会重新渲染组件，</strong>每一次渲染都能拿到独立的count状态，这个状态值是函数中的一个常量；</p>
+<p>7、没有了显性的生命周期，所有渲染后的执行方法都在useEffect里面统一管理；</p>
+<p>8、函数式编程，不需要定义constructor、render、class；</p>
+<p>9、某一个组件，方法需不需要渲染、重新执行完全取决于开发者，方便管理。</p>
+<h3 id="自定义hook"><a href="#自定义hook" class="headerlink" title="自定义hook"></a>自定义hook</h3><ul>
+<li><p>有时候我们需要重复使用一些状态逻辑，怎么处理可以在不增加组件的前提下实现复用，自定义hook可以达到这一目的。</p>
+</li>
+<li><p>通过自定义hook，抽取多个组件重复使用的逻辑，将这些重复的逻辑添加到一个叫做useSomething的自定义hook中，调用这一hook达到逻辑复用的目的，在不增加组件的情况下实现了逻辑共享。</p>
+</li>
+<li><p>自定义的hook是一个函数，名称以“use”开头，函数内部可用调用其他hook</p>
+</li>
+</ul>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>hook主要从以下三个方面对函数式组件进行优化：</p>
+<ul>
+<li>useCallback用于缓存函数</li>
+<li>useMemo用于缓存计算结果，简单理解useCallback(fn, deps) &#x3D;&#x3D;&#x3D; useMemo(() &#x3D;&gt; fn, deps)</li>
+<li>useReducer用于处理多状态的state</li>
+</ul>
+<blockquote>
+<p>优化本身也会带来大量的计算，无意义的优化反而会增加额外的开销。所以优化需谨慎。</p>
+</blockquote>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/05/19/Vue3/VUE3%20Composition%20API%E8%AF%A6%E8%A7%A3/">Vue3-Composition API详解<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2021/06/25/React/%E5%B8%B8%E7%94%A8%E7%9A%84hook/">常用的hook<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
