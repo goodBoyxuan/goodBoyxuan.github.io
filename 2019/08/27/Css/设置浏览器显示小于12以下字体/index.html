@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>浏览器如何显示12px以下的字体 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="浏览器如何显示12px以下的字体的三种方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器如何显示12px以下的字体">
+<meta property="og:url" content="http://example.com/2019/08/27/Css/%E8%AE%BE%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8%E6%98%BE%E7%A4%BA%E5%B0%8F%E4%BA%8E12%E4%BB%A5%E4%B8%8B%E5%AD%97%E4%BD%93/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="浏览器如何显示12px以下的字体的三种方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-27T05:53:19.000Z">
+<meta property="article:modified_time" content="2022-08-13T02:00:36.939Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-Css">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="你又来看我啦" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-text">使用场景：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9A"><span class="toc-text">解决方案一：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A"><span class="toc-text">解决方案二：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E4%B8%89%EF%BC%9A"><span class="toc-text">解决方案三：</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/JavaScript/">JavaScript</a></div><div id="post-meta">发布于&nbsp;<time datetime="2019-08-27T05:53:19.000Z">2019-08-27</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>浏览器如何显示12px以下的字体</span></h1>
+<h4 id="使用场景："><a href="#使用场景：" class="headerlink" title="使用场景："></a>使用场景：</h4><p>以往设计图给的字号一般最小就是12px， 开发人员一般是使用谷歌浏览器来进行调试运行。<br>谷歌浏览器上显示字体最小为12px，css设置font-size：10px，运行代码显示结果仍然是12px大小，但是挡不住甲方有时就是强调使用的字号，必须是特别小的字号。</p>
+<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>谷歌浏览器，以及最近将取代IE的Edge浏览器，显示小于12px字号的解决办法</p>
+<p>了解一点开发的人都知道，谷歌浏览器显示的最小字号就是12px，即使你设定的字体为10px，默认显示的也是12px，当然除了谷歌之外，新出的Edge浏览器也有同样的问题，主要原因还是因为内核使用的是同一个，常用的浏览器除了这两个之外，其实IE、火狐浏览器、移动端等小于12px的字号大小还是可以正常显示的。</p>
+<h4 id="解决方案一："><a href="#解决方案一：" class="headerlink" title="解决方案一："></a>解决方案一：</h4><blockquote>
+<p>更改谷歌浏览器的基础设定12px值，用来解决开发人员的调试问题</p>
+</blockquote>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>点开浏览器右上角的三个点，点击“设置”</li>
+<li>选择“外观”，找到“自定义字体”，在自定义字体中找到“最小字号”，将最小字号的进度条直接拉到最左边，这就表示最小字号是多少由你说了算。</li>
+<li>如果你找不到自定义字体这个选项，你也可以直接在设置页面最上面的搜索框里，直接输入字号，回车，页面会自动筛选出相应设置项，然后一样修改就可以了。在这个页面你可以看到，不仅可以修改默认的最小字号，还可以修改默认显示的字号、字体样式等</li>
+<li>老版本的可能是在“显示高级设置…”里，如果根据我的提示，你还是找不到，那我还是建议你更新浏览器版本吧。</li>
+</ul>
+<p>在这之前有人说使用-webkit-text-size-adjust: none;解除字号限制，不过不知道为啥，我看着页面并没有效果，可能是现在已经废除了这种写法。<br>第一种解决方法是让开发人员用来调试代码，这样可以更直观的观察，其他浏览器小于12px字号的显示大小效果，因为除了谷歌、edge之外，常用的浏览器字号是能正常显示的。<br>但是这种方法并没有解决谷歌浏览器在普通用户页面的显示效果，接下来，我们使用第二种办法。</p>
+<h4 id="解决方案二："><a href="#解决方案二：" class="headerlink" title="解决方案二："></a>解决方案二：</h4><blockquote>
+<p>使用缩放transform:scale()，使用较为广泛</p>
+<p>优点：单行、多行文本都可使用<br>缺点：只是视觉效果变小，并不会改变盒子的实际占位，在对齐其他盒子时不太友好</p>
+</blockquote>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>文本嵌套块标签，这是因为缩放只对有宽高的标签有效，缩放的时候也是将标签一起缩放，而不仅仅是缩放文本，所以如果使用span等行内标签时，还需要将行内标签进行元素转换为块元素（display:block;）</li>
+<li>font-size：12px；<br>给文本设置字体12px，并设置缩放值为10&#x2F;12&#x3D;0.83333，也就是transform:scale(0.83)；如果要设置8px，那就是8&#x2F;12&#x3D;0.66666</li>
+<li>transform-origin：0 0；<br>默认缩放中心点是在盒子的正中心，所以如果我们需要文本左对齐，就需要改变中心点，也就是transform-origin：0 0；该值有两个参数值，第一个是水平方位值，第二个是垂直方位值，对应的如果需要右对齐、或者是有缩进，那就改变对应的参数值即可。</li>
+<li>white-space: nowrap;<br>文本进行缩放后，并不会改变其原来盒子的大小，只是视觉上改变了大小，也就是说如果文本有换行的时候，它进行缩放后仍然是折行显示，这显然不符合我们要求，所以我们还需要强制文本在一行显示，也就是 white-space: nowrap;</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        div &#123;</span><br><span class="line">            width: 300px;</span><br><span class="line">            height: 30px;</span><br><span class="line">            margin-bottom: 5px;</span><br><span class="line">            background: rgb(206, 151, 151);</span><br><span class="line">        &#125;</span><br><span class="line">        .box1 &#123;</span><br><span class="line">            font-size: 12px;</span><br><span class="line">        &#125;</span><br><span class="line">        .box2 &#123;</span><br><span class="line">            font-size: 10px;</span><br><span class="line">            transform: scale(0.83333);</span><br><span class="line">            transform-origin: 0 0;</span><br><span class="line">            white-space: nowrap;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;box1&quot;&gt;我是正常的12px的文字大小 Hello world!&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;box1&quot;&gt;我是正常的12px的文字大小 Hello world!&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;box2&quot;&gt;我是正常的10px的文字大小 Hello world!&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;box2&quot;&gt;我是正常的10px的文字大小 Hello world!&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="解决方案三："><a href="#解决方案三：" class="headerlink" title="解决方案三："></a>解决方案三：</h4><blockquote>
+<p>使用SVG 矢量图设置text<br>优点： 1px-12px任意字号均可设置，可对设计界面进行对齐调整<br>缺点：不支持多行文本</p>
+</blockquote>
+<p><strong>步骤：</strong></p>
+<ul>
+<li><p>在svg包含text标签，给svg设置宽高，文本内容写在text标签中；<br>因为svg是矢量图的概念，也就是说svg其实是一个图片，给图片内容进行缩放。实际的文本字号大小由text标签设置生效，但内容显示多少要看svg设置的宽高是多少，超出区域外的内容不会显示。</p>
+</li>
+<li><p>text标签的x y值这里必须用到的；<br>text的x和y值默认为0，x值表示文字左下角开始的x坐标；y值表示文字左下角开始的y坐标，一般文本显示都是左对齐，所以x值为0，y值为字号大小。当然，如果是右对齐或者居中对齐的x y的值则需要另外设置对应的值。注意：x y的值是写在标签后面，并且无单位！</p>
+</li>
+<li><p>text文本设置样式的方法和普通标签设置的方法不一样，例如文本颜色填充是用fill设置，并不是color；如果需要文本缩进，或者是距离顶部有多宽的间隙，需要使用dx和dy；<br>dx:文本在水平方向上移动的像素大小<br>dy:文本在垂直方向上移动的像素大小</p>
+</li>
+</ul>
+<p>该方法是可以设置任意字号大小，还能根据设计图的需要进行对齐调整，但svg没有换行符！！！所以文本并不支持换行显示，即使你设置的svg的宽高足够大，即使设置文本可以换行white-space: pre;也没有任何效果。 也就是说，svg默认所有单个或连续多个空格、换行符等转为一个空格来显示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;</span><br><span class="line">  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">  &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    div&#123;font-size: 12px;&#125;</span><br><span class="line">    svg&#123;width: 100px;height: 100px;background-color: chocolate;&#125;</span><br><span class="line">    svg text &#123;font-size: 8px;&#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div&gt;我是最小12px字体大小 hello world！&lt;/div&gt;</span><br><span class="line">  &lt;svg&gt;</span><br><span class="line">    &lt;!-- svg是矢量图的概念方法，这里的文本并不支持换行显示，即使你设置的svg的宽高足够大 --&gt;</span><br><span class="line">    &lt;!-- text文本设置样式的方法和普通标签设置的方法不一样，例如文本颜色填充是用fill设置，并不是color --&gt;</span><br><span class="line">    &lt;text x=&quot;0&quot; y=&quot;8&quot; &gt;我是10px字体大小 hello world！&lt;/text&gt;&gt;</span><br><span class="line">  &lt;/svg&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2019/08/19/JavaScript/%E9%82%A3%E4%BA%9B%E6%83%85%E5%86%B5%E4%BC%9A%E5%AF%BC%E8%87%B4%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2/">那些情况会导致内存泄露<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2019/09/16/JavaScript/async%E5%92%8Cawait%E5%AF%B9%E6%AF%94Promise%E7%9A%84%E4%BC%98%E5%8A%BF/">async/await<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
