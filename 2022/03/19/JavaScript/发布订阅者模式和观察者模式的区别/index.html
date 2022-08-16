@@ -18,18 +18,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>Js面向对象 - 你又来看我啦</title>
+  <title>发布订阅者模式和观察者模式的区别 - 你又来看我啦</title>
 
   
-    <meta name="description" content="Js面向对象详解">
+    <meta name="description" content="发布订阅者模式和观察者模式的区别">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Js面向对象">
-<meta property="og:url" content="http://example.com/2022/08/11/JavaScript/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:title" content="发布订阅者模式和观察者模式的区别">
+<meta property="og:url" content="http://example.com/2022/03/19/JavaScript/%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="你又来看我啦">
-<meta property="og:description" content="Js面向对象详解">
+<meta property="og:description" content="发布订阅者模式和观察者模式的区别">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-08-11T13:59:58.042Z">
-<meta property="article:modified_time" content="2022-08-12T00:51:04.017Z">
+<meta property="article:published_time" content="2022-03-19T09:03:26.000Z">
+<meta property="article:modified_time" content="2022-08-16T01:52:17.125Z">
 <meta property="article:author" content="知非">
 <meta property="article:tag" content="-JavaScript">
 <meta name="twitter:card" content="summary">
@@ -73,20 +73,90 @@
 <div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
 <nav class="menu dis-select"></nav></header>
 
-<div class="widgets"></div>
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">什么是观察者模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%91%E5%B8%83%E5%AE%9A%E4%B9%89%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">什么是发布定义者模式</span></a></li></ol></div></div></div>
+
+
+</div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
 
       
 
 
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/JavaScript/">JavaScript</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-08-11T13:59:58.042Z">2022-08-11</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/JavaScript/">JavaScript</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-03-19T09:03:26.000Z">2022-03-19</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>Js面向对象</span></h1>
+<h1 class="article-title"><span>发布订阅者模式和观察者模式的区别</span></h1>
+<h3 id="什么是观察者模式"><a href="#什么是观察者模式" class="headerlink" title="什么是观察者模式"></a>什么是观察者模式</h3><blockquote>
+<p>定义：当对象之间存在一对多的依赖关系的时候，其中一个对象的状态发生改变，所有一栏他的对象都会收到通知，这就是观察者模式。</p>
+</blockquote>
+<ul>
+<li>在观察者模式中，只有两种主题：目标对象(Object)和观察者(Observer)<blockquote>
+<p>目标对象Subject</p>
+<ul>
+<li>维护观察者列表<code>oberverList</code></li>
+</ul>
+</blockquote>
+<ul>
+<li>定义添加观察者的方法</li>
+<li>当自身发生变化后，通过调用自己的notify方法依次通知每个观察者执行<code>update</code>方法</li>
+</ul>
+</li>
+<li>观察者Observer需要实现update方法，供目标对象调用。update方法中可以执行自定义的业务逻辑—弟子们需要定义接受任务通知后的方法，例如去抢任务或者任务不合适继续等待下个任务。</li>
+</ul>
+<h3 id="什么是发布定义者模式"><a href="#什么是发布定义者模式" class="headerlink" title="什么是发布定义者模式"></a>什么是发布定义者模式</h3><blockquote>
+<p>定义：基于一个事件（主题）通道，希望接受通知的对象Subscriber通过自定义事件订阅主题，被激活事件的对象Publisher通过发布主题事件的方式通知各个订阅该主题的Subscriber对象。</p>
+</blockquote>
+<p>因此发布者订阅模式与观察者模式相比，发布订阅模式中有三个角色，发布者Publisher，事件调度中心Event Channel，订阅者Subscriber。<br>目标对象Subject:<br>任务发布者 – 发布者Publisher<br>中介功能 – Event Channel</p>
+<ul>
+<li>维护任务类型，以及每种任务下的订阅情况</li>
+<li>给订阅者提供订阅功能 – subscribe功能</li>
+<li>当主题发布任务后，中介会给所有订阅者发布任务 – publish功能</li>
+</ul>
+<p>任务接受者 – Subscriber<br>观察者Observer需要实现update方法，供目标调用。update方法中可以执行自定义的业务逻辑</p>
+<blockquote>
+<p>发布者和订阅者都不知道对方的存在。需要第三方中介，将订阅者和发布者串联起来，利用中介过滤和分配所有输入的消息。也就是说发布-订阅者模式用来处理不同系统组件的信息交流，即使这些组件不知道对方的存在。<br>例如 ：<br>平台提供了消息订阅的功能，如果你选择订阅，平台更新电视剧之后会第一时间发消息通知你，订阅后，你就可以愉快的追剧了。这个案例中 电视剧就是发布者Publisher，追剧人就是订阅者Subscribe，平台则承担了事件通道Event Channel功能。</p>
+</blockquote>
+<p>总结：</p>
+<table>
+<thead>
+<tr>
+<th>设计模式</th>
+<th>观察者模式</th>
+<th>订阅发布者模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主体</td>
+<td>Object观察者、Subject目标对象</td>
+<td>Publisher发布者、Event Channel事件中心、Subscribe订阅者</td>
+</tr>
+<tr>
+<td>主体关系</td>
+<td>subject中通过observerList记录ObServer</td>
+<td>Publisher和Subscribe不知道对方，通过中介联系</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>角色明确，Subject和Object要遵循约定的成员方法</td>
+<td>松散耦合，灵活度高，通常应用在异步编程中</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>紧耦合</td>
+<td>当事件类型变多时，会增加维护成本</td>
+</tr>
+<tr>
+<td>使用案例</td>
+<td>双向数据绑定</td>
+<td>事件总线EventBus</td>
+</tr>
+</tbody></table>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
@@ -94,7 +164,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2022/08/10/React/%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6%E5%92%8C%E9%9D%9E%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6/">undefined<span class="note">较早</span></a><div class="line"></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/08/13/Html/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB/">图片懒加载和预加载的区别<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2022/06/13/Vue3/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AE%BF%E9%97%AEdata%E5%B1%9E%E6%80%A7%E4%B8%8D%E9%9C%80%E8%A6%81%E5%B8%A6data/">为什么访问data中的属性不需要带data<span class="note">较新</span></a></section></div>
 
 
 

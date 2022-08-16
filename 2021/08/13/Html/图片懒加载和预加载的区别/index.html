@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>图片懒加载和预加载的区别 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="图片懒加载和预加载的区别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图片懒加载和预加载的区别">
+<meta property="og:url" content="http://example.com/2021/08/13/Html/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="图片懒加载和预加载的区别">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-13T05:53:19.000Z">
+<meta property="article:modified_time" content="2022-08-15T06:45:13.173Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-Html">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="你又来看我啦" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%87%92%E5%8A%A0%E8%BD%BD%EF%BC%9F"><span class="toc-text">1.什么是懒加载？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E6%87%92%E5%8A%A0%E8%BD%BD%EF%BC%9F"><span class="toc-text">2.为什么要使用懒加载？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">3.懒加载的原理是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%EF%BC%9F"><span class="toc-text">4.懒加载的实现步骤？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E4%BC%98%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">5.懒加载的优点是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%A0%B8%E5%BF%83%E8%A6%81%E7%82%B9%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-text">预加载的核心要点如下：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E9%A2%84%E5%8A%A0%E8%BD%BD%E4%B8%BB%E8%A6%81%E6%9C%89%E4%B8%89%E4%B8%AA%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-text">实现预加载主要有三个方法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E9%A2%84%E5%8A%A0%E8%BD%BD%EF%BC%9F"><span class="toc-text">1.什么是预加载？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E9%A2%84%E5%8A%A0%E8%BD%BD%EF%BC%9F"><span class="toc-text">2.为什么要使用预加载？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%9E%E7%8E%B0%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%96%B9%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">3.实现预加载的方法有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-text">3、懒加载和预加载的对比</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%84%8F%E4%B9%89%E5%8F%8A%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E6%9C%89%EF%BC%9A"><span class="toc-text">3)懒加载的意义及实现方式有：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%84%8F%E4%B9%89%E5%8F%8A%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E6%9C%89%EF%BC%9A"><span class="toc-text">4)预加载的意义及实现方式有：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-text">4、补充知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%8F%E5%B9%95%E5%8F%AF%E8%A7%86%E7%AA%97%E5%8F%A3%E5%A4%A7%E5%B0%8F"><span class="toc-text">屏幕可视窗口大小</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0%E7%9A%84%E5%B0%BA%E5%AF%B8"><span class="toc-text">获取元素的尺寸</span></a></li></ol></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Html/">Html</a></div><div id="post-meta">发布于&nbsp;<time datetime="2021-08-13T05:53:19.000Z">2021-08-13</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>图片懒加载和预加载的区别</span></h1>
+<h3 id="1-什么是懒加载？"><a href="#1-什么是懒加载？" class="headerlink" title="1.什么是懒加载？"></a>1.什么是懒加载？</h3><p>懒加载也就是延迟加载。<br>当访问一个页面的时候，先把img元素或是其他元素的背景图片路径替换成一张大小为1*1px图片的路径（这样就只需请求一次，俗称占<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E4%BD%8D%E5%9B%BE&spm=1001.2101.3001.7020">位图</a>），只有当图片出现在浏览器的可视区域内时，才设置图片正真的路径，让图片显示出来。这就是图片懒加载。</p>
+<h3 id="2-为什么要使用懒加载？"><a href="#2-为什么要使用懒加载？" class="headerlink" title="2.为什么要使用懒加载？"></a>2.为什么要使用懒加载？</h3><p>很多页面，内容很丰富，页面很长，图片较多。比如说各种商城页面。这些页面图片数量多，而且比较大，少说百来K，多则上兆。要是页面载入就一次性加载完毕。估计大家都会等到黄花变成黄花菜了。</p>
+<h3 id="3-懒加载的原理是什么？"><a href="#3-懒加载的原理是什么？" class="headerlink" title="3.懒加载的原理是什么？"></a>3.懒加载的原理是什么？</h3><p>页面中的img元素，如果没有src属性，浏览器就不会发出请求去下载图片，只有通过javascript设置了图片路径，浏览器才会发送请求。<br>懒加载的原理就是先在页面中把所有的图片统一使用一张占位图进行占位，把正真的路径存在元素的“data-url”（这个名字起个自己认识好记的就行）属性里，要用的时候就取出来，再设置；</p>
+<h3 id="4-懒加载的实现步骤？"><a href="#4-懒加载的实现步骤？" class="headerlink" title="4.懒加载的实现步骤？"></a>4.懒加载的实现步骤？</h3><p>1)首先，不要将图片地址放到src属性中，而是放到其它属性(data-original)中。<br>2)页面加载完成后，根据scrollTop判断图片是否在用户的视野内，如果在，则将data-original属性中的值取出存放到src属性中。<br>3)在滚动事件中重复判断图片是否进入视野，如果进入，则将data-original属性中的值取出存放到src属性中。</p>
+<h3 id="5-懒加载的优点是什么？"><a href="#5-懒加载的优点是什么？" class="headerlink" title="5.懒加载的优点是什么？"></a>5.懒加载的优点是什么？</h3><p>页面加载速度快、可以减轻服务器的压力、节约了流量,用户体验好</p>
+<p>&#x2F;&#x2F;懒加载代码实现<br>var viewHeight &#x3D; document.documentElement.clientHeight &#x2F;&#x2F; 可视区域的高度</p>
+<p>function lazyload () {<br>&#x2F;&#x2F; 获取所有要进行懒加载的图片<br>var eles &#x3D; document.querySelectorAll(‘img[data-original][lazyload]’)<br>Array.prototype.forEach.call(eles, function (item, index) {<br>var rect<br>if (item.dataset.original &#x3D;&#x3D;&#x3D; ‘’)<br>return<br>rect &#x3D; item.getBoundingClientRect()<br>&#x2F;&#x2F; 图片一进入可视区，动态加载<br>if (rect.bottom &gt;&#x3D; 0 &amp;&amp; rect.top &lt; viewHeight) {<br>!function () {<br>var img &#x3D; new Image()<br>img.src &#x3D; item.dataset.original<br>img.onload &#x3D; function () {<br>item.src &#x3D; img.src<br>}<br>item.removeAttribute(‘data-original’)<br>item.removeAttribute(‘lazyload’)<br>}()<br>}<br>})<br>}<br>&#x2F;&#x2F; 首屏要人为的调用，否则刚进入页面不显示图片<br>lazyload()</p>
+<p>document.addEventListener(‘scroll’, lazyload)</p>
+<h3 id="预加载的核心要点如下："><a href="#预加载的核心要点如下：" class="headerlink" title="预加载的核心要点如下："></a>预加载的核心要点如下：</h3><ul>
+<li><p>1.图片等静态资源在使用之前的提前请求；</p>
+</li>
+<li><p>2.资源后续使用时可以从缓存中加载，提升用户体验；</p>
+</li>
+<li><p>3.页面展示的依赖关系维护（必需的资源加载完才可以展示页面，防止白屏等）；</p>
+</li>
+</ul>
+<h4 id="实现预加载主要有三个方法："><a href="#实现预加载主要有三个方法：" class="headerlink" title="实现预加载主要有三个方法："></a>实现预加载主要有三个方法：</h4><p>1.html中img标签最初设置为display:none；</p>
+<p>2.js脚本中使用image对象动态创建好图片；</p>
+<p>3.使用XMLHttpRequest对象可以更加精细的控制预加载过程，缺点是无法跨域：</p>
+<h3 id="1-什么是预加载？"><a href="#1-什么是预加载？" class="headerlink" title="1.什么是预加载？"></a>1.什么是预加载？</h3><p>提前加载图片，当用户需要查看时可直接从本地缓存中渲染</p>
+<h3 id="2-为什么要使用预加载？"><a href="#2-为什么要使用预加载？" class="headerlink" title="2.为什么要使用预加载？"></a>2.为什么要使用预加载？</h3><p>图片预先加载到浏览器中，访问者便可顺利地在你的网站上冲浪，并享受到极快的加载速度。这对图片画廊及图片占据很大比例的网站来说十分有利，它保证了图片快速、无缝地发布，也可帮助用户在浏览你网站内容时获得更好的用户体验。</p>
+<h3 id="3-实现预加载的方法有哪些？"><a href="#3-实现预加载的方法有哪些？" class="headerlink" title="3.实现预加载的方法有哪些？"></a>3.实现预加载的方法有哪些？</h3><p>方法一：用CSS和JavaScript实现预加载<br>方法二：仅使用JavaScript实现预加载<br>方法三：使用Ajax实现预加载</p>
+<h3 id="3、懒加载和预加载的对比"><a href="#3、懒加载和预加载的对比" class="headerlink" title="3、懒加载和预加载的对比"></a>3、懒加载和预加载的对比</h3><p><strong>1)概念</strong>：</p>
+<p>懒加载也叫延迟加载：JS图片延迟加载,延迟加载图片或符合某些条件时才加载某些图片。<br>预加载：提前加载图片，当用户需要查看时可直接从本地缓存中渲染。</p>
+<p><strong>2)区别：</strong></p>
+<p>两种技术的本质：两者的行为是相反的，一个是提前加载，一个是迟缓甚至不加载。懒加载对服务器前端有一定的缓解压力作用，预加载则会增加服务器前端压力。</p>
+<h4 id="3-懒加载的意义及实现方式有："><a href="#3-懒加载的意义及实现方式有：" class="headerlink" title="3)懒加载的意义及实现方式有："></a>3)懒加载的意义及实现方式有：</h4><p><strong>意义：</strong><br>懒加载的主要目的是作为服务器前端的优化，减少请求数或延迟请求数。<br><strong>实现方式：</strong><br>1.第一种是纯粹的延迟加载，使用setTimeOut或setInterval进行加载延迟.<br>2.第二种是条件加载，符合某些条件，或触发了某些事件才开始异步下载。<br>3.第三种是可视区加载，即仅加载用户可以看到的区域，这个主要由监控滚动条来实现，一般会在距用户看到某图片前一定距离遍开始加载，这样能保证用户拉下时正好能看到图片。</p>
+<h4 id="4-预加载的意义及实现方式有："><a href="#4-预加载的意义及实现方式有：" class="headerlink" title="4)预加载的意义及实现方式有："></a>4)预加载的意义及实现方式有：</h4><p><strong>意义:</strong><br>预加载可以说是牺牲服务器前端性能，换取更好的用户体验，这样可以使用户的操作得到最快的反映。<br><strong>实现方式：</strong><br>实现预载的方法非常多，比如：用CSS和JavaScript实现预加载；仅使用JavaScript实现预加载；使用Ajax实现预加载。<br>常用的是new Image();设置其src来实现预载，再使用onload方法回调预载完成事件。只要浏览器把图片下载到本地，同样的src就会使用缓存，这是最基本也是最实用的预载方法。当Image下载完图片头后，会得到宽和高，因此可以在预载前得到图片的大小(方法是用记时器轮循宽高变化)。</p>
+<h3 id="4、补充知识"><a href="#4、补充知识" class="headerlink" title="4、补充知识"></a>4、补充知识</h3><h4 id="屏幕可视窗口大小"><a href="#屏幕可视窗口大小" class="headerlink" title="屏幕可视窗口大小"></a>屏幕可视窗口大小</h4><p>原生方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> window.innerHeight 标准浏览器及IE9+ || </span><br><span class="line"></span><br><span class="line"> document.documentElement.clientHeight 标准浏览器及低版本IE标准模式 || </span><br><span class="line"></span><br><span class="line"> document.body.clientHeight  低版本混杂模式 </span><br><span class="line"></span><br><span class="line">jQuery方法：  </span><br><span class="line"></span><br><span class="line">    $(window).height();</span><br></pre></td></tr></table></figure>
+
+
+<p>浏览器窗口顶部与文档顶部之间的距离，也就是滚动条滚动的距离：</p>
+<p>原生方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">      window.pagYoffset 标准浏览器及IE9+ || </span><br><span class="line"></span><br><span class="line">      document.documentElement.scrollTop 兼容ie低版本的标准模式 || </span><br><span class="line"></span><br><span class="line">      document.body.scrollTop 兼容混杂模式； </span><br><span class="line"></span><br><span class="line">jQuery方法： </span><br><span class="line"></span><br><span class="line">      $(document).scrollTop()</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取元素的尺寸"><a href="#获取元素的尺寸" class="headerlink" title="获取元素的尺寸"></a>获取元素的尺寸</h4><p>$(o).width() &#x3D; o.style.width;<br>$(o).innerWidth() &#x3D; o.style.width+o.style.padding;<br>$(o).outerWidth() &#x3D; o.offsetWidth &#x3D; o.style.width+o.style.padding+o.style.border；<br>$(o).outerWidth(true) &#x3D; o.style.width+o.style.padding+o.style.border+o.style.margin；</p>
+<p>注意<br>要使用原生的style.xxx方法获取属性，这个元素必须已经有内嵌的样<br>如果原先是通过外部或内部样式表定义css样式，必须使用o.currentStyle[xxx] || document.defaultView.getComputedStyle(0)[xxx]来获取样式值。</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/06/25/React/%E5%B8%B8%E7%94%A8%E7%9A%84hook/">常用的hook<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2022/03/19/JavaScript/%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/">发布订阅者模式和观察者模式的区别<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

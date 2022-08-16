@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-08-12T00:51:04.017Z</updated>
+  <updated>2022-08-10T00:43:02.199Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,25 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Js面向对象</title>
-    <link href="http://example.com/2022/08/11/JavaScript/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"/>
-    <id>http://example.com/2022/08/11/JavaScript/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</id>
-    <published>2022-08-11T13:59:58.042Z</published>
-    <updated>2022-08-12T00:51:04.017Z</updated>
-    
-    
-    <summary type="html">Js面向对象详解</summary>
-    
-    
-    
-    <category term="JavaScript" scheme="http://example.com/categories/JavaScript/"/>
-    
-    
-    <category term="-JavaScript" scheme="http://example.com/tags/JavaScript/"/>
-    
-  </entry>
   
   <entry>
     <title></title>
@@ -113,6 +94,69 @@
     
     
     
+    
+  </entry>
+  
+  <entry>
+    <title>为什么访问data中的属性不需要带data</title>
+    <link href="http://example.com/2022/06/13/Vue3/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AE%BF%E9%97%AEdata%E5%B1%9E%E6%80%A7%E4%B8%8D%E9%9C%80%E8%A6%81%E5%B8%A6data/"/>
+    <id>http://example.com/2022/06/13/Vue3/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AE%BF%E9%97%AEdata%E5%B1%9E%E6%80%A7%E4%B8%8D%E9%9C%80%E8%A6%81%E5%B8%A6data/</id>
+    <published>2022-06-13T01:13:23.000Z</published>
+    <updated>2022-08-16T06:35:27.535Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="为什么访问data中的属性不需要带data"><a href="#为什么访问data中的属性不需要带data" class="headerlink" title="为什么访问data中的属性不需要带data"></a>为什么访问data中的属性不需要带data</h3><blockquote><p>vue中访问属性代理this.data.xxx 转换 this.xxx 的实现</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> /** 将 某一个对象的属性 访问 映射到 对象的某一个属性成员上 */</span><br><span class="line">function proxy( target, prop, key ) &#123;</span><br><span class="line">  Object.defineProperty( target, key, &#123;</span><br><span class="line">    enumerable: true,</span><br><span class="line">    configurable: true,</span><br><span class="line">    get () &#123;</span><br><span class="line">      return target[ prop ][ key ];</span><br><span class="line">    &#125;,</span><br><span class="line">    set ( newVal ) &#123;</span><br><span class="line">      target[ prop ][ key ] = newVal;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">为什么访问data中的属性不需要带data</summary>
+    
+    
+    
+    <category term="Vue3" scheme="http://example.com/categories/Vue3/"/>
+    
+    
+    <category term="-Vue3" scheme="http://example.com/tags/Vue3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>发布订阅者模式和观察者模式的区别</title>
+    <link href="http://example.com/2022/03/19/JavaScript/%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://example.com/2022/03/19/JavaScript/%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2022-03-19T09:03:26.000Z</published>
+    <updated>2022-08-16T01:52:17.125Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="什么是观察者模式"><a href="#什么是观察者模式" class="headerlink" title="什么是观察者模式"></a>什么是观察者模式</h3><blockquote><p>定义：当对象之间存在一对多的依赖关系的时候，其中一个对象的状态发生改变，所有一栏他的对象都会收到通知，这就是观察者模式。</p></blockquote><ul><li>在观察者模式中，只有两种主题：目标对象(Object)和观察者(Observer)<blockquote><p>目标对象Subject</p><ul><li>维护观察者列表<code>oberverList</code></li></ul></blockquote><ul><li>定义添加观察者的方法</li><li>当自身发生变化后，通过调用自己的notify方法依次通知每个观察者执行<code>update</code>方法</li></ul></li><li>观察者Observer需要实现update方法，供目标对象调用。update方法中可以执行自定义的业务逻辑—弟子们需要定义接受任务通知后的方法，例如去抢任务或者任务不合适继续等待下个任务。</li></ul><h3 id="什么是发布定义者模式"><a href="#什么是发布定义者模式" class="headerlink" title="什么是发布定义者模式"></a>什么是发布定义者模式</h3><blockquote><p>定义：基于一个事件（主题）通道，希望接受通知的对象Subscriber通过自定义事件订阅主题，被激活事件的对象Publisher通过发布主题事件的方式通知各个订阅该主题的Subscriber对象。</p></blockquote><p>因此发布者订阅模式与观察者模式相比，发布订阅模式中有三个角色，发布者Publisher，事件调度中心Event Channel，订阅者Subscriber。<br>目标对象Subject:<br>任务发布者 – 发布者Publisher<br>中介功能 – Event Channel</p><ul><li>维护任务类型，以及每种任务下的订阅情况</li><li>给订阅者提供订阅功能 – subscribe功能</li><li>当主题发布任务后，中介会给所有订阅者发布任务 – publish功能</li></ul><p>任务接受者 – Subscriber<br>观察者Observer需要实现update方法，供目标调用。update方法中可以执行自定义的业务逻辑</p><blockquote><p>发布者和订阅者都不知道对方的存在。需要第三方中介，将订阅者和发布者串联起来，利用中介过滤和分配所有输入的消息。也就是说发布-订阅者模式用来处理不同系统组件的信息交流，即使这些组件不知道对方的存在。<br>例如 ：<br>平台提供了消息订阅的功能，如果你选择订阅，平台更新电视剧之后会第一时间发消息通知你，订阅后，你就可以愉快的追剧了。这个案例中 电视剧就是发布者Publisher，追剧人就是订阅者Subscribe，平台则承担了事件通道Event Channel功能。</p></blockquote><p>总结：</p><table><thead><tr><th>设计模式</th><th>观察者模式</th><th>订阅发布者模式</th></tr></thead><tbody><tr><td>主体</td><td>Object观察者、Subject目标对象</td><td>Publisher发布者、Event Channel事件中心、Subscribe订阅者</td></tr><tr><td>主体关系</td><td>subject中通过observerList记录ObServer</td><td>Publisher和Subscribe不知道对方，通过中介联系</td></tr><tr><td>优点</td><td>角色明确，Subject和Object要遵循约定的成员方法</td><td>松散耦合，灵活度高，通常应用在异步编程中</td></tr><tr><td>缺点</td><td>紧耦合</td><td>当事件类型变多时，会增加维护成本</td></tr><tr><td>使用案例</td><td>双向数据绑定</td><td>事件总线EventBus</td></tr></tbody></table>]]></content>
+    
+    
+    <summary type="html">发布订阅者模式和观察者模式的区别</summary>
+    
+    
+    
+    <category term="JavaScript" scheme="http://example.com/categories/JavaScript/"/>
+    
+    
+    <category term="-JavaScript" scheme="http://example.com/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>图片懒加载和预加载的区别</title>
+    <link href="http://example.com/2021/08/13/Html/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://example.com/2021/08/13/Html/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2021-08-13T05:53:19.000Z</published>
+    <updated>2022-08-15T06:45:13.173Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-什么是懒加载？"><a href="#1-什么是懒加载？" class="headerlink" title="1.什么是懒加载？"></a>1.什么是懒加载？</h3><p>懒加载也就是延迟加载。<br>当访问一个页面的时候，先把img元素或是其他元素的背景图片路径替换成一张大小为1*1px图片的路径（这样就只需请求一次，俗称占<a href="https://so.csdn.net/so/search?q=%E4%BD%8D%E5%9B%BE&spm=1001.2101.3001.7020">位图</a>），只有当图片出现在浏览器的可视区域内时，才设置图片正真的路径，让图片显示出来。这就是图片懒加载。</p><h3 id="2-为什么要使用懒加载？"><a href="#2-为什么要使用懒加载？" class="headerlink" title="2.为什么要使用懒加载？"></a>2.为什么要使用懒加载？</h3><p>很多页面，内容很丰富，页面很长，图片较多。比如说各种商城页面。这些页面图片数量多，而且比较大，少说百来K，多则上兆。要是页面载入就一次性加载完毕。估计大家都会等到黄花变成黄花菜了。</p><h3 id="3-懒加载的原理是什么？"><a href="#3-懒加载的原理是什么？" class="headerlink" title="3.懒加载的原理是什么？"></a>3.懒加载的原理是什么？</h3><p>页面中的img元素，如果没有src属性，浏览器就不会发出请求去下载图片，只有通过javascript设置了图片路径，浏览器才会发送请求。<br>懒加载的原理就是先在页面中把所有的图片统一使用一张占位图进行占位，把正真的路径存在元素的“data-url”（这个名字起个自己认识好记的就行）属性里，要用的时候就取出来，再设置；</p><h3 id="4-懒加载的实现步骤？"><a href="#4-懒加载的实现步骤？" class="headerlink" title="4.懒加载的实现步骤？"></a>4.懒加载的实现步骤？</h3><p>1)首先，不要将图片地址放到src属性中，而是放到其它属性(data-original)中。<br>2)页面加载完成后，根据scrollTop判断图片是否在用户的视野内，如果在，则将data-original属性中的值取出存放到src属性中。<br>3)在滚动事件中重复判断图片是否进入视野，如果进入，则将data-original属性中的值取出存放到src属性中。</p><h3 id="5-懒加载的优点是什么？"><a href="#5-懒加载的优点是什么？" class="headerlink" title="5.懒加载的优点是什么？"></a>5.懒加载的优点是什么？</h3><p>页面加载速度快、可以减轻服务器的压力、节约了流量,用户体验好</p><p>&#x2F;&#x2F;懒加载代码实现<br>var viewHeight &#x3D; document.documentElement.clientHeight &#x2F;&#x2F; 可视区域的高度</p><p>function lazyload () {<br>&#x2F;&#x2F; 获取所有要进行懒加载的图片<br>var eles &#x3D; document.querySelectorAll(‘img[data-original][lazyload]’)<br>Array.prototype.forEach.call(eles, function (item, index) {<br>var rect<br>if (item.dataset.original &#x3D;&#x3D;&#x3D; ‘’)<br>return<br>rect &#x3D; item.getBoundingClientRect()<br>&#x2F;&#x2F; 图片一进入可视区，动态加载<br>if (rect.bottom &gt;&#x3D; 0 &amp;&amp; rect.top &lt; viewHeight) {<br>!function () {<br>var img &#x3D; new Image()<br>img.src &#x3D; item.dataset.original<br>img.onload &#x3D; function () {<br>item.src &#x3D; img.src<br>}<br>item.removeAttribute(‘data-original’)<br>item.removeAttribute(‘lazyload’)<br>}()<br>}<br>})<br>}<br>&#x2F;&#x2F; 首屏要人为的调用，否则刚进入页面不显示图片<br>lazyload()</p><p>document.addEventListener(‘scroll’, lazyload)</p><h3 id="预加载的核心要点如下："><a href="#预加载的核心要点如下：" class="headerlink" title="预加载的核心要点如下："></a>预加载的核心要点如下：</h3><ul><li><p>1.图片等静态资源在使用之前的提前请求；</p></li><li><p>2.资源后续使用时可以从缓存中加载，提升用户体验；</p></li><li><p>3.页面展示的依赖关系维护（必需的资源加载完才可以展示页面，防止白屏等）；</p></li></ul><h4 id="实现预加载主要有三个方法："><a href="#实现预加载主要有三个方法：" class="headerlink" title="实现预加载主要有三个方法："></a>实现预加载主要有三个方法：</h4><p>1.html中img标签最初设置为display:none；</p><p>2.js脚本中使用image对象动态创建好图片；</p><p>3.使用XMLHttpRequest对象可以更加精细的控制预加载过程，缺点是无法跨域：</p><h3 id="1-什么是预加载？"><a href="#1-什么是预加载？" class="headerlink" title="1.什么是预加载？"></a>1.什么是预加载？</h3><p>提前加载图片，当用户需要查看时可直接从本地缓存中渲染</p><h3 id="2-为什么要使用预加载？"><a href="#2-为什么要使用预加载？" class="headerlink" title="2.为什么要使用预加载？"></a>2.为什么要使用预加载？</h3><p>图片预先加载到浏览器中，访问者便可顺利地在你的网站上冲浪，并享受到极快的加载速度。这对图片画廊及图片占据很大比例的网站来说十分有利，它保证了图片快速、无缝地发布，也可帮助用户在浏览你网站内容时获得更好的用户体验。</p><h3 id="3-实现预加载的方法有哪些？"><a href="#3-实现预加载的方法有哪些？" class="headerlink" title="3.实现预加载的方法有哪些？"></a>3.实现预加载的方法有哪些？</h3><p>方法一：用CSS和JavaScript实现预加载<br>方法二：仅使用JavaScript实现预加载<br>方法三：使用Ajax实现预加载</p><h3 id="3、懒加载和预加载的对比"><a href="#3、懒加载和预加载的对比" class="headerlink" title="3、懒加载和预加载的对比"></a>3、懒加载和预加载的对比</h3><p><strong>1)概念</strong>：</p><p>懒加载也叫延迟加载：JS图片延迟加载,延迟加载图片或符合某些条件时才加载某些图片。<br>预加载：提前加载图片，当用户需要查看时可直接从本地缓存中渲染。</p><p><strong>2)区别：</strong></p><p>两种技术的本质：两者的行为是相反的，一个是提前加载，一个是迟缓甚至不加载。懒加载对服务器前端有一定的缓解压力作用，预加载则会增加服务器前端压力。</p><h4 id="3-懒加载的意义及实现方式有："><a href="#3-懒加载的意义及实现方式有：" class="headerlink" title="3)懒加载的意义及实现方式有："></a>3)懒加载的意义及实现方式有：</h4><p><strong>意义：</strong><br>懒加载的主要目的是作为服务器前端的优化，减少请求数或延迟请求数。<br><strong>实现方式：</strong><br>1.第一种是纯粹的延迟加载，使用setTimeOut或setInterval进行加载延迟.<br>2.第二种是条件加载，符合某些条件，或触发了某些事件才开始异步下载。<br>3.第三种是可视区加载，即仅加载用户可以看到的区域，这个主要由监控滚动条来实现，一般会在距用户看到某图片前一定距离遍开始加载，这样能保证用户拉下时正好能看到图片。</p><h4 id="4-预加载的意义及实现方式有："><a href="#4-预加载的意义及实现方式有：" class="headerlink" title="4)预加载的意义及实现方式有："></a>4)预加载的意义及实现方式有：</h4><p><strong>意义:</strong><br>预加载可以说是牺牲服务器前端性能，换取更好的用户体验，这样可以使用户的操作得到最快的反映。<br><strong>实现方式：</strong><br>实现预载的方法非常多，比如：用CSS和JavaScript实现预加载；仅使用JavaScript实现预加载；使用Ajax实现预加载。<br>常用的是new Image();设置其src来实现预载，再使用onload方法回调预载完成事件。只要浏览器把图片下载到本地，同样的src就会使用缓存，这是最基本也是最实用的预载方法。当Image下载完图片头后，会得到宽和高，因此可以在预载前得到图片的大小(方法是用记时器轮循宽高变化)。</p><h3 id="4、补充知识"><a href="#4、补充知识" class="headerlink" title="4、补充知识"></a>4、补充知识</h3><h4 id="屏幕可视窗口大小"><a href="#屏幕可视窗口大小" class="headerlink" title="屏幕可视窗口大小"></a>屏幕可视窗口大小</h4><p>原生方法：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> window.innerHeight 标准浏览器及IE9+ || </span><br><span class="line"></span><br><span class="line"> document.documentElement.clientHeight 标准浏览器及低版本IE标准模式 || </span><br><span class="line"></span><br><span class="line"> document.body.clientHeight  低版本混杂模式 </span><br><span class="line"></span><br><span class="line">jQuery方法：  </span><br><span class="line"></span><br><span class="line">    $(window).height();</span><br></pre></td></tr></table></figure><p>浏览器窗口顶部与文档顶部之间的距离，也就是滚动条滚动的距离：</p><p>原生方法：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">      window.pagYoffset 标准浏览器及IE9+ || </span><br><span class="line"></span><br><span class="line">      document.documentElement.scrollTop 兼容ie低版本的标准模式 || </span><br><span class="line"></span><br><span class="line">      document.body.scrollTop 兼容混杂模式； </span><br><span class="line"></span><br><span class="line">jQuery方法： </span><br><span class="line"></span><br><span class="line">      $(document).scrollTop()</span><br></pre></td></tr></table></figure><h4 id="获取元素的尺寸"><a href="#获取元素的尺寸" class="headerlink" title="获取元素的尺寸"></a>获取元素的尺寸</h4><p>$(o).width() &#x3D; o.style.width;<br>$(o).innerWidth() &#x3D; o.style.width+o.style.padding;<br>$(o).outerWidth() &#x3D; o.offsetWidth &#x3D; o.style.width+o.style.padding+o.style.border；<br>$(o).outerWidth(true) &#x3D; o.style.width+o.style.padding+o.style.border+o.style.margin；</p><p>注意<br>要使用原生的style.xxx方法获取属性，这个元素必须已经有内嵌的样<br>如果原先是通过外部或内部样式表定义css样式，必须使用o.currentStyle[xxx] || document.defaultView.getComputedStyle(0)[xxx]来获取样式值。</p>]]></content>
+    
+    
+    <summary type="html">图片懒加载和预加载的区别</summary>
+    
+    
+    
+    <category term="Html" scheme="http://example.com/categories/Html/"/>
+    
+    
+    <category term="-Html" scheme="http://example.com/tags/Html/"/>
     
   </entry>
   
@@ -394,50 +438,6 @@
     <category term="-JavaScript" scheme="http://example.com/tags/JavaScript/"/>
     
     <category term="-webpack" scheme="http://example.com/tags/webpack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>React生命周期</title>
-    <link href="http://example.com/2020/07/29/React/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
-    <id>http://example.com/2020/07/29/React/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</id>
-    <published>2020-07-29T02:20:39.000Z</published>
-    <updated>2022-08-11T06:10:27.415Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="—React"><a href="#—React" class="headerlink" title="—React"></a>—React</h1><h2 id="React生命周期有哪些不同阶段？每个阶段对应的方法是？"><a href="#React生命周期有哪些不同阶段？每个阶段对应的方法是？" class="headerlink" title="React生命周期有哪些不同阶段？每个阶段对应的方法是？"></a>React生命周期有哪些不同阶段？每个阶段对应的方法是？</h2><h3 id="创建阶段"><a href="#创建阶段" class="headerlink" title="创建阶段"></a>创建阶段</h3><blockquote><p>constructor ES6中新增的实例过程中自动调用的方法，在方法内部通过super关键字获取来自父组件props在该方法中，通常的操作为初始化state状态或者在this上挂载方法</p><p>getDerivedStateFromProps 是一个静态的方法 不能访问到组件的实例 在组件创建和更新阶段，不论是props变化还是state变化都会调用</p><p>componentWillMount<br>componentDidmount 组件挂载到真实DOM节点后执行<br>render 唯一一个类组件必须调用的方法，用来生成react元素</p></blockquote><h3 id="更新阶段"><a href="#更新阶段" class="headerlink" title="更新阶段"></a>更新阶段</h3><blockquote><p>getDerivedStateFromProps<br>shouldCompoentUpdate  当组件本身基于props和state是否需要重新渲染组件 默认返回true 返回fals阻止渲染<br>render<br>getSnapshitBeforUpdate 在render之后执行 执行之时DOM元素还没有被更新 用来获取组件更新前的一信息<br>componentWillupdate<br>componentDIdUpdate 更新结束后触发</p></blockquote><h3 id="卸载阶段"><a href="#卸载阶段" class="headerlink" title="卸载阶段"></a>卸载阶段</h3><blockquote><p>componentWillUnmount 组件卸载前 清理一些注册或监听事件 或者取消订阅的网络请求等一旦一个组件实例被卸载 其不会被再次挂载 只能重新创建</p></blockquote><h2 id="如何避免生命周期中的坑"><a href="#如何避免生命周期中的坑" class="headerlink" title="如何避免生命周期中的坑"></a>如何避免生命周期中的坑</h2><p>需要做好两件事情<br>1.不在恰当的时候调用了不该调用的代码<br>2.在需要调用时，不要忘了调用</p><h3 id="那么主要有这么-7-种情况容易造成生命周期的坑"><a href="#那么主要有这么-7-种情况容易造成生命周期的坑" class="headerlink" title="那么主要有这么 7 种情况容易造成生命周期的坑"></a>那么主要有这么 7 种情况容易造成生命周期的坑</h3><p>1.getDerivedStateFromProps 容易编写反模式代码，使受控组件与非受控组件区分模糊<br>componentWillMount 在 React 中已被标记弃用，不推荐使用，主要原因是新的异步渲染架构会导致它被多次调用。所以网络请求及事件绑定代码应移至 componentDidMount 中。</p><p>2.componentWillReceiveProps 同样被标记弃用，被 getDerivedStateFromProps 所取代，主要原因是性能问题</p><p>3.shouldComponentUpdate 通过返回 true 或者 false 来确定是否需要触发新的渲染。主要用于性能优化</p><p>4.componentWillUpdate 同样是由于新的异步渲染机制，而被标记废弃，不推荐使用，原先的逻辑可结合</p><p>5.getSnapshotBeforeUpdate 与 componentDidUpdate 改造使用。</p><p>6.如果在 componentWillUnmount 函数中忘记解除事件绑定，取消定时器等清理操作，容易引发 bug</p><p>7.如果没有添加错误边界处理，当渲染发生异常时，用户将会看到一个无法操作的白屏，所以一定要添加</p><h2 id="“React-的请求应该放在哪里，为什么-”"><a href="#“React-的请求应该放在哪里，为什么-”" class="headerlink" title="“React 的请求应该放在哪里，为什么?”"></a>“React 的请求应该放在哪里，为什么?”</h2><p>对于异步请求，应该放在 componentDidMount 中去操作。从时间顺序来看，除了 componentDidMount 还可以有以下选择：<br>    1.constructor：可以放，但从设计上而言不推荐。constructor 主要用于初始化 state 与函数绑定，并不承载业务逻辑。而且随着类属性的流行，constructor 已经很少使用了<br>    2.componentWillMount：已被标记废弃，在新的异步渲染架构下会触发多次渲染，容易引发 Bug，不利于未来 React 升级后的代码维护。<br>    所以React 的请求放在 componentDidMount 里是最好的选择。</p>]]></content>
-    
-    
-    <summary type="html">React生命周期详解</summary>
-    
-    
-    
-    <category term="React" scheme="http://example.com/categories/React/"/>
-    
-    
-    <category term="-生命周期" scheme="http://example.com/tags/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
-    
-    <category term="-React" scheme="http://example.com/tags/React/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>垃圾回收机制</title>
-    <link href="http://example.com/2020/05/19/JavaScript/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/"/>
-    <id>http://example.com/2020/05/19/JavaScript/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/</id>
-    <published>2020-05-19T09:03:26.000Z</published>
-    <updated>2022-08-12T03:54:10.730Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="垃圾回收的概念"><a href="#垃圾回收的概念" class="headerlink" title="垃圾回收的概念"></a>垃圾回收的概念</h3><blockquote><p>垃圾回收：JavaScript代码运行时，需要分配内存空间来存储变量和值。当变量不在参与运行时，就需要系统收回被占用的内存空间，这就是垃圾回收。</p></blockquote><h4 id="回收机制"><a href="#回收机制" class="headerlink" title="回收机制"></a>回收机制</h4><ul><li><ol><li>JavaScript具有自动垃圾回收机制，会定期对那些不在使用的变量、对象所占用的内存进行释放，原理就是找到不在使用的变量，然后释放掉其占用的内存。</li></ol></li><li><ol start="2"><li>JavaScript中存在两种变量：局部变量和全局变量。全局变量的生命周期会持续到页面卸载；而局部变量声明在函数中，他的声明周期从函数执行开始，直到函数执行结束。在这个过程中，局部变量会在堆或栈中存储它们的值，当函数执行结束后，这些局部变量不再被使用，它们所占有的空间就会被释放。</li></ol></li><li><ol start="3"><li>不过，当局部变量被外部函数使用时，其中一种情况就是闭包，在函数执行结束后，函数外部的变量依然指向函数内部的局部变量，此时局部变量依然在被使用，所以不会回收。</li></ol></li></ul><h3 id="垃圾回收的方式"><a href="#垃圾回收的方式" class="headerlink" title="垃圾回收的方式"></a>垃圾回收的方式</h3><blockquote><p>现在浏览器通常使用的垃圾回收方法有两种：标记清除和引用计数。</p></blockquote><h4 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h4><ul><li>标记清除是浏览器常见的垃圾回收机制，当变量进入执行环境时，就标记这个变量“进入环境”，被标记为“进入环境”的变量是不能被回收的，因为他们正在被使用。当变量离开环境时，就会被标记为“离开环境”，被标记为“离开环境”的变量会被内存释放</li><li>垃圾收集器在运行的时候会给存储在内存中的所有变量都加上标记。然后，它会去掉环境中的变量以及被环境中的变量引用的标记。而在此之后再被加上标记的变量将被是为准备删除的变量，原因是环境中的变量已经无法访问到这些变量了。最后，垃圾收集完成内存清除工作，销毁那些带有标记的值，并回收他们所占用的内存空间。</li></ul><h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><ul><li>另外一种垃圾回收机制就是引用计数，这个用的相对较少。引用计数就是跟踪记录每个值被引用的次数。当声明了一个变量并将一个引用类型赋值给该变量时，则这个值的引用次数就是1。相反，如果包含对这个值引用的变量又取得了另外一个值，则这个值的引用次数就减1。当这个引用次数为0时，说明这个变量已经没有价值，因此在在机回收期下次再运行时，这个变量所占有的内存空间就会被释放出来。</li></ul><h3 id="减少垃圾回收"><a href="#减少垃圾回收" class="headerlink" title="减少垃圾回收"></a>减少垃圾回收</h3><blockquote><p>虽然浏览器可以进行垃圾自动回收，但是当代码比较复杂时，垃圾回收所带来的代价比较大，所以应该尽量减少垃圾回收。</p></blockquote><h4 id="对数组进行优化"><a href="#对数组进行优化" class="headerlink" title="对数组进行优化"></a>对数组进行优化</h4><p>在清空一个数组时，最简单的方法就是给其赋值为[]，但是与此同时会创建一个新的空对象，可以将数组的长度设置为0，以此来达到清空数组的目的。</p><h4 id="对object进行优化"><a href="#对object进行优化" class="headerlink" title="对object进行优化"></a>对object进行优化</h4><p>对象尽量复用，对于不再使用的对象，就将其设置为null，尽快被回收。</p><h4 id="对函数进行优化"><a href="#对函数进行优化" class="headerlink" title="对函数进行优化"></a>对函数进行优化</h4><p>在循环的函数表达式，如果可以复用，尽量放在函数的外面</p>]]></content>
-    
-    
-    <summary type="html">垃圾回收机制</summary>
-    
-    
-    
-    <category term="JavaScript" scheme="http://example.com/categories/JavaScript/"/>
-    
-    
-    <category term="-JavaScript" scheme="http://example.com/tags/JavaScript/"/>
     
   </entry>
   
