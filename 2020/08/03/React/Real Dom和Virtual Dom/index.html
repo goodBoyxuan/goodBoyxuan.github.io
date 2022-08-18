@@ -28,11 +28,14 @@
 <meta property="og:site_name" content="你又来看我啦">
 <meta property="og:description" content="说说 Real DOM 和 Virtual DOM 的区别？优缺点？">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://static.vue-js.com/fc7ba8d0-d302-11eb-85f6-6fac77c0c9b3.png">
+<meta property="og:image" content="https://static.vue-js.com/1716b9a0-d303-11eb-ab90-d9ae814b240d.png">
 <meta property="article:published_time" content="2020-08-03T02:19:21.000Z">
-<meta property="article:modified_time" content="2022-08-16T06:37:55.820Z">
+<meta property="article:modified_time" content="2022-08-16T07:31:35.209Z">
 <meta property="article:author" content="知非">
 <meta property="article:tag" content="-React">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://static.vue-js.com/fc7ba8d0-d302-11eb-85f6-6fac77c0c9b3.png">
   
   
 
@@ -73,11 +76,16 @@
 <div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
 <nav class="menu dis-select"></nav></header>
 
-<div class="widgets"></div>
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">是什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Real-DOM"><span class="toc-text">Real DOM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Virtual-Dom"><span class="toc-text">Virtual Dom</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">三、优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9C%9F%E5%AE%9E-DOM-%E7%9A%84%E4%BC%98%E5%8A%BF%EF%BC%9A"><span class="toc-text">真实 DOM 的优势：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="toc-text">缺点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%99%9A%E6%8B%9F-DOM-%E7%9A%84%E4%BC%98%E5%8A%BF%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-text">使用虚拟 DOM 的优势如下：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9%EF%BC%9A-1"><span class="toc-text">缺点：</span></a></li></ol></li></ol></li></ol></div></div></div>
+
+
+</div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
 
       
@@ -87,6 +95,42 @@
 
 <article class='content md post'>
 <h1 class="article-title"><span>说说 Real DOM 和 Virtual DOM 的区别？优缺点？</span></h1>
+<h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><h3 id="Real-DOM"><a href="#Real-DOM" class="headerlink" title="Real DOM"></a>Real DOM</h3><blockquote>
+<p>真是Dom,意思为文档对象模型，是一个结构化文本的抽象，在页面渲染出的每一个节点都是一个真是DOM结构，如下<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://static.vue-js.com/fc7ba8d0-d302-11eb-85f6-6fac77c0c9b3.png"></p>
+</blockquote>
+<h3 id="Virtual-Dom"><a href="#Virtual-Dom" class="headerlink" title="Virtual Dom"></a>Virtual Dom</h3><blockquote>
+<p>本质上是义JavaScript形象存在的对DOM的描述<br>创建虚拟Dom目的就是为了更好将虚拟的节点渲染到页面视图中，虚拟Dom兑现的节点与真是DOM的属性一一照应<br>在React中，JSX是其一大特性，可以让你在JS中通过使用XML的方式直接声明界面的Dom结构</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 创建 h1 标签，右边千万不能加引号</span><br><span class="line">const vDom = &lt;h1&gt;Hello World&lt;/h1&gt;; </span><br><span class="line">// 找到 &lt;div id=&quot;root&quot;&gt;&lt;/div&gt; 节点</span><br><span class="line">const root = document.getElementById(&quot;root&quot;); </span><br><span class="line">// 把创建的 h1 标签渲染到 root 节点上</span><br><span class="line">ReactDOM.render(vDom, root); </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述中，ReactDOM.render() 用于将你创建好的虚拟 DOM 节点插入到某个真实节点上，并渲染到页面上<br>JSX 实际是一种语法糖，在使用过程中会被 babel 进行编译转化成 JS 代码，上述 VDOM 转化为如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const vDom = React.createElement(</span><br><span class="line">  &#x27;h1&#x27;，</span><br><span class="line">  &#123; className: &#x27;hClass&#x27;, id: &#x27;hId&#x27; &#125;,</span><br><span class="line">  &#x27;hello world&#x27;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>可以看到，JSX 就是为了简化直接调用 <strong>React.createElement()</strong> 方法：</p>
+<ul>
+<li>第一个参数是标签名，例如 h1、span、table…</li>
+<li>第二个参数是个对象，里面存着标签的一些属性，例如 id、class 等</li>
+<li>第三个参数是节点中的文本<br>通过 console.log(VDOM)，则能够得到虚拟 VDOM 消息<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://static.vue-js.com/1716b9a0-d303-11eb-ab90-d9ae814b240d.png"><blockquote>
+<p>所以可以得到，JSX 通过 babel 的方式转化成 React.createElement 执行，返回值是一个对象，也就是虚拟 DOM</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>两者的区别如下：</p>
+<ul>
+<li>虚拟 DOM 不会进行排版与重绘操作，而真实 DOM 会频繁重排与重绘</li>
+<li>虚拟 DOM 的总损耗是“虚拟 DOM 增删改+真实 DOM 差异增删改+排版与重绘”，真实 DOM 的总损耗是“真实 DOM 完全增删改+排版与重绘”</li>
+</ul>
+<p>传统的原生 api 或 jQuery 去操作 DOM 时，浏览器会从构建 DOM 树开始从头到尾执行一遍流程</p>
+<p>当你在一次操作时，需要更新 10 个 DOM 节点，浏览器没这么智能，收到第一个更新 DOM 请求后，并不知道后续还有 9 次更新操作，因此会马上执行流程，最终执行 10 次流程</p>
+<p>而通过 VNode，同样更新 10 个 DOM 节点，虚拟 DOM 不会立即操作 DOM，而是将这 10 次更新的 diff 内容保存到本地的一个 js 对象中，最终将这个 js 对象一次性 attach 到 DOM 树上，避免大量的无谓计算</p>
+<h3 id="三、优缺点"><a href="#三、优缺点" class="headerlink" title="三、优缺点"></a>三、优缺点</h3><h4 id="真实-DOM-的优势："><a href="#真实-DOM-的优势：" class="headerlink" title="真实 DOM 的优势："></a>真实 DOM 的优势：</h4><p>易用</p>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><p>效率低，解析速度慢，内存占用量过高<br>性能差：频繁操作真实 DOM，易于导致重绘与回流</p>
+<h4 id="使用虚拟-DOM-的优势如下："><a href="#使用虚拟-DOM-的优势如下：" class="headerlink" title="使用虚拟 DOM 的优势如下："></a>使用虚拟 DOM 的优势如下：</h4><blockquote>
+<p>简单方便：如果使用手动操作真实 DOM 来完成页面，繁琐又容易出错，在大规模应用下维护起来也很困难<br>性能方面：使用 Virtual DOM，能够有效避免真实 DOM 数频繁更新，减少多次引起重绘与回流，提高性能<br>跨平台：React 借助虚拟 DOM，带来了跨平台的能力，一套代码多端运行</p>
+</blockquote>
+<h4 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h4><blockquote>
+<p>在一些性能要求极高的应用中虚拟 DOM 无法进行针对性的极致优化<br>首次渲染大量 DOM 时，由于多了一层虚拟 DOM 的计算，速度比正常稍慢</p>
+</blockquote>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
@@ -94,7 +138,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2020/07/29/React/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">React生命周期<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2020/09/09/JavaScript/Webpack%E7%AE%80%E4%BB%8B/">webpack的打包原理<span class="note">较新</span></a></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2020/07/29/React/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">React生命周期<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2020/08/11/React/setState%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6/">setState执行机制<span class="note">较新</span></a></section></div>
 
 
 

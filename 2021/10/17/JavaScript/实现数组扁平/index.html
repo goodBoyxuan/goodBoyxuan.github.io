@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>实现数组扁平化 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="实现数组扁平化的六种方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现数组扁平化">
+<meta property="og:url" content="http://example.com/2021/10/17/JavaScript/%E5%AE%9E%E7%8E%B0%E6%95%B0%E7%BB%84%E6%89%81%E5%B9%B3/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="实现数组扁平化的六种方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s.poetries.work/images/20210414170438.png">
+<meta property="article:published_time" content="2021-10-17T03:23:20.000Z">
+<meta property="article:modified_time" content="2022-08-18T01:40:26.547Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s.poetries.work/images/20210414170438.png">
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="你又来看我啦" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E6%99%AE%E9%80%9A%E7%9A%84%E9%80%92%E5%BD%92%E5%AE%9E"><span class="toc-text">1. 方法一：普通的递归实</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%88%A9%E7%94%A8-reduce-%E5%87%BD%E6%95%B0%E8%BF%AD%E4%BB%A3"><span class="toc-text">2. 方法二：利用 reduce 函数迭代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%96%B9%E6%B3%95%E4%B8%89%EF%BC%9A%E6%89%A9%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6%E5%AE%9E%E7%8E%B0"><span class="toc-text">3. 方法三：扩展运算符实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%96%B9%E6%B3%95%E5%9B%9B%EF%BC%9Asplit-%E5%92%8C-toString-%E5%85%B1%E5%90%8C%E5%A4%84%E7%90%86"><span class="toc-text">4. 方法四：split 和 toString 共同处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%96%B9%E6%B3%95%E4%BA%94%EF%BC%9A%E8%B0%83%E7%94%A8-ES6-%E4%B8%AD%E7%9A%84-flat"><span class="toc-text">5. 方法五：调用 ES6 中的 flat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%96%B9%E6%B3%95%E5%85%AD%EF%BC%9A%E6%AD%A3%E5%88%99%E5%92%8C-JSON-%E6%96%B9%E6%B3%95%E5%85%B1%E5%90%8C%E5%A4%84%E7%90%86"><span class="toc-text">6. 方法六：正则和 JSON 方法共同处理</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/JavaScript/">JavaScript</a></div><div id="post-meta">发布于&nbsp;<time datetime="2021-10-17T03:23:20.000Z">2021-10-17</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>实现数组扁平化</span></h1>
+<h3 id="1-方法一：普通的递归实"><a href="#1-方法一：普通的递归实" class="headerlink" title="1. 方法一：普通的递归实"></a>1. 方法一：普通的递归实</h3><blockquote>
+<p>普通的递归思路很容易理解，就是通过循环递归的方式，一项一项地去遍历，如果每一项还是一个数组，那么就继续往下遍历，利用递归程序的方法，来实现数组的每一项的连接。我们来看下这个方法是如何实现的，如下所示</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 方法1</span><br><span class="line">var a = [1, [2, [3, 4, 5]]];</span><br><span class="line">function flatten(arr) &#123;</span><br><span class="line">  let result = [];</span><br><span class="line"></span><br><span class="line">  for(let i = 0; i &lt; arr.length; i++) &#123;</span><br><span class="line">    if(Array.isArray(arr[i])) &#123;</span><br><span class="line">      result = result.concat(flatten(arr[i]));</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      result.push(arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line">flatten(a);  //  [1, 2, 3, 4，5]</span><br></pre></td></tr></table></figure>
+<p>从上面这段代码可以看出，最后返回的结果是扁平化的结果，这段代码核心就是循环遍历过程中的递归操作，就是在遍历过程中发现数组元素还是数组的时候进行递归操作，把数组的结果通过数组的 concat 方法拼接到最后要返回的 result 数组上，那么最后输出的结果就是扁平化后的数组</p>
+<h3 id="2-方法二：利用-reduce-函数迭代"><a href="#2-方法二：利用-reduce-函数迭代" class="headerlink" title="2. 方法二：利用 reduce 函数迭代"></a>2. 方法二：利用 reduce 函数迭代</h3><blockquote>
+<p>从上面普通的递归函数中可以看出，其实就是对数组的每一项进行处理，那么我们其实也可以用 reduce 来实现数组的拼接，从而简化第一种方法的代码，改造后的代码如下所示。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 方法2</span><br><span class="line">var arr = [1, [2, [3, 4]]];</span><br><span class="line">function flatten(arr) &#123;</span><br><span class="line">    return arr.reduce(function(prev, next)&#123;</span><br><span class="line">        return prev.concat(Array.isArray(next) ? flatten(next) : next)</span><br><span class="line">    &#125;, [])</span><br><span class="line">&#125;</span><br><span class="line">console.log(flatten(arr));//  [1, 2, 3, 4，5]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-方法三：扩展运算符实现"><a href="#3-方法三：扩展运算符实现" class="headerlink" title="3. 方法三：扩展运算符实现"></a>3. 方法三：扩展运算符实现</h3><blockquote>
+<p>这个方法的实现，采用了扩展运算符和 some 的方法，两者共同使用，达到数组扁平化的目的，还是来看一下代码</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 方法3</span><br><span class="line">var arr = [1, [2, [3, 4]]];</span><br><span class="line">function flatten(arr) &#123;</span><br><span class="line">    while (arr.some(item =&gt; Array.isArray(item))) &#123;</span><br><span class="line">        arr = [].concat(...arr);</span><br><span class="line">    &#125;</span><br><span class="line">    return arr;</span><br><span class="line">&#125;</span><br><span class="line">console.log(flatten(arr)); //  [1, 2, 3, 4，5]</span><br></pre></td></tr></table></figure>
+<p>从执行的结果中可以发现，我们先用数组的 some 方法把数组中仍然是组数的项过滤出来，然后执行 concat 操作，利用 ES6 的展开运算符，将其拼接到原数组中，最后返回原数组，达到了预期的效果。</p>
+<p>前三种实现数组扁平化的方式其实是最基本的思路，都是通过最普通递归思路衍生的方法，尤其是前两种实现方法比较类似。值得注意的是 reduce 方法，它可以在很多应用场景中实现，由于 reduce 这个方法提供的几个参数比较灵活，能解决很多问题，所以是值得熟练使用并且精通的</p>
+<h3 id="4-方法四：split-和-toString-共同处理"><a href="#4-方法四：split-和-toString-共同处理" class="headerlink" title="4. 方法四：split 和 toString 共同处理"></a>4. 方法四：split 和 toString 共同处理</h3><p>我们也可以通过 split 和 toString 两个方法，来共同实现数组扁平化，由于数组会默认带一个 toString 的方法，所以可以把数组直接转换成逗号分隔的字符串，然后再用 split 方法把字符串重新转换为数组，如下面的代码所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 方法4</span><br><span class="line">var arr = [1, [2, [3, 4]]];</span><br><span class="line">function flatten(arr) &#123;</span><br><span class="line">    return arr.toString().split(&#x27;,&#x27;);</span><br><span class="line">&#125;</span><br><span class="line">console.log(flatten(arr)); //  [1, 2, 3, 4]</span><br></pre></td></tr></table></figure>
+<p>通过这两个方法可以将多维数组直接转换成逗号连接的字符串，然后再重新分隔成数组，你可以在控制台执行一下查看结果。</p>
+<h3 id="5-方法五：调用-ES6-中的-flat"><a href="#5-方法五：调用-ES6-中的-flat" class="headerlink" title="5. 方法五：调用 ES6 中的 flat"></a>5. 方法五：调用 ES6 中的 flat</h3><blockquote>
+<p>我们还可以直接调用 ES6 中的 flat 方法，可以直接实现数组扁平化。先来看下 flat 方法的语法：<br>arr.flat([depth])<br>其中 depth 是 flat 的参数，depth 是可以传递数组的展开深度（默认不填、数值是 1），即展开一层数组。那么如果多层的该怎么处理呢？参数也可以传进 Infinity，代表不论多少层都要展开。那么我们来看下，用 flat 方法怎么实现，请看下面的代码。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 方法5</span><br><span class="line">var arr = [1, [2, [3, 4]]];</span><br><span class="line">function flatten(arr) &#123;</span><br><span class="line">  return arr.flat(Infinity);</span><br><span class="line">&#125;</span><br><span class="line">console.log(flatten(arr)); //  [1, 2, 3, 4，5]</span><br></pre></td></tr></table></figure>
+<p>可以看出，一个嵌套了两层的数组，通过将 flat 方法的参数设置为 Infinity，达到了我们预期的效果。其实同样也可以设置成 2，也能实现这样的效果。<br>因此，你在编程过程中，发现对数组的嵌套层数不确定的时候，最好直接使用 Infinity，可以达到扁平化。下面我们再来看最后一种场景</p>
+<h3 id="6-方法六：正则和-JSON-方法共同处理"><a href="#6-方法六：正则和-JSON-方法共同处理" class="headerlink" title="6. 方法六：正则和 JSON 方法共同处理"></a>6. 方法六：正则和 JSON 方法共同处理</h3><blockquote>
+<p>我们在第四种方法中已经尝试了用 toString 方法，其中仍然采用了将 JSON.stringify 的方法先转换为字符串，然后通过正则表达式过滤掉字符串中的数组的方括号，最后再利用 JSON.parse 把它转换成数组。请看下面的代码</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 方法 6</span><br><span class="line">let arr = [1, [2, [3, [4, 5]]], 6];</span><br><span class="line">function flatten(arr) &#123;</span><br><span class="line">  let str = JSON.stringify(arr);</span><br><span class="line">  str = str.replace(/(\[|\])/g, &#x27;&#x27;);</span><br><span class="line">  str = &#x27;[&#x27; + str + &#x27;]&#x27;;</span><br><span class="line">  return JSON.parse(str); </span><br><span class="line">&#125;</span><br><span class="line">console.log(flatten(arr)); //  [1, 2, 3, 4，5]</span><br></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s.poetries.work/images/20210414170438.png"> </p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/08/13/Html/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB/">图片懒加载和预加载的区别<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2021/10/17/%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E7%9A%84%E4%BC%98%E5%8C%96/">前端的优化<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
