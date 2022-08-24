@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>前端性能优化指标 - 你又来看我啦</title>
+
+  
+    <meta name="description" content="浅析前端性能优化指标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端性能优化指标">
+<meta property="og:url" content="http://example.com/2021/09/13/%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8C%87%E6%A0%87/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="浅析前端性能优化指标">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-13T02:01:23.000Z">
+<meta property="article:modified_time" content="2022-08-22T09:19:33.470Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-前端">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="你又来看我啦" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%8C%87%E6%A0%87"><span class="toc-text">优化指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E5%B7%A5%E5%85%B7"><span class="toc-text">性能工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E6%96%B9%E6%A1%88"><span class="toc-text">优化实践方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E8%A7%92%E5%BA%A6"><span class="toc-text">时间角度</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%80%97%E6%97%B6%E4%BC%98%E5%8C%96%E7%9A%84%E7%9D%80%E6%89%8B%E7%82%B9%EF%BC%9A"><span class="toc-text">耗时优化的着手点：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E4%BC%98%E5%8C%96"><span class="toc-text">网络请求优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E5%B1%8F%E5%8A%A0%E8%BD%BD%E4%BC%98%E5%8C%96"><span class="toc-text">首屏加载优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B%E4%BC%98%E5%8C%96"><span class="toc-text">渲染过程优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97-x2F-%E9%80%BB%E8%BE%91%E8%BF%90%E8%A1%8C%E6%8F%90%E9%80%9F"><span class="toc-text">计算&#x2F;逻辑运行提速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E8%A7%92%E5%BA%A6"><span class="toc-text">空间角度</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></div><div id="post-meta">发布于&nbsp;<time datetime="2021-09-13T02:01:23.000Z">2021-09-13</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>前端性能优化指标</span></h1>
+<blockquote>
+<p>随着业务的不断迭代，项目日渐壮大，为了给用户提供更优的体验，性能优化是前端开发避不开的话题</p>
+</blockquote>
+<p><strong>性能优化的本质</strong> ：在用户输入url到站点完整把整个页面展示出来的过程中，通过各种优化策略和方法，让页面加载更快；在用户使用过程中，让用户的操作响应更及时，有更好的用户体验。主要是从浏览器的加载和渲染两方面入手。</p>
+<h3 id="优化指标"><a href="#优化指标" class="headerlink" title="优化指标"></a>优化指标</h3><ul>
+<li><p>First Paint 首次绘制（FP）这个指标用于记录页面第一次绘制像素的时间，如显示页面背景色。FP不包含默认背景绘制，但包含非默认的背景绘制。</p>
+</li>
+<li><p>First contentful paint 首次内容绘制 (FCP)<br>LCP是指页面开始加载到最大文本块内容或图片显示在页面中的时间。如果 FP 及 FCP 两指标在 2 秒内完成的话我们的页面就算体验优秀。</p>
+</li>
+<li><p>Largest contentful paint 最大内容绘制 (LCP)<br>用于记录视窗内最大的元素绘制的时间，该时间会随着页面渲染变化而变化，因为页面中的最大元素在渲染过程中可能会发生改变，另外该指标会在用户第一次交互后停止记录。官方推荐的时间区间，在 2.5 秒内表示体验优秀</p>
+</li>
+<li><p>First input delay 首次输入延迟 (FID)<br>首次输入延迟，FID（First Input Delay），记录在 FCP 和 TTI 之间用户首次与页面交互时响应的延迟。<br>Time to Interactive 可交互时间 (TTI)<br>首次可交互时间，TTI（Time to Interactive）。这个指标计算过程略微复杂，它需要满足以下几个条件：<br>从 FCP 指标后开始计算<br>持续 5 秒内无长任务（执行时间超过 50 ms）且无两个以上正在进行中的 GET 请求<br>往前回溯至 5 秒前的最后一个长任务结束的时间<br>对于用户交互（比如点击事件），推荐的响应时间是 100ms 以内。那么为了达成这个目标，推荐在空闲时间里执行任务不超过 50ms（ W3C 也有这样的标准规定），这样能在用户无感知的情况下响应用户的交互，否则就会造成延迟感。</p>
+</li>
+<li><p>Total blocking time 总阻塞时间 (TBT)<br>阻塞总时间，TBT（Total Blocking Time），记录在 FCP 到 TTI 之间所有长任务的阻塞时间总和。</p>
+</li>
+<li><p>Cumulative layout shift 累积布局偏移 (CLS)<br>累计位移偏移，CLS（Cumulative Layout Shift），记录了页面上非预期的位移波动。页面渲染过程中突然插入一张巨大的图片或者说点击了某个按钮突然动态插入了一块内容等等相当影响用户体验的网站。这个指标就是为这种情况而生的，计算方式为：位移影响的面积 * 位移距离。</p>
+</li>
+</ul>
+<h3 id="性能工具"><a href="#性能工具" class="headerlink" title="性能工具"></a>性能工具</h3><p>调试工具和Web API的使用参考：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6911472693405548557#heading-21">https://juejin.cn/post/6911472693405548557#heading-21</a><br>工具列表：</p>
+<ul>
+<li>Lighthouse</li>
+<li>PageSpeed Insights</li>
+<li>Chrome DevTools</li>
+<li>Search Console (Core Web Vitals report)</li>
+<li>web.dev’s提供的测量工具</li>
+<li>web-vitals 扩展</li>
+<li>Chrome User Experience Report</li>
+</ul>
+<blockquote>
+<ul>
+<li>我们已经知道了有哪些工具，那么这些工具怎么使用呢？</li>
+<li>首先我们可以使用Lighthouse，在本地进行测量，根据报告给出的一些建议进行优化；</li>
+<li>发布之后，我们可以使用PageSpeed Insights去看下线上的性能情况；</li>
+<li>接着，我们可以使用Chrome User Experience Report API去捞取线上过去28天的数据；</li>
+<li>发现数据有异常，我们可以使用DevTools工具进行具体代码定位分析；</li>
+<li>使用Search Console’s Core Web Vitals report查看网站功能整体情况；</li>
+<li>使用Web Vitals扩展方便的看页面核心指标情况；</li>
+</ul>
+</blockquote>
+<h3 id="优化实践方案"><a href="#优化实践方案" class="headerlink" title="优化实践方案"></a>优化实践方案</h3><blockquote>
+<p>对于前端应用来说，网络耗时、页面加载耗时、脚本执行耗时、渲染耗时等耗时情况会影响用户的等待时长，而 CPU<br>占用、内存占用、本地缓存占用等则可能会导致页面卡顿甚至卡死。<br>因此，性能优化可以分别从耗时和资源占用两方面来解决，也可以理解成时间和空间两个方面。</p>
+</blockquote>
+<h3 id="时间角度"><a href="#时间角度" class="headerlink" title="时间角度"></a>时间角度</h3><p>在时间角度进行优化主要是减少耗时，浏览器在页面加载的过程中，主要会进行以下的步骤：</p>
+<ul>
+<li>网络请求相关（发起 HTTP 请求从服务端获取页面资源，包括 HTML&#x2F;CSS&#x2F;JS&#x2F;图片资源等）</li>
+<li>浏览器解析 HTML 和渲染页面</li>
+<li>加载 Javascript 代码时会暂停页面渲染（包括解析到外部资源，会发起 HTTP 请求获取并加载）</li>
+</ul>
+<h4 id="耗时优化的着手点："><a href="#耗时优化的着手点：" class="headerlink" title="耗时优化的着手点："></a>耗时优化的着手点：</h4><ul>
+<li>网络请求优化</li>
+<li>首屏加载优化</li>
+<li>渲染过程优化</li>
+<li>计算&#x2F;逻辑运行提速</li>
+</ul>
+<h3 id="网络请求优化"><a href="#网络请求优化" class="headerlink" title="网络请求优化"></a>网络请求优化</h3><blockquote>
+<p>目标在于减少网络资源的请求和加载耗时，如果考虑 HTTP 请求过程，显然我们可以从几个角度来进行优化：</p>
+</blockquote>
+<ul>
+<li>请求链路：DNS 查询、部署 CDN 节点、缓存等</li>
+<li>数据大小：代码大小、图片资源等<blockquote>
+<p>对于请求链路，核心的方案常常包括使用缓存，比如 DNS 缓存、CDN 缓存、HTTP 缓存、后台缓存等等，前端的话还可以考虑使用<br>Service Worker、PWA等技术。使用缓存并非万能药，很多使用由于缓存的存在，我们在功能更新修复的时候还需要考虑缓存的情况。除此之外，还可以考虑使用<br>HTTP&#x2F;2、HTTP&#x2F;3 等提升资源请求速度，以及对多个请求进行合并，减少通信次数；对请求进行域名拆分，提升并发请求数量。<br>数据大小则主要考对请求资源进行合理的拆分（CSS、Javascript 脚本、图片&#x2F;音频&#x2F;视频等）和压缩，减少请求资源的体积，比如使用<br>Tree-shaking、代码分割、移除用不上的依赖项等。<br>在请求资源返回后，浏览器会进行解析和加载，这个过程会影响页面的可见时间，通过对首屏加载的优化，可有效地提升用户体验。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="首屏加载优化"><a href="#首屏加载优化" class="headerlink" title="首屏加载优化"></a>首屏加载优化</h3><p>首屏加载优化核心点在于两部分：</p>
+<ul>
+<li>将页面内容尽快地展示给用户，减少页面白屏时间。</li>
+<li>将用户可操作的时间尽量提前，避免用户无法操作的卡顿体验。<blockquote>
+<p>整体的优化思路包括：尽可能提前页面可见，以及将用户可交互的时间提前。一般来说，我们需要尽可能地降低首屏需要的代码量和执行耗时，可以通过以下方式进行：</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>对页面的内容进行分片&#x2F;分屏加载</li>
+<li>仅加载需要的资源，通过异步或是懒加载的方式加载剩余资源</li>
+<li>使用骨架屏进行预渲染</li>
+<li>使用差异化服务，比如读写分离，对于不同场景按需加载所需要的模块</li>
+<li>使用服务端直出渲染，减少页面二次请求和渲染的耗时</li>
+<li>有些时候，我们的页面也需要在客户端进行展示，此时可充分利用客户端的优势：</li>
+<li>配合客户端进行资源预请求和预加载，比如使用预热 Web 容器</li>
+<li>配合客户端将资源和数据进行离线，可用于下一次页面的快速渲染</li>
+<li>使用秒看技术，通过生成预览图片的方式提前将页面内容提供给用户<br>除了首屏渲染以外，用户在浏览器页面过程中，也会触发页面的二次运算和渲染，此时需要进行渲染过程的优化。</li>
+</ul>
+</blockquote>
+<h3 id="渲染过程优化"><a href="#渲染过程优化" class="headerlink" title="渲染过程优化"></a>渲染过程优化</h3><p>渲染过程的优化可以理解成首屏加载完成后，用户的操作交互触发的二次渲染。</p>
+<blockquote>
+<p>主要思路是减少用户的操作等待时间，以及通过将页面渲染帧率保持在 60FPS 左右，提升页面交互和渲染的流畅度。包括但不限于以下方案：</p>
+<ul>
+<li>使用资源预加载，提升空闲时间的资源利用率</li>
+<li>减少&#x2F;合并 DOM 操作，减少浏览器渲染过程中的计算耗时</li>
+<li>使用离屏渲染，在页面不可见的地方提前进行渲染（比如 Canvas 离屏渲染）</li>
+<li>通过合理使用浏览器 GPU 能力，提升浏览器渲染效率（比如使用 css transform 代替 Canvas 缩放绘制）<br>以上这些，是对常见的 Web 页面渲染优化方案。对于运算逻辑复杂、计算量较大的业务逻辑，我们还需要进行计算&#x2F;逻辑运行的提速。</li>
+</ul>
+</blockquote>
+<h3 id="计算-x2F-逻辑运行提速"><a href="#计算-x2F-逻辑运行提速" class="headerlink" title="计算&#x2F;逻辑运行提速"></a>计算&#x2F;逻辑运行提速</h3><blockquote>
+<p>计算&#x2F;逻辑运行速度优化的主要思路是“拆大为小、多路并行”，方式包括但不限于：</p>
+<ul>
+<li>通过将 Javscript 大任务进行拆解，结合异步任务的管理，避免出现长时间计算导致页面卡顿的情况</li>
+<li>将耗时长且非关键逻辑的计算拆离，比如使用 Web Worker</li>
+<li>通过使用运行效率更高的方式，减少计算耗时，比如使用 Webassembly</li>
+<li>通过将计算过程提前，减少计算等待时长，比如使用 AOT 技术</li>
+<li>通过使用更优的算法或是存储结构，提升计算效率，比如 VSCode 使用红黑树优化文本缓冲区的计算</li>
+<li>通过将计算结果缓存的方式，减少运算次数</li>
+</ul>
+</blockquote>
+<h3 id="空间角度"><a href="#空间角度" class="headerlink" title="空间角度"></a>空间角度</h3><p>在做性能优化的时候，其实很多情况下会依赖时间换空间、空间换时间等方式，只能根据自己项目的实际情况做出取舍，选择相对合适的一种方案去进行优化。<br>资源占用常见的优化方式包括：</p>
+<ul>
+<li>合理使用缓存，不滥用用户的缓存资源（比如浏览器缓存、IndexDB），及时进行缓存清理</li>
+<li>避免存在内存泄露，比如尽量避免全局变量的使用、及时解除引用等</li>
+<li>避免复杂&#x2F;异常的递归调用，导致调用栈的溢出</li>
+<li>通过使用数据结构享元的方式，减少对象的创建，从而减少内存占用</li>
+</ul>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/08/13/Html/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB/">图片懒加载和预加载的区别<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2021/09/16/%E5%89%8D%E7%AB%AF/%E5%89%8D%E7%AB%AF%E7%9A%84%E4%BC%98%E5%8C%96/">前端的优化<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

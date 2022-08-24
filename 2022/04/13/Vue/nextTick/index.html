@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>Vue中的nextTick - 你又来看我啦</title>
+
+  
+    <meta name="description" content="nextTick的原理和应用场景">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue中的nextTick">
+<meta property="og:url" content="http://example.com/2022/04/13/Vue/nextTick/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="nextTick的原理和应用场景">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-13T11:11:07.000Z">
+<meta property="article:modified_time" content="2022-08-24T13:59:10.456Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-Vue">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="你又来看我啦" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nextTick%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">$nextTick使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%80%BB%E7%BB%93%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF"><span class="toc-text">简单总结事件循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nextTick%E8%A7%A6%E5%8F%91%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-text">nextTick触发的时机</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Vue/">Vue</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-04-13T11:11:07.000Z">2022-04-13</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>Vue中的nextTick</span></h1>
+<p>vm.$nextTick( [callback] )</p>
+<blockquote>
+<p>官方解释：将回调延迟到下次DOM更新循环之后执行。</p>
+</blockquote>
+<p>要理解这句话，首先要了解一下vue的异步更新队列，vue异步执行dom更新。只要观察到数据变化，不会立即更新DOM，vue将开启一个队列，并缓冲在同一事件循环中发生的所有数据改变。</p>
+<p>如果同一个数据被多次改变，只会被推到队列中一次。例如，当你设置vm.someData &#x3D;  ‘new value’,对应的dom更新会被推到一个队列里，该组件不会立即重新渲染，会在当前tick完毕后，在下一个tick中渲染dom。在事件循环中，每进行一次循环操作称为tick。而nextTick函数就是vue提供的一个实例方法，数据更新后等待下一个tick里dom更新完后执行回调，回调的this自动绑定到调用它的实例上。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">html: </span><br><span class="line">&lt;span class=&quot;test&quot;&gt;&#123;&#123;egData&#125;&#125;&lt;/span&gt;</span><br><span class="line">&lt;el-button @click=&quot;changeData&quot;&gt;改变&lt;/el-button&gt;</span><br><span class="line"></span><br><span class="line">js:</span><br><span class="line">new Vue(&#123;</span><br><span class="line">    data () &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            egData: &#x27;old Message&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    methods: &#123;</span><br><span class="line">        changeData () &#123;</span><br><span class="line">          this.egData = &#x27;new Message&#x27;</span><br><span class="line">          console.log($(&#x27;.test&#x27;).html(), &#x27;-----------------------&#x27;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><strong>结果：</strong> </p>
+<ul>
+<li>第一次点击输出 old Message ———————–，</li>
+<li>第二次点击输出 new Message ———————–</li>
+</ul>
+<p>使用$nextTick:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">js:</span><br><span class="line">new Vue(&#123;</span><br><span class="line">    data () &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            egData: &#x27;old Message&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    methods: &#123;</span><br><span class="line">        changeData () &#123;</span><br><span class="line">          this.egData = &#x27;new Message&#x27;</span><br><span class="line">          this.$nextTick(function () &#123;</span><br><span class="line">            console.log($(&#x27;.test&#x27;).html(), &#x27;-----------------------&#x27;)</span><br><span class="line">          &#125;)</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结果：不管第几次点击，都输出 new Message ———————–</p>
+</blockquote>
+<h3 id="nextTick使用场景"><a href="#nextTick使用场景" class="headerlink" title="$nextTick使用场景"></a>$nextTick使用场景</h3><ul>
+<li><p>1、数据更新后想要马上操作新的DOM，需要把操作写在nextTick的回调里</p>
+</li>
+<li><p>2、在created钩子函数里需要操作DOM，也可以把操作写在nextTick的回调里,(created钩子函数里还没有挂载dom，所以直接操作会有问</p>
+</li>
+</ul>
+<blockquote>
+<p>this.$nextTick()将回调延迟到下次DOM更新循环之后执行。在修改数据之后立即使用它，然后等待DOM更新。它跟全局方法Vue.nextTick一样，不同的是回调的this自动绑定到调用它的实例上。</p>
+</blockquote>
+<blockquote>
+<p>nextTick的由来：由于VUE的数据驱动视图更新，是异步的，即修改数据的当下，视图不会立刻更新，而是等同一事件中的所有数据变化完成之后，再统一进行视图更新。</p>
+</blockquote>
+<blockquote>
+<p>nextTick的触发时机：在同一事件循环中的数据变化后，DOM完成更新，立即执行nextTick(callback)内的回调。</p>
+</blockquote>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>需要在视图更新之后，基于新的视图进行操作。</p>
+<blockquote>
+<p>以上出现了事件循环的概念，其涉及到JS的运行机制，包括主线程的执行栈、异步队列、异步API、时间循环的写作。大致可以理解为：主线程完成同步环境执行，查询任务队列，提取队首的任务，放入主线程中执行；执行完毕，再重复该操作，该过程称为事件循环。而主线程的每次读取任务队列操作，是一个事件循环的开始。异步callback不可能处在同一事件循环中。</p>
+</blockquote>
+<h3 id="简单总结事件循环"><a href="#简单总结事件循环" class="headerlink" title="简单总结事件循环"></a>简单总结事件循环</h3><p>同步代码执行→查找异步队列，推入执行栈，执行callback[事件循环1]→查找异步队列，推入执行栈，执行callback2[事件循环2]…</p>
+<p>即每个异步callback，最终都会形成自己独立的一个事件循环。</p>
+<h3 id="nextTick触发的时机"><a href="#nextTick触发的时机" class="headerlink" title="nextTick触发的时机"></a>nextTick触发的时机</h3><p>结合nextTick的由来，可以推出每个事件循环中，nextTick触发的时机：同一事件循环中的代码执行完毕→DOM更新→nextTick callback触发。</p>
+<p>ps:上文中的任务队列、消息队列、异步队列指向同一个东西，均指macrotask queue。</p>
+<p>用法：在下次DOM更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的DOM。</p>
+<p>在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中<br>在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳，所以此处一定要将DOM操作的js代码放进Vue.nextTick()的回调函数中。与之对应的就是mounted()钩子函数，因为该钩子函数执行时所有的DOM挂载和渲染都已完成，此时在该钩子函数中进行任何DOM操作都不会有问题 。</p>
+<p>在数据变化后要执行的某个操作，而这个操作需要使用随数据改变而改变的DOM结构的时候，这个操作都应该放进Vue.nextTick()的回调函数中</p>
+<p>为了在数据变化之后等待 Vue 完成更新 DOM ，可以在数据变化之后立即使用Vue.nextTick(callback) 。这样回调函数在 DOM 更新完成后就会调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;nextTick&lt;/title&gt;</span><br><span class="line">        &lt;script src=&quot;./js/vue.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;div class=&quot;app&quot;&gt;</span><br><span class="line">          &lt;div ref=&quot;msgDiv&quot;&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;</span><br><span class="line">          &lt;div v-if=&quot;msg1&quot;&gt;Message got outside 1 $nextTick: &#123;&#123;msg1&#125;&#125;&lt;/div&gt;</span><br><span class="line">          &lt;div v-if=&quot;msg2&quot;&gt;Message got inside 2 $nextTick: &#123;&#123;msg2&#125;&#125;&lt;/div&gt;</span><br><span class="line">          &lt;div v-if=&quot;msg3&quot;&gt;Message got outside 3 $nextTick: &#123;&#123;msg3&#125;&#125;&lt;/div&gt;</span><br><span class="line">          &lt;button @click=&quot;changeMsg&quot;&gt;</span><br><span class="line">            Change the Message</span><br><span class="line">          &lt;/button&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">        &lt;script&gt;</span><br><span class="line">            new Vue(&#123;</span><br><span class="line">              el: &#x27;.app&#x27;,</span><br><span class="line">              data: &#123;</span><br><span class="line">                msg: &#x27;Hello Vue.&#x27;,</span><br><span class="line">                msg1: &#x27;&#x27;,</span><br><span class="line">                msg2: &#x27;&#x27;,</span><br><span class="line">                msg3: &#x27;&#x27;</span><br><span class="line">              &#125;,</span><br><span class="line">              methods: &#123;</span><br><span class="line">                changeMsg() &#123;</span><br><span class="line">                  this.msg = &quot;Hello world.&quot;</span><br><span class="line">                  this.msg1 = this.$refs.msgDiv.innerHTML</span><br><span class="line">                  this.$nextTick(() =&gt; &#123;</span><br><span class="line">                    this.msg2 = this.$refs.msgDiv.innerHTML</span><br><span class="line">                  &#125;)</span><br><span class="line">                  this.msg3 = this.$refs.msgDiv.innerHTML</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>msg1和msg3显示的内容还是变换之前的，而msg2显示的内容是变换之后的。其根本原因是因为Vue中DOM更新是异步的</p>
+<p>需要注意的是，在 created 和 mounted 阶段，如果需要操作渲染后的试图，也要使用 nextTick 方法。</p>
+<p>官方文档说明：</p>
+<blockquote>
+<p>注意 mounted 不会承诺所有的子组件也都一起被挂载。如果你希望等到整个视图都渲染完毕，可以用 vm.$nextTick 替换掉 mounted</p>
+</blockquote>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2022/04/11/JavaScript/Js%E4%B8%AD%E9%97%AE%E5%8F%B7%E5%92%8C%E9%97%AE%E5%8F%B7%E7%82%B9%E7%9A%84%E5%8C%BA%E5%88%AB/">??和?.的区别<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2022/05/17/JavaScript/%E4%BB%80%E4%B9%88%E6%98%AFEventloop/">Event Loop<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

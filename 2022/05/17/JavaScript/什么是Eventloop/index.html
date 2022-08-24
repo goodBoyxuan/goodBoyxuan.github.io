@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.2.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>Event Loop - 你又来看我啦</title>
+
+  
+    <meta name="description" content="什么是事件循环（Event Loop）？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Event Loop">
+<meta property="og:url" content="http://example.com/2022/05/17/JavaScript/%E4%BB%80%E4%B9%88%E6%98%AFEventloop/index.html">
+<meta property="og:site_name" content="你又来看我啦">
+<meta property="og:description" content="什么是事件循环（Event Loop）？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-17T10:13:26.000Z">
+<meta property="article:modified_time" content="2022-08-24T14:05:17.541Z">
+<meta property="article:author" content="知非">
+<meta property="article:tag" content="-JavaScript">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="你又来看我啦" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
+<nav class="menu dis-select"></nav></header>
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%EF%BC%88Event-Loop%EF%BC%89%EF%BC%9F"><span class="toc-text">什么是事件循环（Event Loop）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9A%E9%A6%96%E5%85%88%E8%A6%81%E6%98%8E%E7%A1%AE%EF%BC%9Ajs%E7%9A%84%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">一：首先要明确：js的执行机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%EF%BC%9A%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="toc-text">二：事件循环的执行过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%EF%BC%9A%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%A0%B9%E6%9C%AC%E5%8C%BA%E5%88%AB"><span class="toc-text">三：宏任务和微任务的根本区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%EF%BC%9A%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E7%9A%84%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-text">四：事件循环的整体流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%EF%BC%9A%E7%BB%8F%E5%85%B8%E6%A1%88%E4%BE%8B"><span class="toc-text">五：经典案例</span></a></li></ol></div></div></div>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/JavaScript/">JavaScript</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-05-17T10:13:26.000Z">2022-05-17</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>Event Loop</span></h1>
+<h3 id="什么是事件循环（Event-Loop）？"><a href="#什么是事件循环（Event-Loop）？" class="headerlink" title="什么是事件循环（Event Loop）？"></a>什么是事件循环（Event Loop）？</h3><h3 id="一：首先要明确：js的执行机制"><a href="#一：首先要明确：js的执行机制" class="headerlink" title="一：首先要明确：js的执行机制"></a>一：首先要明确：js的执行机制</h3><ul>
+<li><p>1.从上到下依次执行</p>
+</li>
+<li><p>2.当某一行代码发生错误时，停止执行下面的代码</p>
+</li>
+<li><p>3.先执行同步代码，在执行异步代码</p>
+</li>
+</ul>
+<h3 id="二：事件循环的执行过程"><a href="#二：事件循环的执行过程" class="headerlink" title="二：事件循环的执行过程"></a>二：事件循环的执行过程</h3><ul>
+<li><p>1.同步代码先执行：调用栈执行后直接出栈</p>
+</li>
+<li><p>2.异步代码放入回调队列：等待调用栈空后，进入执行</p>
+</li>
+<li><p>3.宏任务和微任务都属于异步代码，微任务先执行，宏任务后执行</p>
+</li>
+<li><p>4.微任务在DOM渲染前执行，宏任务在DOM渲染后执行</p>
+</li>
+</ul>
+<h3 id="三：宏任务和微任务的根本区别"><a href="#三：宏任务和微任务的根本区别" class="headerlink" title="三：宏任务和微任务的根本区别"></a>三：宏任务和微任务的根本区别</h3><ul>
+<li><p>1.常见的宏任务有：setTimeout setInterval ajax DOM事件</p>
+</li>
+<li><p>2.常见的微任务有：promise async&#x2F;await</p>
+</li>
+<li><p>3.微任务的执行时间早于宏任务</p>
+</li>
+<li><p>4.微任务是由es6语法规定的，宏任务是浏览器规定的</p>
+</li>
+</ul>
+<h3 id="四：事件循环的整体流程"><a href="#四：事件循环的整体流程" class="headerlink" title="四：事件循环的整体流程"></a>四：事件循环的整体流程</h3><ul>
+<li><p>1.执行完call stack调用栈中的同步代码</p>
+</li>
+<li><p>2.执行微任务队列中的微任务代码</p>
+</li>
+<li><p>3.尝试DOM渲染</p>
+</li>
+<li><p>4.触发Event Loop 反复询问callbackQueue回调队列中是否还有需要执行的语句，如果有，则放入call stack调用栈中继续执行</p>
+</li>
+</ul>
+<h3 id="五：经典案例"><a href="#五：经典案例" class="headerlink" title="五：经典案例"></a>五：经典案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#x27;start&#x27;);</span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">    console.log(333);</span><br><span class="line">&#125;); // 安排明天干的活</span><br><span class="line">Promise.resolve(&#x27;x&#x27;).then(() =&gt; &#123;</span><br><span class="line">    console.log(3);</span><br><span class="line">&#125;).then(() =&gt; &#123;</span><br><span class="line">    console.log(4);</span><br><span class="line">&#125;).then(() =&gt; &#123;</span><br><span class="line">    console.log(5); // 小任务无限的加 今天干完否则下不了班</span><br><span class="line">    //nodejs 有小任务限制，跳过直接到宏任务</span><br><span class="line">&#125;)</span><br><span class="line">console.log(&#x27;end&#x27;);</span><br><span class="line">输入结果：start--&gt;end--&gt;3---&gt;4--&gt;5--&gt;333</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong>：</p>
+<blockquote>
+<p>1.start和end属于同步代码优先执行<br>2.promise里的代码也属于同步代码，但.then里的代码属于异步代码中的微任务，稍后执行<br>3.setTimeout属于异步代码中的宏任务，最后执行</p>
+</blockquote>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2022/04/13/Vue/nextTick/">Vue中的nextTick<span class="note">较早</span></a><div class="line"></div><a id="prev" href="/2022/06/13/Vue3/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AE%BF%E9%97%AEdata%E5%B1%9E%E6%80%A7%E4%B8%8D%E9%9C%80%E8%A6%81%E5%B8%A6data/">为什么访问data中的属性不需要带data<span class="note">较新</span></a></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@知非</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0" title="v1.8.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.8.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
