@@ -29,7 +29,7 @@
 <meta property="og:description" content="前端的优化策略有哪些">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-16T12:21:07.000Z">
-<meta property="article:modified_time" content="2022-08-22T08:26:05.798Z">
+<meta property="article:modified_time" content="2022-08-26T02:48:43.880Z">
 <meta property="article:author" content="知非">
 <meta property="article:tag" content="-前端">
 <meta property="article:tag" content="-HTTP">
@@ -74,11 +74,16 @@
 <div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202105%2F29%2F20210529001057_aSeLB.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662793049&t=071dea2a37ad6ee5aeedfc6db21b7969" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main"><div class="main">MengXuan</div> <div class="sub normal cap">A wandering dream ~</div> <div class="sub hover cap" style="opacity:0">一个流浪的梦想</div></div></a></div>
 <nav class="menu dis-select"></nav></header>
 
-<div class="widgets"></div>
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E5%8A%A0%E8%BD%BD%E4%BC%98%E5%8C%96%EF%BC%88%E5%87%8F%E5%B0%91http%E8%AF%B7%E6%B1%82%E6%95%B0%EF%BC%89"><span class="toc-text">一、 加载优化（减少http请求数）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%BE%E7%89%87%E4%BC%98%E5%8C%96"><span class="toc-text">二、图片优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BD%BF%E7%94%A8CDN"><span class="toc-text">三、使用CDN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%BC%80%E5%90%AFGzip%EF%BC%88%E4%BB%A3%E7%A0%81%E5%8E%8B%E7%BC%A9%EF%BC%89"><span class="toc-text">四、开启Gzip（代码压缩）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%A0%B7%E5%BC%8F%E8%A1%A8%E5%92%8CJS%E6%96%87%E4%BB%B6%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-text">五、样式表和JS文件的优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%87%8F%E5%B0%91%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84Cookie"><span class="toc-text">六、减少不必要的Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E8%84%9A%E6%9C%AC%E4%BC%98%E5%8C%96"><span class="toc-text">七、脚本优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-text">八、前端代码结构的优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D%E3%80%81SEO%E4%BC%98%E5%8C%96"><span class="toc-text">九、SEO优化</span></a></li></ol></div></div></div>
+
+
+</div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
 
       
@@ -88,6 +93,71 @@
 
 <article class='content md post'>
 <h1 class="article-title"><span>前端的优化</span></h1>
+<h3 id="一、-加载优化（减少http请求数）"><a href="#一、-加载优化（减少http请求数）" class="headerlink" title="一、 加载优化（减少http请求数）"></a>一、 加载优化（减少http请求数）</h3><p>常用的减少http请求数有以下几种：</p>
+<ol>
+<li><p>合并图片：当图片较多时，像精灵图，雪碧图可以合并为一张大图，从而减少http请求数。经常变化的图片可能不太合适，变化相对稳定的就可以考虑。合并大图除了能减少http 请求数外，还可以充分利用缓存来提升性能。</p>
+</li>
+<li><p>合并压缩css样式表和js脚本，他们的共同目的都是为了减少http连接数。</p>
+</li>
+<li><p>去掉不必要的请求，开发写代码或者系统升级之后残留的无效请求连接。</p>
+</li>
+<li><p>首屏加载：首屏快速显示可大大的提升用户对页面速度的感知，应尽量针对首屏的快速显示做出相应的优化。</p>
+</li>
+<li><p>充分利用缓存：来减少向服务器发送的请求数，节省网络资源，所有静态资源都要放在服务器端并设置缓存，并且要尽量使用长缓存。</p>
+</li>
+<li><p>预加载：大型资源页面可使用Loading，资源加载完成后再显示页面，但是加载时间过长，会造成负体验。</p>
+</li>
+<li><p>异步加载第三方资源：第三方资源不可控，会影响页面加载，所以要异步加载第三方资源。</p>
+</li>
+</ol>
+<h3 id="二、图片优化"><a href="#二、图片优化" class="headerlink" title="二、图片优化"></a>二、图片优化</h3><p>优化方法：</p>
+<ol>
+<li><p>尽可能的使用PNG格式的图片，它相对来说体积较小，可以使用工具压缩，在上线之前最好进行一定的优化。</p>
+</li>
+<li><p>同时在代码中进行图片的延迟加载，也叫做赖加载。</p>
+</li>
+<li><p>避免img、iframe等标签的src属性为空：空src会重新加载当前页面，影响速度和效率。</p>
+</li>
+<li><p>图像尽量避免使用DataURL：DataURL图像没有使用图像压缩算法，文件会变大，并且要解码后再渲染，加载慢耗时长。</p>
+</li>
+</ol>
+<h3 id="三、使用CDN"><a href="#三、使用CDN" class="headerlink" title="三、使用CDN"></a>三、使用CDN</h3><p>CDN：实现把内容从中心媒体服务器分发到边缘服务器的网络体系即内容分发网络，CDN具有更低的网络延迟和丢包率，能够分配负载，节省带宽提高网站的性能，可以使用户就近取得所需内容，解决网络拥挤的状况，提高用户访问网站的响应速度。</p>
+<p>如果安全性对你的网站很重要，就不要使用公共的CDN，因为当你远程从CDN请求文件时，你的访问来源信息也被发送过去，一些远程的js文件可能被修改用来搜集你的用户或者系统信息，而当你使用https协议时，能选择的CDN就更加有限。</p>
+<h3 id="四、开启Gzip（代码压缩）"><a href="#四、开启Gzip（代码压缩）" class="headerlink" title="四、开启Gzip（代码压缩）"></a>四、开启Gzip（代码压缩）</h3><p>Gzip即数据压缩，前端生产环境中将js、css、图片等文件进行压缩，通过减少数据传输量减小传输时间，节省服务器网络带宽，提高前端性能。</p>
+<p>压缩时间、流程、说明</p>
+<h3 id="五、样式表和JS文件的优化"><a href="#五、样式表和JS文件的优化" class="headerlink" title="五、样式表和JS文件的优化"></a>五、样式表和JS文件的优化</h3><ol>
+<li><p>头部内联的样式和脚本会阻塞页面的渲染，一般我们会把css样式表文件放到文件的头部使用link引入，这样可以让CSS样式表尽早地完成下载。</p>
+</li>
+<li><p>对应js脚本文件，一般我们把脚本放在尾部并使用异步方式加载，这样可以尽最大限度的减少样式和脚本对页面的阻塞。</p>
+</li>
+</ol>
+<h3 id="六、减少不必要的Cookie"><a href="#六、减少不必要的Cookie" class="headerlink" title="六、减少不必要的Cookie"></a>六、减少不必要的Cookie</h3><p>Cookie存储在客户端，伴随着HTTP请求在浏览器和服务器之间传递，由于cookie在访问对应域名下的资源时都会通过HTTP请求发送到服务器，从而会影响加载速度，所以尽量减少不必要的Cookie。</p>
+<h3 id="七、脚本优化"><a href="#七、脚本优化" class="headerlink" title="七、脚本优化"></a>七、脚本优化</h3><ol>
+<li>复杂动画效果，使用绝对定位让其脱离文档流，避免循环DOM元素，用transform:translate 代替 position left、right…以此来尽量减少回流和重绘。</li>
+</ol>
+<p>2．将脚本往后挪，减少对并发下载的影响。</p>
+<p>3．缓存.length的值：每次.length计算使用一个变量保存值。</p>
+<p>4．尽量使用事件委托：不给每个子节点单独设置事件监听器，而是设置在其父节点上，然后利用冒泡原理设置每个子节点，避免批量绑定事件以此来减少内存消耗和DOM操作。</p>
+<p>5．尽量使用id选择器：id选择器选择元素是最快的，具有唯一性，灵活性和优先性的优点。</p>
+<h3 id="八、前端代码结构的优化"><a href="#八、前端代码结构的优化" class="headerlink" title="八、前端代码结构的优化"></a>八、前端代码结构的优化</h3><p>1．设置Viewport：HTML的viewport可加快页面的渲染。</p>
+<p>2．减少DOM结点：DOM结点太多会影响页面的渲染。</p>
+<p>3．尽量使用css3动画：合理使用requestAnimationFrame动画代替setTimeout。</p>
+<p>4．优化高频事件：scroll、touchmove等事件尽量使用函数防抖节流等进行限制。</p>
+<ol start="5">
+<li><p>不滥用WEB字体：WEB字体需要下载、解析、重绘当前页面，尽量减少使用。</p>
+</li>
+<li><p>文件命名规则须统一且要有意义，同类型文件归类到相同的文件夹中。</p>
+</li>
+</ol>
+<h3 id="九、SEO优化"><a href="#九、SEO优化" class="headerlink" title="九、SEO优化"></a>九、SEO优化</h3><ol>
+<li><p>标题： 标题字数不要太长，一般写核心的关键词和网站主题相关的内容。</p>
+</li>
+<li><p>描述：描述是整个页面的综合说明，作用和重要性仅次于标题，描述最好能得吸引人一点，带上自己公司的品牌词和电话，并包括目标关键词。</p>
+</li>
+<li><p>关键词：对关键词进行优化，能够让用户在搜索关键词的时候，能够准确的定位到自己要搜索的内容和网站，能够让网站被更多有需要的人看到。</p>
+</li>
+</ol>
+<p>4.网站代码：网站代码尽量精简，节约百度蜘蛛的时候，这一点针对大型网站特别重要。</p>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
