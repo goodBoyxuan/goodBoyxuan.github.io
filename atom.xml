@@ -218,9 +218,9 @@
     <category term="前端" scheme="http://example.com/categories/%E5%89%8D%E7%AB%AF/"/>
     
     
-    <category term="-Html" scheme="http://example.com/tags/Html/"/>
-    
     <category term="-前端" scheme="http://example.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+    <category term="-Html" scheme="http://example.com/tags/Html/"/>
     
   </entry>
   
@@ -399,27 +399,6 @@
   </entry>
   
   <entry>
-    <title>常用的hook</title>
-    <link href="http://example.com/2021/06/25/React/%E5%B8%B8%E7%94%A8%E7%9A%84hook/"/>
-    <id>http://example.com/2021/06/25/React/%E5%B8%B8%E7%94%A8%E7%9A%84hook/</id>
-    <published>2021-06-25T02:50:39.000Z</published>
-    <updated>2022-08-10T02:04:09.205Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h3><p>示例：</p><p>const [stateA, setStateA] &#x3D; useState(0)</p><p>参数是初始state（定义初始state最好给出初始值，方便后期维护， 0&#x2F;false&#x2F;’’&#x2F;[]&#x2F;{}）。</p><p>返回值：一个是当前state，一个是更新state的函数。</p><p>useState的实现很简单，只有两行</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export function useState&lt;S&gt;(initialState: (() =&gt; S) | S) &#123;</span><br><span class="line">  const dispatcher = resolveDispatcher();</span><br><span class="line">  return dispatcher.useState(initialState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>重点都在dispatcher上，dispatcher通过resolveDispatcher()来获取，这个函数只是将ReactCurrentDispatcher.current的值赋给了dispatcher</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function resolveDispatcher() &#123;</span><br><span class="line">  const dispatcher = ReactCurrentDispatcher.current;</span><br><span class="line">  return dispatcher;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>useState挂在dispatcher上，resolveDispatcher() 返回的是 ReactCurrentDispatcher.current，所以useState(xxx)等价于ReactCurrentDispatcher.current.useState(xxx)。<br>简单理解：</p><blockquote><p> 初次渲染的时候，按照 useState，useEffect 的顺序，把 state，deps 等按顺序塞到 memoizedState 数组中，共享同一个 memoizedState，共享同一个顺序。<br>更新的时候，按照顺序，从 memoizedState 中把上次记录的值拿出来。</p></blockquote><h3 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h3><p>useEffect的实现很简单，也是只有两行：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export function useEffect (create: () = &gt;(() = &gt;void) | void, deps: Array &lt; mixed &gt; |void | null, ) : void &#123;</span><br><span class="line">  const dispatcher = resolveDispatcher();</span><br><span class="line">  return dispatcher.useEffect(create, deps);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>useEffect产生的hook会放在fiber.memoizedState上，调用后生成一个effect对象，存储到对应hook的memoizedState中，与其他effect连接成环形链表。<br>单个的effect对象包含以下几个属性：<br>create：传入useEffect函数的第一个参数，即回调函数；<br>destory：回调函数中的return函数，在改effect销毁的时候执行，默认发生在第一次渲染后，也可以让它在依赖项数组中的值改变时执行，通过return清除副作用函数（如监听、订阅、计时器等）；<br>deps：依赖项，传入的第二个参数，用来控制该Effect包裹的函数执不执行。如果依赖项为空数组[]，则该Effect在每次组件挂载时执行，且仅执行一次，相当于class组件中的componentDidMount和componentDidupdate生命周期的融合；如果没有第二个参数，则effect会不停地调用。<br>next：指向下一个effect；<br>tag：effect的类型，区分useEffect和useLayoputEffect。<br>hook会挂载到fiber.memoizedState上。hook按出现顺序进行存储，memoizedState存储了useEffect的effect对象（effect1），next指向useLayoutEffect的effect对象（effect2），effect2的next又会指向effect1，最终形成闭环。结构如下：<br><img src="https://img-blog.csdnimg.cn/20210524181825618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMwOTk3NTAz,size_16,color_FFFFFF,t_70"></p><p>结论：effect在页面完成渲染后按照先后顺序执行，并且内部执行时异步的</p><blockquote><p>useEffect和useLayoutEffect：<br>useLayoutEffect也是一个hook方法，跟useEffect类似，区别在于渲染时机不同，useEffect发生在浏览器渲染结束后执行，useLayoutEffect则是发生在dom更新完成后。</p></blockquote><h4 id="useLayoutEffect"><a href="#useLayoutEffect" class="headerlink" title="useLayoutEffect"></a>useLayoutEffect</h4><p>useLayoutEffect和useEffect很像，唯一的不同点就是useEffect是异步执行，而useLayoutEffect是同步执行的。</p><p>当函数组件刷新（渲染）时，</p><p>包含useEffect的组件整个运行过程如下：<br>1、触发组件重新渲染（通过改变组件state或者组件的父组件重新渲染，导致子节点渲染）<br>2、组件函数执行<br>3、组件渲染后呈现到屏幕上<br>4、useEffect hook执行</p><p>包含useLayoutEffect的组件整个运行过程如下：<br>1、触发组件重新渲染（通过改变组件state或者组件的父组件重新渲染，导致子组件渲染）<br>2、组件函数执行<br>3、useLayoutEffect hook执行, React等待useLayoutEffect的函数执行完毕<br>4、组件渲染后呈现到屏幕上</p><p>useEffect异步执行的优点是，react渲染组件不必等待useEffect函数执行完毕，造成阻塞。</p><p>百分之99的情况，使用useEffect就可以了，唯一需要用到useLayoutEffect的情况就是，在使用useEffect的情况下，我们的屏幕会出现闪烁的情况（组件在很短的时间内渲染了两次）。</p><h3 id="useReducer"><a href="#useReducer" class="headerlink" title="useReducer"></a>useReducer</h3><p>参数：第一个是reducer纯函数，第二个是初始state，第三个是修改初始state，用于重置<br>返回值是一个数组，数组第一个元素是state的当前值，第二个元素是发送action的dispatch函数</p><blockquote><p>结论：useReducer可以处理多个用useState实现的逻辑（加载状态、错误信息、请求数据）</p></blockquote><h3 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h3><p>参数是创建函数和依赖项数组。</p><p>返回值是一个带有memoized的值，发生在render之前， 并且这个值仅在依赖项改变时才重新计算。</p><blockquote><p>结论：useMemo发生在render前，返回一个缓存的数据，且仅在依赖项改变后变化。</p><p>使用useMemo可以避免多余的计算开销。</p></blockquote><h3 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h3><p>参数是内联回调函数和依赖项数组，</p><p>返回值是回调函数的memoized版，该回调函数仅在某个依赖项改变时才会更新。</p><blockquote><p>结论：返回一个缓存的函数，添加依赖项数组可以避免函数的无意义计算，降低了子组件的渲染开销。</p></blockquote><h3 id="useRef"><a href="#useRef" class="headerlink" title="useRef"></a>useRef</h3><p>返回值是一个可变的ref对象，并且这个对象的值发生改变时不会引起页面的渲染。</p><blockquote><p>结论：useRef可以存储不需要引起页面渲染的数据；修改useRef值的唯一方法是修改.current，且修改后不会引起重渲染。</p></blockquote><h3 id="useContext"><a href="#useContext" class="headerlink" title="useContext"></a>useContext</h3><p>跨组件共享数据的钩子函数，接收一个context对象，并返回该对象的当前值。</p><p>当前的context值由上层组件中距离当前组件最近的&lt;MyContext.Provider&gt;的value决定，并且父组件的context发生改变是，子组件都会重新渲染。</p><blockquote><p>结论：useContext会在context值变化时重新渲染，&lt;MyContext.Provider&gt;的value发生变化时，包裹的组件无论是否订阅value值，都会重新渲染，可以使用memo对未使用value的子组件进行优化。</p></blockquote>]]></content>
-    
-    
-    <summary type="html">React中常用的hook</summary>
-    
-    
-    
-    <category term="React" scheme="http://example.com/categories/React/"/>
-    
-    
-    <category term="-React" scheme="http://example.com/tags/React/"/>
-    
-  </entry>
-  
-  <entry>
     <title>类组件和函数组件的区别</title>
     <link href="http://example.com/2021/06/25/React/%E7%B1%BB%E7%BB%84%E4%BB%B6%E5%92%8C%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
     <id>http://example.com/2021/06/25/React/%E7%B1%BB%E7%BB%84%E4%BB%B6%E5%92%8C%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
@@ -437,6 +416,27 @@
     <category term="-React" scheme="http://example.com/tags/React/"/>
     
     <category term="-component" scheme="http://example.com/tags/component/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用的hook</title>
+    <link href="http://example.com/2021/06/25/React/%E5%B8%B8%E7%94%A8%E7%9A%84hook/"/>
+    <id>http://example.com/2021/06/25/React/%E5%B8%B8%E7%94%A8%E7%9A%84hook/</id>
+    <published>2021-06-25T02:50:39.000Z</published>
+    <updated>2022-08-10T02:04:09.205Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h3><p>示例：</p><p>const [stateA, setStateA] &#x3D; useState(0)</p><p>参数是初始state（定义初始state最好给出初始值，方便后期维护， 0&#x2F;false&#x2F;’’&#x2F;[]&#x2F;{}）。</p><p>返回值：一个是当前state，一个是更新state的函数。</p><p>useState的实现很简单，只有两行</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export function useState&lt;S&gt;(initialState: (() =&gt; S) | S) &#123;</span><br><span class="line">  const dispatcher = resolveDispatcher();</span><br><span class="line">  return dispatcher.useState(initialState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>重点都在dispatcher上，dispatcher通过resolveDispatcher()来获取，这个函数只是将ReactCurrentDispatcher.current的值赋给了dispatcher</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function resolveDispatcher() &#123;</span><br><span class="line">  const dispatcher = ReactCurrentDispatcher.current;</span><br><span class="line">  return dispatcher;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>useState挂在dispatcher上，resolveDispatcher() 返回的是 ReactCurrentDispatcher.current，所以useState(xxx)等价于ReactCurrentDispatcher.current.useState(xxx)。<br>简单理解：</p><blockquote><p> 初次渲染的时候，按照 useState，useEffect 的顺序，把 state，deps 等按顺序塞到 memoizedState 数组中，共享同一个 memoizedState，共享同一个顺序。<br>更新的时候，按照顺序，从 memoizedState 中把上次记录的值拿出来。</p></blockquote><h3 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h3><p>useEffect的实现很简单，也是只有两行：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export function useEffect (create: () = &gt;(() = &gt;void) | void, deps: Array &lt; mixed &gt; |void | null, ) : void &#123;</span><br><span class="line">  const dispatcher = resolveDispatcher();</span><br><span class="line">  return dispatcher.useEffect(create, deps);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>useEffect产生的hook会放在fiber.memoizedState上，调用后生成一个effect对象，存储到对应hook的memoizedState中，与其他effect连接成环形链表。<br>单个的effect对象包含以下几个属性：<br>create：传入useEffect函数的第一个参数，即回调函数；<br>destory：回调函数中的return函数，在改effect销毁的时候执行，默认发生在第一次渲染后，也可以让它在依赖项数组中的值改变时执行，通过return清除副作用函数（如监听、订阅、计时器等）；<br>deps：依赖项，传入的第二个参数，用来控制该Effect包裹的函数执不执行。如果依赖项为空数组[]，则该Effect在每次组件挂载时执行，且仅执行一次，相当于class组件中的componentDidMount和componentDidupdate生命周期的融合；如果没有第二个参数，则effect会不停地调用。<br>next：指向下一个effect；<br>tag：effect的类型，区分useEffect和useLayoputEffect。<br>hook会挂载到fiber.memoizedState上。hook按出现顺序进行存储，memoizedState存储了useEffect的effect对象（effect1），next指向useLayoutEffect的effect对象（effect2），effect2的next又会指向effect1，最终形成闭环。结构如下：<br><img src="https://img-blog.csdnimg.cn/20210524181825618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMwOTk3NTAz,size_16,color_FFFFFF,t_70"></p><p>结论：effect在页面完成渲染后按照先后顺序执行，并且内部执行时异步的</p><blockquote><p>useEffect和useLayoutEffect：<br>useLayoutEffect也是一个hook方法，跟useEffect类似，区别在于渲染时机不同，useEffect发生在浏览器渲染结束后执行，useLayoutEffect则是发生在dom更新完成后。</p></blockquote><h4 id="useLayoutEffect"><a href="#useLayoutEffect" class="headerlink" title="useLayoutEffect"></a>useLayoutEffect</h4><p>useLayoutEffect和useEffect很像，唯一的不同点就是useEffect是异步执行，而useLayoutEffect是同步执行的。</p><p>当函数组件刷新（渲染）时，</p><p>包含useEffect的组件整个运行过程如下：<br>1、触发组件重新渲染（通过改变组件state或者组件的父组件重新渲染，导致子节点渲染）<br>2、组件函数执行<br>3、组件渲染后呈现到屏幕上<br>4、useEffect hook执行</p><p>包含useLayoutEffect的组件整个运行过程如下：<br>1、触发组件重新渲染（通过改变组件state或者组件的父组件重新渲染，导致子组件渲染）<br>2、组件函数执行<br>3、useLayoutEffect hook执行, React等待useLayoutEffect的函数执行完毕<br>4、组件渲染后呈现到屏幕上</p><p>useEffect异步执行的优点是，react渲染组件不必等待useEffect函数执行完毕，造成阻塞。</p><p>百分之99的情况，使用useEffect就可以了，唯一需要用到useLayoutEffect的情况就是，在使用useEffect的情况下，我们的屏幕会出现闪烁的情况（组件在很短的时间内渲染了两次）。</p><h3 id="useReducer"><a href="#useReducer" class="headerlink" title="useReducer"></a>useReducer</h3><p>参数：第一个是reducer纯函数，第二个是初始state，第三个是修改初始state，用于重置<br>返回值是一个数组，数组第一个元素是state的当前值，第二个元素是发送action的dispatch函数</p><blockquote><p>结论：useReducer可以处理多个用useState实现的逻辑（加载状态、错误信息、请求数据）</p></blockquote><h3 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h3><p>参数是创建函数和依赖项数组。</p><p>返回值是一个带有memoized的值，发生在render之前， 并且这个值仅在依赖项改变时才重新计算。</p><blockquote><p>结论：useMemo发生在render前，返回一个缓存的数据，且仅在依赖项改变后变化。</p><p>使用useMemo可以避免多余的计算开销。</p></blockquote><h3 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h3><p>参数是内联回调函数和依赖项数组，</p><p>返回值是回调函数的memoized版，该回调函数仅在某个依赖项改变时才会更新。</p><blockquote><p>结论：返回一个缓存的函数，添加依赖项数组可以避免函数的无意义计算，降低了子组件的渲染开销。</p></blockquote><h3 id="useRef"><a href="#useRef" class="headerlink" title="useRef"></a>useRef</h3><p>返回值是一个可变的ref对象，并且这个对象的值发生改变时不会引起页面的渲染。</p><blockquote><p>结论：useRef可以存储不需要引起页面渲染的数据；修改useRef值的唯一方法是修改.current，且修改后不会引起重渲染。</p></blockquote><h3 id="useContext"><a href="#useContext" class="headerlink" title="useContext"></a>useContext</h3><p>跨组件共享数据的钩子函数，接收一个context对象，并返回该对象的当前值。</p><p>当前的context值由上层组件中距离当前组件最近的&lt;MyContext.Provider&gt;的value决定，并且父组件的context发生改变是，子组件都会重新渲染。</p><blockquote><p>结论：useContext会在context值变化时重新渲染，&lt;MyContext.Provider&gt;的value发生变化时，包裹的组件无论是否订阅value值，都会重新渲染，可以使用memo对未使用value的子组件进行优化。</p></blockquote>]]></content>
+    
+    
+    <summary type="html">React中常用的hook</summary>
+    
+    
+    
+    <category term="React" scheme="http://example.com/categories/React/"/>
+    
+    
+    <category term="-React" scheme="http://example.com/tags/React/"/>
     
   </entry>
   
